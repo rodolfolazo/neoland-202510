@@ -25,3 +25,15 @@ Confirmar cambios
 ```sh
 git commit -m "Mensaje"
 ```
+
+Bajar del repo
+
+```sh
+gi8t pull origin main
+```
+
+Subir a repo
+
+```sh
+git push -u origin main
+```
