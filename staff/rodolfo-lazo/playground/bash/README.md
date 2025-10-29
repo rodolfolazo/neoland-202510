@@ -1,27 +1,107 @@
-![Bash](data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/2wCEAAkGBxAPEA8PEA8NDw8NDw8NDw8NDQ8NDQ0NFREWFhURFRUYHSggGBolGxUVITEhJSkrLy4uFx8zODMsNygtLjcBCgoKDQ0NFQ8PDysdFRkrLS03LSstLSs3ListLS43KzcrMTIrLS0rKzctLTgyKysrLzc3NzguLy03Ly03NzQ3L//AABEIAKMBNgMBIgACEQEDEQH/xAAcAAEBAQACAwEAAAAAAAAAAAAAAQIHCAMEBgX/xAA9EAACAgECBAIGBQsEAwAAAAAAAQIRAwQhBRIxYUFRBgcTcYHwIlKRobEUIzM0QnN0srPB0RUycoIkYmP/xAAWAQEBAQAAAAAAAAAAAAAAAAAAAQL/xAAZEQEBAQEBAQAAAAAAAAAAAAAAARECISL/2gAMAwEAAhEDEQA/AOKgAEBRLAFAFAKFAWUKLRLIBoWZLQFFBIqAlkK38olAGLK0EBKFFslgKFfPUhQL9pL+eoYS8wK3/YyUAQAoCK8+hqVbmGAKVMnQcwCxYsJAQpUhWwENJmQBbBgBWqFFsgQoUABaCQFgSkUEAtkT7AAXfyLRGyNgWl5gzZbA0RfAyLA187In2hMgGmDNl5WBYj56mUjXL3AjFFpeY2AbdzJrYyFW+wvsiqitr5QRlsqlt8RZLAs3ZktlsDNFQsWA5tqFkABgAAUgA1RKAAqQLRAASKmEwFdgl2LfvIviBKBQmBkUVsfACNCiiveBKKl2BQJREjS+AXzuQZovw+4+k9GvQfX8RXPp8P5pWvbZZeywt+Sb3l/1T70PSb0J1/Dlz6jA/ZOl7bFL2uG/JyX+3/slfhZTXzbYH2i13AiIatdxt3+4Knh8RZdvN/YSl5/cBKDNKvP7g13CMg0o90JLugMlaoR6msoGC0Q0twI4ko8nKyOINZBrlMgKBQABLAFUhZAAsCy0BbLzGGEBrm7GWysASKNfAjRANL4l+fIwpGlMA0QlnJXq+9V89dCGq1U5YdLP6WOEK9vqIp9be0IPz3b8K2YHw3BuC6jW5Vh02GeabptQW0I/WlJ7RXdtHM3ob6osGn5cuvcdTm2awRv8lg/KV75fjS7Pqcg8H4Pp9FiWHTYYYca8ILeT+tKT3k+7bZ7wMZhBRSjFJRikkkqSS6JIZIKScZJSjJOMoyScZJ9U14o0CK4v9MvVDgz82XQOOmy9Xglf5LN+Ua3x/C12XU4Y4zwbU6LK8Opwzw5F4TW0l9aLW0l3TaO256HGeDafW4nh1OGGbG+ikvpQf1oyW8X3TTLqOpFCMqvuck+sD1YT0EJ6rTTlm0sXc4zX5/Tpvq2tpxvx2a2tPdnHEo7gZBqLH+QqKiOisUESiMMAacfAlNlaZNwFGkmjNmucBzMjkxZLA0pGbCYsC2AAILIAKAGgAIUAmCAChogQFFiyoCWhXcUSgL0/E7ecJxRhp8EIpKMMOKMUuiioJJHUL/D/AAO3/D/0OL91j/lQHsAAigB+N6S+k+k4dj59TlUXJPkxR+nny/8AGHj73SXi0B+yfAemXrQ0ui5sOm5dXqVcXyy/8bDLp9Oa/wBzX1Y+VNxOOPTH1j6viHNixt6XSu17LHL87lj/APTIv5VS3p83U+LSNTlm9P2eK+lWv1WSWXNqszc4yg8cJyx6dY5JpwWJPl5abW6bfi2fOz6vc9k9bIt372KRhSCZXHsCNI2WxzdkNu4EEVuQqCNOPUUzNs0pde4EbCZGWAGrRllrqYA1RKIUBQAAgAAAAKBCwBSBFAIEAFZBZbAJ0XZkaFBEa/v+B2/4f+hxfusf8qOoDf4P8Dt/w/8AQ4v3eP8AlQHsAAivV4rq/YafPnrm9hhy5uX63JByr7jqvxLiGXU5Z6jPklkzZXzTnL8EvCK8Etkjs96VfqGu/g9T/RkcAerfgmPXa/Hiyx9pixYsmpnibpZ+TlUcbfk5SjfZNGuWen43F+EZ9Hklh1GKWOcOS/2oc0scZ8qmvotpTV03TPRPsPWDxDi2eWH/AFPTvTRi8jwY4wSxJy5eaPOm1JpJdX5+Z8eaZD1ckt37/wC57R68+r95KsZ5vn4kk/xNOKo8ZloFAqCgQKghZvmVGLDA1KjNCiUBaI0WxYGS2AAAoAQEFhQFYABkAFAFAVMEAABEA0kRhMICJnZb1b+mODiGmw4nkjHWYcUYZcMmoznyJL2sF+1F7N10bpnWto3hzShKMoSlGUWpRlCTjKMl0aa3T7oI7hg4O9DfW/lw8uHiClqMWyWogktRBf8AsumRd9pf8mcycJ4tp9ZiWbTZsebHLbmg7p/VkusX2dMivB6VfqGu/g9T/RkdbfRnDrZ6iH+nrL+VRjKcfYzjCagl9LeTSrfo+tnZL0q/UNd/B6n+jI6waHXZtPJzwZsuCcoPG54cksU+R1ceaO9bL7Ea5Z6fd+sPiOojoNDoNdljm4hHNPWainjlLT42pxxYpuCS5nGd7fV8dm/jM2ihhi/az/PNfRxY6k4Pzm+i9xOOcVya3U5tVm5Pa53GU/ZxcYLlhGEUk2/2YxXU/NyZku7J1L59ZGbLb5W263PW5rbfmJSbCotrUmI15ERDRGmopeJhI1B0F094RkHkj9pia3AyjVkoAUEAFBC2AolGgBkFaAGAARVIAigVIhQIVMgA1ZkFQBkAYGq2MgrYCwQqYBH6XBOPanQ5Vm0uaeKeylyu4ziv2Zxe0l2a+w/NaIgObeG+tfTazSZ9Nr09JlzYMmH22LHkzaeTnBx5uSNzi9+m67nD85KNrmjKtrjdS7q0nXvSPUbIXUx5Zzb26Iw9tvP8DKZW7IKrRk034eRAqFsNUGwEgpAUB5IMxIEQRLLYaDQAtCCNzA8YLZKACxQAtgyygZABFAAAABQBSAAAABaFgQqEhYFl2M0aQiBmypEYTA0Vrx8DLYQABoAC2SygE99yyIAjSiDXMRxAyKMsWBqyMBoApFbsyUAkeRLY8ZrmAUZZrmMsCFMlAgAIoAAAAAoRAAYKkQoqYIVEBuyApRDaZhgAwihAQqDImBWXl2syWwICgDViCMmosCGrMooRktAIKpLKRoIAgAoZLAEBoyFAAAABAAAAAFAAEFABRCgAClAGWI9QAK+pCgAjLAAIFAAAAAwAKja6EARhFACoaACIzLKAqIoAAgAAAAf/2Q==)
+![BASH image](https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Gnu-bash-logo.svg/1200px-Gnu-bash-logo.svg.png)
 
-# Manual de Bash
+# BASH
 
-Directorio actual
+Commands in BASH terminal.
+
+## pwd
+
+Path to working directory.
 
 ```sh
-pwd
+$ pwd
+/Users/b00tc4mp/workspace
 ```
 
-Listar ficheros
+## ls
+
+List files and folders (directories).
 
 ```sh
-ls
+$ ls
+Desktop		Downloads	Movies		Pictures	workspace
+Documents	Library		Music		Public
 ```
 
-Copiar ficheros
+## ls -l
+
+List files and folders with details.
 
 ```sh
-copy ruta1 ruta2
+$ ls -l
+total 0
+drwx------@  4 b00tc4mp  staff   128 Oct 22 17:01 Desktop
+drwx------@  4 b00tc4mp  staff   128 Oct 17 13:03 Documents
+drwx------+  8 b00tc4mp  staff   256 Oct 22 17:01 Downloads
+drwx------@ 88 b00tc4mp  staff  2816 Oct 10 18:51 Library
+drwx------   5 b00tc4mp  staff   160 Oct 22 16:58 Movies
+drwx------+  4 b00tc4mp  staff   128 Oct 16 10:50 Music
+drwx------+  5 b00tc4mp  staff   160 Oct 21 18:50 Pictures
+drwxr-xr-x+  4 b00tc4mp  staff   128 Sep 30 18:51 Public
+drwxr-xr-x  11 b00tc4mp  staff   352 Oct 22 21:32 workspace
 ```
 
-Borrar ficheros
+## mkdir folder-name
+
+Creates a folder with the provided name.
 
 ```sh
-rm ruta1
+$ mkdir workspace
+```
+
+## touch file-name
+
+Creates and empty file with the given name.
+
+```sh
+$ touch readme.txt
+```
+
+## chmod rwx file-name/folder-name
+
+Updates permissions in given file or folder.
+
+```sh
+$ chmod 700 readme.txt
+```
+
+## nano file-name
+
+Opens a given file in the Nano editor.
+
+```sh
+$ nano readme.txt
+```
+
+## rm file-name
+
+Removes a given file from system.
+
+```sh
+$ rm readme.txt
+```
+
+## rmdir folder-name
+
+Removes a given folder when is empty.
+
+```sh
+$ rmdir temp
+```
+
+### cd folder-name
+
+Changes from current folder to the given folder path.
+
+```sh
+$ cd workspace
+```
+
+### ls -a
+
+Shows visible and hidden files and folders in given path.
+
+```sh
+$ ls -a
+.       ..      .git    staff
 ```
