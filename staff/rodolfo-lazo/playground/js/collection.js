@@ -22,7 +22,7 @@ console.log(collection);
 // { 0: 'Peter', 1: 'Wendy', 2: 'James', count: 3 }
 
 // TODO implement remove method
-collection.remove = function (index) {
+collection.removeIndex = function (index) {
   if (index < 0 || index >= this.count) {
     console.warn("Índice fuera de rango");
     return;
@@ -39,3 +39,7 @@ collection.remove = function (index) {
   // Actualizar el contador
   this.count--;
 };
+
+collection.remove(1);
+console.log(collection);
+// { 0: 'Peter', 1: 'James', count: 2 }
