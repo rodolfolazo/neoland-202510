@@ -29,7 +29,15 @@ collection.removeIndex = function (index) {
 };
 
 collection.remove = function (item) {
-  for (let i = 0; i < this.count - 1; i++) {
+  for (let i = 0; i < this.count; i++) {
+    if (this[i] === item) {
+      delete this[i];
+    }
+  }
+};
+
+collection.removeFirst = function (item) {
+  for (var i = 0; i < this.count; i++) {
     if (this[i] === item) {
       delete this[i];
       return;
@@ -37,9 +45,11 @@ collection.remove = function (item) {
   }
 };
 
+debugger;
 collection.add("Peter");
 collection.add("Wendy");
 collection.add("James");
+collection.add("Wendy");
 
-collection.remove("Wendy");
+collection.removeFirst("Wendy");
 console.log(collection);
