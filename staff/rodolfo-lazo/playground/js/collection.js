@@ -53,3 +53,5 @@ collection.add("Wendy");
 
 collection.removeFirst("Wendy");
 console.log(collection);
+
+//TODO implement update method
