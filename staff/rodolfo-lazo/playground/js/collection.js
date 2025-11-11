@@ -9,18 +9,6 @@ collection.add = function (item) {
   this.count++;
 };
 
-collection.add("Peter");
-console.log(collection);
-// { 0: 'Peter', count: 1 }
-
-collection.add("Wendy");
-console.log(collection);
-// { 0: 'Peter', 1: 'Wendy', count: 2 }
-
-collection.add("James");
-console.log(collection);
-// { 0: 'Peter', 1: 'Wendy', 2: 'James', count: 3 }
-
 // TODO implement remove method
 collection.removeIndex = function (index) {
   if (index < 0 || index >= this.count) {
@@ -40,6 +28,18 @@ collection.removeIndex = function (index) {
   this.count--;
 };
 
-collection.remove(1);
+collection.remove = function (item) {
+  for (let i = 0; i < this.count - 1; i++) {
+    if (this[i] === item) {
+      delete this[i];
+      return;
+    }
+  }
+};
+
+collection.add("Peter");
+collection.add("Wendy");
+collection.add("James");
+
+collection.remove("Wendy");
 console.log(collection);
-// { 0: 'Peter', 1: 'James', count: 2 }
