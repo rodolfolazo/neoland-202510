@@ -4,17 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>DOM</title>
+    <style>
+      .estilo1 {
+        font-weight: bold;
+        font-style: italic;
+      }
+    </style>
   </head>
 
   <body>
     <h1>Hello, DOM!</h1>
-
+    <div><p>A ver, que le ponemos</p></div>
     <script>
       document.childNodes[1].childNodes[2].childNodes[1].style.backgroundColor =
-        "dodgerblue";
-      document.childNodes[1].childNodes[2].childNodes[1].style.color = "gold";
-      document.childNodes[1].childNodes[2].childNodes[1].style.paddingLeft =
-        ".5rem";
+        "green";
+      document.childNodes[1].childNodes[2].childNodes[1].style.color = "white";
+      document.childNodes[1].childNodes[2].childNodes[1].style.padding = "1rem";
+      document.childNodes[1].childNodes[2].childNodes[1].style.textAlign =
+        "center";
+      document.childNodes[1].childNodes[2].childNodes[3].childNodes[0].style.color =
+        "red";
+      const eleP = document.createElement("p");
+      eleP.textContent = "Este es otro elemento p";
+      eleP.className = "estilo1";
+      document.childNodes[1].childNodes[2].childNodes[3].appendChild(eleP);
+      document.childNodes[1].childNodes[2].childNodes[3].insertAdjacentHTML(
+        "beforeend",
+        "<p>Otro párrafo insertado</p>"
+      );
+      //insertAdjacentHTML("beforeend", "<span>Texto insertado</span>");
     </script>
   </body>
 </html>
