@@ -10,11 +10,47 @@
         font-style: italic;
       }
     </style>
+    <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
   <body>
     <h1>Hello, DOM!</h1>
     <div><p>A ver, que le ponemos</p></div>
+    <!-- //Casa con tailwind-->
+    <div class="flex flex-col items-center mt-10">
+      <!-- Techo -->
+      <div
+        class="w-0 h-0 border-l-[75px] border-l-transparent border-r-[75px] border-r-transparent border-b-[75px] border-b-red-600"
+      ></div>
+
+      <!-- Cuerpo de la casa -->
+      <div class="w-[150px] h-[150px] bg-yellow-200 relative">
+        <!-- Puerta -->
+        <div
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40px] h-[70px] bg-brown-700"
+        ></div>
+
+        <!-- Ventana izquierda -->
+        <div
+          class="absolute top-6 left-4 w-[40px] h-[40px] bg-blue-300 border border-gray-700"
+        ></div>
+
+        <!-- Ventana derecha -->
+        <div
+          class="absolute top-6 right-4 w-[40px] h-[40px] bg-blue-300 border border-gray-700"
+        ></div>
+        <!-- Puerta -->
+        <div
+          class="absolute bottom-0 left-1/2 -translate-x-1/2 w-[40px] h-[70px] bg-orange-800 rounded-sm"
+        >
+          <!-- Manija -->
+          <div
+            class="absolute top-1/2 right-2 w-2 h-2 bg-gray-300 rounded-full"
+          ></div>
+        </div>
+      </div>
+    </div>
+
     <script>
       document.childNodes[1].childNodes[2].childNodes[1].style.backgroundColor =
         "green";
