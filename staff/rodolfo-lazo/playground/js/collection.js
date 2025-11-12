@@ -45,13 +45,21 @@ collection.removeFirst = function (item) {
   }
 };
 
+
+collection.update = function (oldItem, newItem) {
+  for (var i = 0; i < this.count; i++) {
+    if (this[i] === oldItem) {
+      this[i] = newItem;      
+    }
+}
+
 debugger;
 collection.add("Peter");
 collection.add("Wendy");
 collection.add("James");
 collection.add("Wendy");
 
-collection.removeFirst("Wendy");
-console.log(collection);
+//collection.removeFirst("Wendy");
 
-//TODO implement update method
+collection.update("Wendy", "Stacey");
+console.log(collection);
