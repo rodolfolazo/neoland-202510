@@ -45,13 +45,13 @@ collection.removeFirst = function (item) {
   }
 };
 
-
 collection.update = function (oldItem, newItem) {
   for (var i = 0; i < this.count; i++) {
     if (this[i] === oldItem) {
-      this[i] = newItem;      
+      this[i] = newItem;
     }
-}
+  }
+};
 
 debugger;
 collection.add("Peter");
