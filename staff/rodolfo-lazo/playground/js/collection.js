@@ -53,13 +53,21 @@ collection.update = function (oldItem, newItem) {
   }
 };
 
+collection.updateFirst = function (oldItem, newItem) {
+  for (var i = 0; i < this.count; i++) {
+    if (this[i] === oldItem) {
+      this[i] = newItem;
+      return;
+    }
+  }
+};
+
 debugger;
 collection.add("Peter");
-collection.add("Wendy");
 collection.add("James");
+collection.add("Pepito");
 collection.add("Wendy");
+collection.add("Pepito");
 
-//collection.removeFirst("Wendy");
-
-collection.update("Wendy", "Stacey");
+collection.updateFirst("Pepito", "Jiminy");
 console.log(collection);
