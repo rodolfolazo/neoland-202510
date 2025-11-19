@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DOM</title>
+
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Sixtyfour&display=swap");
+    </style>
+  </head>
+
+  <body>
+    <h1>Hello, DOM!</h1>
+
+    <script>
+      // document.childNodes[1].childNodes[2].childNodes[1].style.backgroundColor = 'dodgerblue'
+      // document.childNodes[1].childNodes[2].childNodes[1].style.color = 'gold'
+      // document.childNodes[1].childNodes[2].childNodes[1].style.paddingLeft = '.5rem'
+
+      /* super mario */
+
+      const step = 10;
+
+      let marioX = 100,
+        marioY = 200,
+        marioWidth = 70,
+        marioHeight = 150,
+        marioLife = 10;
+
+      const mario = document.createElement("div");
+      mario.style.width = marioWidth + "px";
+      mario.style.height = marioHeight + "px";
+      mario.style.backgroundColor = "green";
+      mario.style.backgroundImage =
+        "url(https://static.wikia.nocookie.net/mario/images/d/dc/Mario_%282%29.png)";
+      mario.style.backgroundPosition = "center";
+      mario.style.backgroundSize = "contain";
+      mario.style.backgroundRepeat = "no-repeat";
+      mario.style.position = "absolute";
+      mario.style.position = "absolute";
+      mario.style.left = marioX + "px";
+      mario.style.top = marioY + "px";
+      document.body.appendChild(mario);
+
+      mario.addEventListener("click", function () {
+        alert("Ouch!");
+      });
+
+      let goombaX = 100,
+        goombaY = 500,
+        goombaWidth = 80,
+        goombaHeight = 100,
+        goombaLife = 10;
+
+      const goomba = document.createElement("div");
+      goomba.style.width = goombaWidth + "px";
+      goomba.style.height = goombaHeight + "px";
+      goomba.style.backgroundColor = "green";
+      goomba.style.backgroundImage =
+        "url(https://static.wikia.nocookie.net/mario/images/d/d5/GoombaNSMB.png)";
+      goomba.style.backgroundPosition = "center";
+      goomba.style.backgroundSize = "contain";
+      goomba.style.backgroundRepeat = "no-repeat";
+      goomba.style.position = "absolute";
+      goomba.style.left = goombaX + "px";
+      goomba.style.top = goombaY + "px";
+      document.body.appendChild(goomba);
+
+      goomba.addEventListener("click", function () {
+        alert("dont touch me!");
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "ArrowUp") marioY -= step;
+        else if (event.key === "ArrowDown") marioY += step;
+        else if (event.key === "ArrowLeft") marioX -= step;
+        else if (event.key === "ArrowRight") marioX += step;
+
+        mario.style.left = marioX + "px";
+        mario.style.top = marioY + "px";
+
+        console.log("mario", marioX, marioY);
+
+        if (event.key === "w") goombaY -= step;
+        else if (event.key === "s") goombaY += step;
+        else if (event.key === "a") goombaX -= step;
+        else if (event.key === "d") goombaX += step;
+
+        goomba.style.left = goombaX + "px";
+        goomba.style.top = goombaY + "px";
+
+        console.log("goomba", goombaX, goombaY);
+
+        // detect collision
+
+        let marioXMax = marioX + marioWidth;
+        let marioYMax = marioY + marioHeight;
+
+        if (marioXMax > goombaX && marioYMax > goombaY) {
+          console.log("collision");
+
+          marioLife--;
+          goombaLife--;
+
+          if (marioLife < 8 && marioLife >= 4)
+            mario.style.backgroundColor = "gold";
+          else if (marioLife < 4) mario.style.backgroundColor = "tomato";
+
+          if (goombaLife < 8 && goombaLife >= 4)
+            goomba.style.backgroundColor = "gold";
+          else if (goombaLife < 4) goomba.style.backgroundColor = "tomato";
+        }
+      });
+
+      /* clock */
+
+      const clock = document.createElement("div");
+      clock.style.width = "150px";
+      clock.style.height = "15px";
+      clock.style.backgroundColor = "black";
+      clock.style.color = "tomato";
+      clock.style.fontFamily = "Sixtyfour";
+      clock.style.textAlign = "center";
+      clock.style.padding = "10px";
+      clock.style.borderWidth = "5px";
+      clock.style.borderColor = "gray";
+      clock.style.borderStyle = "solid";
+      clock.textContent = "Loading...";
+
+      document.body.appendChild(clock);
+
+      // let counter = 30
+
+      setInterval(function () {
+        let now = new Date();
+        clock.textContent = now.toLocaleTimeString();
+        // clock.textContent = counter
+        // counter--
+
+        console.log(clock.textContent);
+      }, 1000);
+
+      /* pointer follower */
+
+      const follower = document.createElement("div");
+      follower.style.width = "50px";
+      follower.style.height = "50px";
+      // follower.style.backgroundColor = 'gold'
+      follower.style.borderRadius = "50%";
+      follower.style.position = "absolute";
+      follower.style.backgroundImage = "url(images/crosshair.png)";
+      follower.style.backgroundPosition = "center";
+      follower.style.backgroundSize = "contain";
+      follower.style.backgroundRepeat = "no-repeat";
+
+      document.body.appendChild(follower);
+
+      document.addEventListener("mousemove", function (event) {
+        console.log(event.clientX, event.clientY);
+
+        follower.style.left = event.clientX + "px";
+        follower.style.top = event.clientY + "px";
+      });
+
+      document.childNodes[1].style.height = "100%";
+      document.childNodes[1].style.margin = "0";
+      document.body.style.margin = "0";
+      document.body.style.padding = "0";
+      document.body.style.backgroundColor = "skyblue";
+      document.body.style.cursor = "none";
+      document.body.style.height = "100%";
+    </script>
+  </body>
+</html>
