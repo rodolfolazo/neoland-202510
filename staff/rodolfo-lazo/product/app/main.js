@@ -174,19 +174,32 @@ loginView.appendChild(loginFeedback);
 //Handle login form submission
 loginForm.addEventListener("submit", function (event) {
   event.preventDefault();
+
   const username = loginUsernameInput.value;
   const password = loginPasswordInput.value;
+
   try {
     logic.loginUser(username, password);
+
     loginForm.reset();
+
     loginFeedback.textContent = "";
-    landingView.style.display = "";
+
     loginView.style.display = "none";
-    landingAccess.style.display = "none";
-    alert("Login successful!");
+
+    homeView.style.display = "";
   } catch (error) {
     loginFeedback.textContent = error.message;
   }
 });
 
 document.body.appendChild(loginView);
+
+const homeView = document.createElement("div");
+homeView.style.display = "none";
+
+const homeTitle = document.createElement("h1");
+homeTitle.textContent = "MyPet";
+homeView.appendChild(homeTitle);
+
+document.body.appendChild(homeView);
