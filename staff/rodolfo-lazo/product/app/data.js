@@ -60,6 +60,22 @@ Data.prototype.insertPet = function (pet) {
   this.petsCount++;
 };
 
+Data.prototype.findPetByChip = function (chip) {
+  for (let i = 0; i < this.pets.length; i++) {
+    const pet = this.pets[i];
+    if (pet.chip === chip) return pet;
+  }
+  return null;
+};
+
+Data.prototype.getPetsByPetId = function (id) {
+  for (let i = 0; i < this.pets.length; i++) {
+    const pet = this.pets[i];
+    if (pet.id === id) return pet;
+  }
+  return null;
+};
+
 // instance
 
 const data = new Data();

@@ -39,7 +39,7 @@ landingRegisterLink.addEventListener("click", function (event) {
 
 document.body.appendChild(landingView);
 
-// register
+// register Form
 
 const registerView = document.createElement("div");
 registerView.style.display = "none";
@@ -72,16 +72,20 @@ const registerPasswordLabel = document.createElement("label");
 registerPasswordLabel.textContent = "Password";
 registerForm.appendChild(registerPasswordLabel);
 const registerPasswordInput = document.createElement("input");
+registerPasswordInput.type = "password";
 registerForm.appendChild(registerPasswordInput);
 const registerPasswordRepeatLabel = document.createElement("label");
 registerPasswordRepeatLabel.textContent = "Repeat Password";
 registerForm.appendChild(registerPasswordRepeatLabel);
 const registerPasswordRepeatInput = document.createElement("input");
+registerPasswordRepeatInput.type = "password";
 registerForm.appendChild(registerPasswordRepeatInput);
 const registerSubmitButton = document.createElement("button");
 registerSubmitButton.textContent = "Register";
 registerForm.appendChild(registerSubmitButton);
 registerView.appendChild(registerForm);
+
+// Handle register form submission
 
 registerForm.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -122,7 +126,7 @@ registerView.appendChild(registerFeedback);
 
 document.body.appendChild(registerView);
 
-// login
+// login Form
 
 const loginView = document.createElement("div");
 loginView.style.display = "none";
@@ -145,6 +149,7 @@ const loginPasswordLabel = document.createElement("label");
 loginPasswordLabel.textContent = "Password";
 loginForm.appendChild(loginPasswordLabel);
 const loginPasswordInput = document.createElement("input");
+loginPasswordInput.type = "password";
 loginForm.appendChild(loginPasswordInput);
 const loginSubmitButton = document.createElement("button");
 loginSubmitButton.textContent = "Login";
@@ -161,6 +166,27 @@ loginRegisterLink.addEventListener("click", function (event) {
 
   loginView.style.display = "none";
   registerView.style.display = "";
+});
+
+const loginFeedback = document.createElement("p");
+loginView.appendChild(loginFeedback);
+
+//Handle login form submission
+loginForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+  const username = loginUsernameInput.value;
+  const password = loginPasswordInput.value;
+  try {
+    logic.loginUser(username, password);
+    loginForm.reset();
+    loginFeedback.textContent = "";
+    landingView.style.display = "";
+    loginView.style.display = "none";
+    landingAccess.style.display = "none";
+    alert("Login successful!");
+  } catch (error) {
+    loginFeedback.textContent = error.message;
+  }
 });
 
 document.body.appendChild(loginView);

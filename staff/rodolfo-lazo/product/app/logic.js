@@ -1,5 +1,6 @@
 function Logic() {}
 
+// Register user
 Logic.prototype.registerUser = function (
   name,
   email,
@@ -46,6 +47,17 @@ Logic.prototype.registerUser = function (
   data.insertUser(user);
 };
 
-// instance
+// Login user
+Logic.prototype.loginUser = function (username, password) {
+  if (typeof username !== "string") throw new Error("invalid username type");
+  if (username.length < 3) throw new Error("invalid username length");
+  if (typeof password !== "string") throw new Error("invalid password type");
+  if (password.length < 8) throw new Error("invalid password length");
+  const user = data.findUserByUsername(username);
+  if (user === null) throw new Error("user does not exist");
+  if (user.password !== password) throw new Error("invalid password");
+  return user;
+};
 
+// instance
 const logic = new Logic();
