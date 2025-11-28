@@ -65,3 +65,6 @@ Logic.prototype.loginUser = function (username, password) {
 
 // instance
 const logic = new Logic();
+
+//Creo usuario
+logic.registerUser("Annie", "annie.lazo@outlook.com", "annielv", "12345678", "12345678");

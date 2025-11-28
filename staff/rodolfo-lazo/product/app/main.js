@@ -12,12 +12,14 @@ landingView.appendChild(landingWelcome);
 
 const landingAccess = document.createElement("p");
 const landingLoginLink = document.createElement("a");
+landingLoginLink.classList.add("button");
 landingLoginLink.textContent = "Login";
 landingLoginLink.href = "";
 landingAccess.appendChild(landingLoginLink);
 const landingOrText = document.createTextNode(" or ");
 landingAccess.appendChild(landingOrText);
 const landingRegisterLink = document.createElement("a");
+landingRegisterLink.classList.add("button");
 landingRegisterLink.textContent = "Register";
 landingRegisterLink.href = "";
 landingAccess.appendChild(landingRegisterLink);
@@ -202,6 +204,20 @@ homeView.style.display = "none";
 
 const homeTitle = document.createElement("h1");
 homeTitle.textContent = "MyPet";
+const homeLogoutLink = document.createElement("a");
+homeLogoutLink.textContent = "Logout"
+homeLogoutLink.classList.add("button")
+homeLogoutLink.classList.add("button-primary")
+homeLogoutLink.style.cursor = "pointer"
+
+homeLogoutLink.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  landingView.style.display = "";
+  homeView.style.display = "none";
+});
+
 homeView.appendChild(homeTitle);
+homeView.appendChild(homeLogoutLink);
 
 document.body.appendChild(homeView)
