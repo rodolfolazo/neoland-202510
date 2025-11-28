@@ -1,4 +1,4 @@
-// landing
+// LANDING VIEW
 
 const landingView = document.createElement("div");
 
@@ -195,6 +195,8 @@ loginForm.addEventListener("submit", function (event) {
 
 document.body.appendChild(loginView);
 
+
+//HOME VIEW
 const homeView = document.createElement("div");
 homeView.style.display = "none";
 
@@ -202,4 +204,4 @@ const homeTitle = document.createElement("h1");
 homeTitle.textContent = "MyPet";
 homeView.appendChild(homeTitle);
 
-document.body.appendChild(homeView);
+document.body.appendChild(homeView)
