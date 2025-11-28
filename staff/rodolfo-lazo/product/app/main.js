@@ -175,6 +175,7 @@ loginRegisterLink.addEventListener("click", function (event) {
 });
 
 const loginFeedback = document.createElement("p");
+loginFeedback.classList.add("feedback");
 loginView.appendChild(loginFeedback);
 
 //Handle login form submission
