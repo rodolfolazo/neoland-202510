@@ -127,6 +127,7 @@ registerLoginLink.addEventListener("click", function (event) {
 });
 
 const registerFeedback = document.createElement("p");
+registerFeedback.classList.add("feedback");
 registerView.appendChild(registerFeedback);
 
 document.body.appendChild(registerView);
