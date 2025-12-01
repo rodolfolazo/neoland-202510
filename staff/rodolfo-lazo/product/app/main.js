@@ -41,7 +41,7 @@ landingRegisterLink.addEventListener("click", function (event) {
 
 document.body.appendChild(landingView);
 
-// register Form
+// Register View
 
 const registerView = document.createElement("div");
 registerView.style.display = "none";
@@ -54,41 +54,101 @@ const registerSubtitle = document.createElement("h2");
 registerSubtitle.textContent = "Register";
 registerView.appendChild(registerSubtitle);
 
+//Register Form
+
 const registerForm = document.createElement("form");
+//name
 const registerNameLabel = document.createElement("label");
+registerNameLabel.htmlFor= "name"
 registerNameLabel.textContent = "Name";
 registerForm.appendChild(registerNameLabel);
 const registerNameInput = document.createElement("input");
 registerNameInput.type = "text";
+registerNameInput.id = "name";
 registerForm.appendChild(registerNameInput);
+//email
 const registerEmailLabel = document.createElement("label");
+registerEmailLabel.htmlFor = "email"
 registerEmailLabel.textContent = "Email";
 registerForm.appendChild(registerEmailLabel);
 const registerEmailInput = document.createElement("input");
 registerEmailInput.type = "email";
+registerEmailInput.id = "email";
 registerForm.appendChild(registerEmailInput);
+//username
 const registerUsernameLabel = document.createElement("label");
 registerUsernameLabel.textContent = "Username";
+registerUsernameLabel.htmlFor="username"
 registerForm.appendChild(registerUsernameLabel);
 const registerUsernameInput = document.createElement("input");
 registerUsernameInput.type = "text";
+registerUsernameInput.id="email";
 registerForm.appendChild(registerUsernameInput);
+//password
 const registerPasswordLabel = document.createElement("label");
 registerPasswordLabel.textContent = "Password";
+registerPasswordLabel.htmlFor = "password"
 registerForm.appendChild(registerPasswordLabel);
 const registerPasswordInput = document.createElement("input");
 registerPasswordInput.type = "password";
+registerPasswordInput.id="password";
 registerForm.appendChild(registerPasswordInput);
+const registerPasswordShow = document.createElement("button");
+registerPasswordShow.type ="button";
+registerPasswordShow.textContent = "Show";
+registerPasswordShow.style.marginLeft = "10px";
+registerForm.appendChild(registerPasswordShow);
+
+//Password handle
+registerPasswordShow.addEventListener('click',(e)=>{
+  e.preventDefault();
+  if (e.target.textContent === 'Show'){    
+    e.target.textContent = "Hide";
+    registerPasswordInput.type = "text";
+  }else{    
+    e.target.textContent = 'Show';
+    registerPasswordInput.type = "password";
+  }
+});
+
+//Repeat password
 const registerPasswordRepeatLabel = document.createElement("label");
 registerPasswordRepeatLabel.textContent = "Repeat Password";
+registerPasswordRepeatLabel.htmlFor ="repeatPassword";
 registerForm.appendChild(registerPasswordRepeatLabel);
+
 const registerPasswordRepeatInput = document.createElement("input");
 registerPasswordRepeatInput.type = "password";
+registerPasswordRepeatInput.id = "repeatPassword";
 registerForm.appendChild(registerPasswordRepeatInput);
+
+const registerRepeatPasswordShow = document.createElement("button");
+registerRepeatPasswordShow.type ="button";
+registerRepeatPasswordShow.textContent = "Show";
+registerRepeatPasswordShow.style.marginLeft = "10px";
+
+registerForm.appendChild(registerRepeatPasswordShow);
+//Button Registrar
 const registerSubmitButton = document.createElement("button");
 registerSubmitButton.textContent = "Register";
+registerSubmitButton.style.display = 'block';
+registerSubmitButton.classList.add("button")
+registerSubmitButton.classList.add("button-primary")
+
 registerForm.appendChild(registerSubmitButton);
 registerView.appendChild(registerForm);
+
+//Repeat password handle
+registerRepeatPasswordShow.addEventListener('click',(e)=>{
+  e.preventDefault();
+  if (e.target.textContent === 'Show'){    
+    e.target.textContent = "Hide";
+    registerPasswordRepeatInput.type = "text";
+  }else{    
+    e.target.textContent = 'Show';
+    registerPasswordRepeatInput.type = "password";
+  }
+});
 
 // Handle register form submission
 
