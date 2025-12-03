@@ -1,36 +1,27 @@
-// body
-
-document.body.className = "p-4 h-screen bg-sky-100";
-
-// landing
+// LANDING VIEW
 
 const landingView = document.createElement("div");
 
 const landingTitle = document.createElement("h1");
 landingTitle.textContent = "MyPet";
-landingTitle.className = "font-bold text-3xl mb-6";
 landingView.appendChild(landingTitle);
 
 const landingWelcome = document.createElement("p");
 landingWelcome.textContent = "Welcome!";
-landingWelcome.className = "mb-6";
 landingView.appendChild(landingWelcome);
 
-const landingAccess = document.createElement("nav");
+const landingAccess = document.createElement("p");
 const landingLoginLink = document.createElement("a");
+landingLoginLink.classList.add("button");
 landingLoginLink.textContent = "Login";
 landingLoginLink.href = "";
-landingLoginLink.className =
-  "bg-sky-500 p-2 rounded-md boder-2 border-blue-900 text-white hover:bg-sky-700 hover:scale-105 transition duration-300 ease-in-out";
-
 landingAccess.appendChild(landingLoginLink);
 const landingOrText = document.createTextNode(" or ");
 landingAccess.appendChild(landingOrText);
 const landingRegisterLink = document.createElement("a");
+landingRegisterLink.classList.add("button");
 landingRegisterLink.textContent = "Register";
 landingRegisterLink.href = "";
-landingRegisterLink.className =
-  "bg-sky-500 p-2 rounded-md boder-2 border-blue-900 text-white hover:bg-sky-700 hover:scale-105 transition duration-300 ease-in-out";
 landingAccess.appendChild(landingRegisterLink);
 landingView.appendChild(landingAccess);
 
@@ -50,114 +41,116 @@ landingRegisterLink.addEventListener("click", function (event) {
 
 document.body.appendChild(landingView);
 
-// register
+// Register View
 
 const registerView = document.createElement("div");
 registerView.style.display = "none";
 
 const registerTitle = document.createElement("h1");
 registerTitle.textContent = "MyPet";
-registerTitle.className = "font-bold text-xl";
 registerView.appendChild(registerTitle);
 
 const registerSubtitle = document.createElement("h2");
 registerSubtitle.textContent = "Register";
-registerSubtitle.className = "font-bold";
 registerView.appendChild(registerSubtitle);
 
+//Register Form
+
 const registerForm = document.createElement("form");
-registerForm.className = "flex flex-col";
+//name
 const registerNameLabel = document.createElement("label");
+registerNameLabel.htmlFor= "name"
 registerNameLabel.textContent = "Name";
-registerNameLabel.htmlFor = "name";
 registerForm.appendChild(registerNameLabel);
 const registerNameInput = document.createElement("input");
-registerNameInput.id = "name";
 registerNameInput.type = "text";
-registerNameInput.className = "border px-1";
+registerNameInput.id = "name";
 registerForm.appendChild(registerNameInput);
+//email
 const registerEmailLabel = document.createElement("label");
+registerEmailLabel.htmlFor = "email"
 registerEmailLabel.textContent = "Email";
-registerEmailLabel.htmlFor = "email";
 registerForm.appendChild(registerEmailLabel);
 const registerEmailInput = document.createElement("input");
-registerEmailInput.id = "email";
 registerEmailInput.type = "email";
-registerEmailInput.className = "border px-1";
+registerEmailInput.id = "email";
 registerForm.appendChild(registerEmailInput);
+//username
 const registerUsernameLabel = document.createElement("label");
 registerUsernameLabel.textContent = "Username";
-registerUsernameLabel.htmlFor = "username";
+registerUsernameLabel.htmlFor="username"
 registerForm.appendChild(registerUsernameLabel);
 const registerUsernameInput = document.createElement("input");
-registerUsernameInput.id = "username";
 registerUsernameInput.type = "text";
-registerUsernameInput.className = "border px-1";
+registerUsernameInput.id="email";
 registerForm.appendChild(registerUsernameInput);
+//password
 const registerPasswordLabel = document.createElement("label");
-registerPasswordLabel.htmlFor = "password";
 registerPasswordLabel.textContent = "Password";
+registerPasswordLabel.htmlFor = "password"
 registerForm.appendChild(registerPasswordLabel);
 const registerPasswordInput = document.createElement("input");
-registerPasswordInput.id = "password";
 registerPasswordInput.type = "password";
-registerPasswordInput.className = "border px-1";
+registerPasswordInput.id="password";
 registerForm.appendChild(registerPasswordInput);
-const registerShowPasswordButton = document.createElement("button");
-registerShowPasswordButton.textContent = "Show";
-registerShowPasswordButton.type = "button";
-registerShowPasswordButton.className = "self-end";
-registerForm.appendChild(registerShowPasswordButton);
+const registerPasswordShow = document.createElement("button");
+registerPasswordShow.type ="button";
+registerPasswordShow.textContent = "Show";
+registerPasswordShow.style.marginLeft = "10px";
+registerForm.appendChild(registerPasswordShow);
 
-registerShowPasswordButton.addEventListener("click", function (event) {
-  event.preventDefault();
-
-  if (registerPasswordInput.type === "password") {
+//Password handle
+registerPasswordShow.addEventListener('click',(e)=>{
+  e.preventDefault();
+  if (e.target.textContent === 'Show'){    
+    e.target.textContent = "Hide";
     registerPasswordInput.type = "text";
-    registerShowPasswordButton.textContent = "Hide";
-    registerPasswordInput.className = "border px-1 bg-[gold]";
-  } else {
+  }else{    
+    e.target.textContent = 'Show';
     registerPasswordInput.type = "password";
-    registerShowPasswordButton.textContent = "Show";
-    registerPasswordInput.className = "border px-1";
   }
 });
 
+//Repeat password
 const registerPasswordRepeatLabel = document.createElement("label");
 registerPasswordRepeatLabel.textContent = "Repeat Password";
-registerPasswordRepeatLabel.htmlFor = "passwordRepeat";
+registerPasswordRepeatLabel.htmlFor ="repeatPassword";
 registerForm.appendChild(registerPasswordRepeatLabel);
+
 const registerPasswordRepeatInput = document.createElement("input");
-registerPasswordRepeatInput.id = "passwordRepeat";
 registerPasswordRepeatInput.type = "password";
-registerPasswordRepeatInput.className = "border px-1";
+registerPasswordRepeatInput.id = "repeatPassword";
 registerForm.appendChild(registerPasswordRepeatInput);
-const registerShowPasswordRepeatButton = document.createElement("button");
-registerShowPasswordRepeatButton.textContent = "Show";
-registerShowPasswordRepeatButton.type = "button";
-registerShowPasswordRepeatButton.className = "self-end";
-registerForm.appendChild(registerShowPasswordRepeatButton);
 
-registerShowPasswordRepeatButton.addEventListener("click", function (event) {
-  event.preventDefault();
+const registerRepeatPasswordShow = document.createElement("button");
+registerRepeatPasswordShow.type ="button";
+registerRepeatPasswordShow.textContent = "Show";
+registerRepeatPasswordShow.style.marginLeft = "10px";
 
-  if (registerPasswordRepeatInput.type === "password") {
+registerForm.appendChild(registerRepeatPasswordShow);
+//Button Registrar
+const registerSubmitButton = document.createElement("button");
+registerSubmitButton.textContent = "Register";
+registerSubmitButton.style.display = 'block';
+registerSubmitButton.classList.add("button")
+registerSubmitButton.classList.add("button-primary")
+
+registerForm.appendChild(registerSubmitButton);
+registerView.appendChild(registerForm);
+
+//Repeat password handle
+registerRepeatPasswordShow.addEventListener('click',(e)=>{
+  e.preventDefault();
+  if (e.target.textContent === 'Show'){    
+    e.target.textContent = "Hide";
     registerPasswordRepeatInput.type = "text";
-    registerShowPasswordRepeatButton.textContent = "Hide";
-    registerPasswordRepeatInput.className = "border px-1 bg-[gold]";
-  } else {
+  }else{    
+    e.target.textContent = 'Show';
     registerPasswordRepeatInput.type = "password";
-    registerShowPasswordRepeatButton.textContent = "Show";
-    registerPasswordRepeatInput.className = "border px-1";
   }
 });
 
-const registerSubmitButton = document.createElement("button");
-registerSubmitButton.textContent = "Register";
-registerSubmitButton.type = "submit";
-registerSubmitButton.className = "bg-black text-white self-center px-1";
-registerForm.appendChild(registerSubmitButton);
-registerView.appendChild(registerForm);
+// Handle register form submission
 
 registerForm.addEventListener("submit", function (event) {
   event.preventDefault();
@@ -184,7 +177,6 @@ registerForm.addEventListener("submit", function (event) {
 const registerLoginLink = document.createElement("a");
 registerLoginLink.textContent = "Login";
 registerLoginLink.href = "";
-registerLoginLink.className = "underline";
 registerView.appendChild(registerLoginLink);
 
 registerLoginLink.addEventListener("click", function (event) {
@@ -195,95 +187,45 @@ registerLoginLink.addEventListener("click", function (event) {
 });
 
 const registerFeedback = document.createElement("p");
+registerFeedback.classList.add("feedback");
 registerView.appendChild(registerFeedback);
 
 document.body.appendChild(registerView);
 
-// login
+// login Form
 
 const loginView = document.createElement("div");
 loginView.style.display = "none";
 
 const loginTitle = document.createElement("h1");
 loginTitle.textContent = "MyPet";
-loginTitle.className = "font-bold text-xl";
 loginView.appendChild(loginTitle);
 
 const loginSubtitle = document.createElement("h2");
 loginSubtitle.textContent = "Login";
-loginSubtitle.className = "font-bold";
 loginView.appendChild(loginSubtitle);
 
 const loginForm = document.createElement("form");
-loginForm.className = "flex flex-col";
 const loginUsernameLabel = document.createElement("label");
 loginUsernameLabel.textContent = "Username";
-loginUsernameLabel.htmlFor = "username";
 loginForm.appendChild(loginUsernameLabel);
 const loginUsernameInput = document.createElement("input");
-loginUsernameInput.id = "username";
 loginUsernameInput.type = "text";
-loginUsernameInput.className = "border px-1";
 loginForm.appendChild(loginUsernameInput);
 const loginPasswordLabel = document.createElement("label");
 loginPasswordLabel.textContent = "Password";
-loginPasswordLabel.htmlFor = "password";
 loginForm.appendChild(loginPasswordLabel);
 const loginPasswordInput = document.createElement("input");
-loginPasswordInput.id = "password";
 loginPasswordInput.type = "password";
-loginPasswordInput.className = "border px-1";
 loginForm.appendChild(loginPasswordInput);
-const loginShowPasswordButton = document.createElement("button");
-loginShowPasswordButton.textContent = "Show";
-loginShowPasswordButton.type = "button";
-loginShowPasswordButton.className = "self-end";
-loginForm.appendChild(loginShowPasswordButton);
-
-loginShowPasswordButton.addEventListener("click", function (event) {
-  event.preventDefault();
-
-  if (loginPasswordInput.type === "password") {
-    loginPasswordInput.type = "text";
-    loginShowPasswordButton.textContent = "Hide";
-    loginPasswordInput.className = "border px-1 bg-[gold]";
-  } else {
-    loginPasswordInput.type = "password";
-    loginShowPasswordButton.textContent = "Show";
-    loginPasswordInput.className = "border px-1";
-  }
-});
-
 const loginSubmitButton = document.createElement("button");
 loginSubmitButton.textContent = "Login";
-loginSubmitButton.type = "submit";
-loginSubmitButton.className = "bg-black text-white px-1 self-center";
 loginForm.appendChild(loginSubmitButton);
 loginView.appendChild(loginForm);
-
-loginForm.addEventListener("submit", function (event) {
-  event.preventDefault();
-
-  const username = loginUsernameInput.value;
-  const password = loginPasswordInput.value;
-
-  try {
-    logic.loginUser(username, password);
-
-    loginForm.reset();
-    loginFeedback.textContent = "";
-
-    loginView.style.display = "none";
-    homeView.style.display = "";
-  } catch (error) {
-    loginFeedback.textContent = error.message;
-  }
-});
 
 const loginRegisterLink = document.createElement("a");
 loginRegisterLink.textContent = "Register";
 loginRegisterLink.href = "";
-loginRegisterLink.className = "underline";
 loginView.appendChild(loginRegisterLink);
 
 loginRegisterLink.addEventListener("click", function (event) {
@@ -294,22 +236,54 @@ loginRegisterLink.addEventListener("click", function (event) {
 });
 
 const loginFeedback = document.createElement("p");
+loginFeedback.classList.add("feedback");
 loginView.appendChild(loginFeedback);
+
+//Handle login form submission
+loginForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const username = loginUsernameInput.value;
+  const password = loginPasswordInput.value;
+
+  try {
+    logic.loginUser(username, password);
+
+    loginForm.reset();
+
+    loginFeedback.textContent = "";
+
+    loginView.style.display = "none";
+
+    homeView.style.display = "";
+  } catch (error) {
+    loginFeedback.textContent = error.message;
+  }
+});
 
 document.body.appendChild(loginView);
 
-// home
 
+//HOME VIEW
 const homeView = document.createElement("div");
 homeView.style.display = "none";
 
 const homeTitle = document.createElement("h1");
 homeTitle.textContent = "MyPet";
-homeTitle.className = "font-bold text-xl";
+const homeLogoutLink = document.createElement("a");
+homeLogoutLink.textContent = "Logout"
+homeLogoutLink.classList.add("button")
+homeLogoutLink.classList.add("button-primary")
+homeLogoutLink.style.cursor = "pointer"
+
+homeLogoutLink.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  landingView.style.display = "";
+  homeView.style.display = "none";
+});
+
 homeView.appendChild(homeTitle);
+homeView.appendChild(homeLogoutLink);
 
-const homeSubtitle = document.createElement("h2");
-homeSubtitle.textContent = "Welcome Home!";
-homeView.appendChild(homeSubtitle);
-
-document.body.appendChild(homeView);
+document.body.appendChild(homeView)
