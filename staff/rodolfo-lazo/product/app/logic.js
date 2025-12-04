@@ -75,11 +75,3 @@ Logic.prototype.addPet = function (name, birthdate, weight, image) {
 // instance
 
 const logic = new Logic();
-
-logic.registerUser(
-  "Annie",
-  "annielv@outlook.com",
-  "annielv",
-  "12345678",
-  "12345678"
-);
