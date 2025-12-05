@@ -87,7 +87,34 @@ loginForm.addEventListener("submit", function (event) {
     const ulPets = document.createElement("ul");
     for (let i = 0; i < data.listaPets.length; i++) {
       const liPet = document.createElement("li");
-      liPet.textContent = `Nombre de mascota: ${data.listaPets[i].name}`;
+      liPet.className =
+        "flex items-center gap-6 mb-2 border border-gray-400 p-2 mb-2";
+
+      // Crear imagen redonda de 30x30px
+      const petImg = document.createElement("img");
+      petImg.src = data.listaPets[i].image;
+      console.log(data.listaPets[i].image);
+      petImg.alt = data.listaPets[i].name;
+      petImg.style.width = "45px";
+      petImg.style.height = "45px";
+      petImg.style.borderRadius = "50%"; // hace la imagen circular
+      petImg.style.objectFit = "cover"; // asegura que se recorte bien
+
+      // Crear texto
+      const petText = document.createElement("span");
+      petText.textContent = `${data.listaPets[i].name}`;
+      petText.className = "w-[90px] shrink-0";
+
+      // Crear Birth Date
+      const petBirth = document.createElement("span");
+      petBirth.textContent = `${data.listaPets[i].birthdate}`;
+
+      // Añadir imagen y texto al <li>
+      liPet.appendChild(petImg);
+      liPet.appendChild(petText);
+      liPet.appendChild(petBirth);
+
+      //liPet.textContent = `${data.listaPets[i].name}`;
       ulPets.appendChild(liPet);
     }
 
@@ -100,8 +127,9 @@ loginForm.addEventListener("submit", function (event) {
       }
     }
 
-    const nombreHome = document.createElement("h2");
+    const nombreHome = document.createElement("h3");
     nombreHome.textContent = `Hola ${nombre}`;
+    nombreHome.className = "mb-2";
 
     //Añado título y lista al dom
     homeView.appendChild(nombreHome);

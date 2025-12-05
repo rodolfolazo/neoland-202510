@@ -9,7 +9,7 @@ function User(id, name, email, username, password, role) {
   this.role = role;
 }
 
-function Pet(userId, name, birthdate, weight, image) {
+function Pet(userId, name, birthdate, image) {
   //this.id = id;
   this.userId = userId;
   //this.chip = chip;
@@ -19,7 +19,7 @@ function Pet(userId, name, birthdate, weight, image) {
   //this.species = species;
   //this.race = race;
   //this.colors = colors;
-  this.weight = weight;
+  //this.weight = weight;
   this.image = image;
 }
 
