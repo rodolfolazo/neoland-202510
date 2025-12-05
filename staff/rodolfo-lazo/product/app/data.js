@@ -9,16 +9,18 @@ function User(id, name, email, username, password, role) {
   this.role = role;
 }
 
-function Pet(id, userId, chip, name, gender, birthdate, species, race, colors) {
-  this.id = id;
+function Pet(userId, name, birthdate, weight, image) {
+  //this.id = id;
   this.userId = userId;
-  this.chip = chip;
+  //this.chip = chip;
   this.name = name;
-  this.gender = gender;
+  //this.gender = gender;
   this.birthdate = birthdate;
-  this.species = species;
-  this.race = race;
-  this.colors = colors;
+  //this.species = species;
+  //this.race = race;
+  //this.colors = colors;
+  this.weight = weight;
+  this.image = image;
 }
 
 // manager
@@ -29,6 +31,7 @@ function Data() {
   this.pets = [];
   this.petsCount = 0;
   this.loggedInUserId = null;
+  this.listaPets = [];
 }
 
 Data.prototype.insertUser = function (user) {

@@ -272,6 +272,36 @@ loginForm.addEventListener("submit", function (event) {
 
     loginView.style.display = "none";
     homeView.style.display = "";
+
+    console.log(data.loggedInUserId);
+    const nombre = "";
+    /*
+    for (let i = 0; i < data.users.length; i++) {
+      if (data.loggedInUserId === data.users[i].id) {
+        nombre = data.users[i].name;
+      }
+    }
+      */
+    const nombreHome = document.createElement("h2");
+    nombreHome.textContent = `Hola ${data.loggedInUserId}`;
+    homeView.appendChild(nombreHome);
+
+    //Creo array de Pets de usuario logueado
+
+    for (let i = 0; i < data.pets.length; i++) {
+      if (data.pets[i].userId === data.loggedInUserId) {
+        data.listaPets.push(data.pets[i]);
+      }
+    }
+
+    //Creo ul de pets
+    const ulPets = document.createElement("ul");
+    for (let i = 0; i < data.listaPets.length; i++) {
+      const liPet = document.createElement("li");
+      liPet.textContent = `Nombre de mascota: ${data.listaPets[i].name}`;
+      ulPets.appendChild(liPet);
+    }
+    homeView.appendChild(ulPets);
   } catch (error) {
     loginFeedback.textContent = error.message;
   }
@@ -339,6 +369,8 @@ homeLogout.addEventListener("click", function (event) {
   homeView.style.display = "none";
   //data.loggedInUserId = null;
   logic.logoutUser();
+  data.listaPets.length = 0;
+  document.querySelector("ul").remove();
 });
 
 document.body.appendChild(homeView);
