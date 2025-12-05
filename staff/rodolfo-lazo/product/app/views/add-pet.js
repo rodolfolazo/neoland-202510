@@ -1,0 +1,159 @@
+// home
+
+const homeView = document.createElement("div");
+homeView.style.display = "none";
+
+const homeTitle = document.createElement("h1");
+homeTitle.textContent = "MyPet";
+homeTitle.className = "font-bold text-xl";
+homeView.appendChild(homeTitle);
+
+const homeSubtitle = document.createElement("h2");
+homeSubtitle.textContent = "Welcome Home!";
+homeView.appendChild(homeSubtitle);
+
+const homeTopDiv = document.createElement("div");
+homeTopDiv.className = "flex flex-row justify-between bg-gray-100 p-4";
+
+const homeAddPetButton = document.createElement("button");
+homeAddPetButton.textContent = "+ Pet";
+homeAddPetButton.type = "button";
+homeAddPetButton.className = "bg-black text-white px-3 py-1";
+homeTopDiv.appendChild(homeAddPetButton);
+
+const homeLogout = document.createElement("a");
+homeLogout.textContent = "Logout";
+homeLogout.className = "bg-black text-white rounded px-3 py-1";
+homeTopDiv.appendChild(homeLogout);
+
+homeView.appendChild(homeTopDiv);
+
+homeAddPetButton.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  homeView.style.display = "none";
+  addPetView.style.display = "";
+});
+
+homeLogout.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  landingView.style.display = "";
+  homeView.style.display = "none";
+  //data.loggedInUserId = null;
+  logic.logoutUser();
+  data.listaPets.length = 0;
+  homeView.querySelector("ul").remove();
+});
+
+document.body.appendChild(homeView);
+
+// VISTA ADD PET
+
+const addPetView = document.createElement("div");
+addPetView.style.display = "none";
+
+const addPetTitle = document.createElement("h1");
+addPetTitle.textContent = "MyPet";
+addPetTitle.className = "font-bold text-xl";
+addPetView.appendChild(addPetTitle);
+
+const addPetTopPanel = document.createElement("div");
+addPetTopPanel.className = "flex justify-between";
+addPetView.appendChild(addPetTopPanel);
+
+const addPetSubtitle = document.createElement("h2");
+addPetSubtitle.textContent = "Add Pet";
+addPetSubtitle.className = "font-bold";
+addPetTopPanel.appendChild(addPetSubtitle);
+
+const addPetBackLink = document.createElement("a");
+addPetBackLink.textContent = "< Back";
+addPetBackLink.href = "";
+addPetBackLink.className = "underline font-bold";
+addPetTopPanel.appendChild(addPetBackLink);
+
+addPetBackLink.addEventListener("click", function (event) {
+  event.preventDefault();
+
+  addPetView.style.display = "none";
+  homeView.style.display = "";
+});
+
+// Formulario Add Pet
+
+const addPetForm = document.createElement("form");
+addPetForm.className = "flex flex-col";
+
+//Name
+//Label
+const addPetNameLabel = document.createElement("label");
+addPetNameLabel.textContent = "Name";
+addPetNameLabel.htmlFor = "name";
+addPetForm.appendChild(addPetNameLabel);
+//Input
+const addPetNameInput = document.createElement("input");
+addPetNameInput.id = "name";
+addPetNameInput.type = "text";
+addPetNameInput.className = "border px-1";
+addPetForm.appendChild(addPetNameInput);
+
+//Birth of Date
+//Label
+const addPetBirthdateLabel = document.createElement("label");
+addPetBirthdateLabel.textContent = "Date of Birth";
+addPetBirthdateLabel.htmlFor = "date";
+addPetForm.appendChild(addPetBirthdateLabel);
+//Input
+const addPetBirthdateInput = document.createElement("input");
+addPetBirthdateInput.id = "date";
+addPetBirthdateInput.type = "date";
+addPetBirthdateInput.className = "border px-1";
+addPetForm.appendChild(addPetBirthdateInput);
+
+// Weight
+// Label
+const addPetWeightLabel = document.createElement("label");
+addPetWeightLabel.textContent = "Weight (kg)";
+addPetWeightLabel.htmlFor = "weight";
+addPetForm.appendChild(addPetWeightLabel);
+//Input
+const addPetWeightInput = document.createElement("input");
+addPetWeightInput.id = "weight";
+addPetWeightInput.type = "number";
+addPetWeightInput.className = "border px-1";
+addPetForm.appendChild(addPetWeightInput);
+
+//Image
+//Label
+const addPetImageLabel = document.createElement("label");
+addPetImageLabel.htmlFor = "image";
+addPetImageLabel.textContent = "Image";
+addPetForm.appendChild(addPetImageLabel);
+//Input
+const addPetImageInput = document.createElement("input");
+addPetImageInput.id = "image";
+addPetImageInput.type = "url";
+addPetImageInput.className = "border px-1";
+addPetForm.appendChild(addPetImageInput);
+
+// Button
+const addPetSubmitButton = document.createElement("button");
+addPetSubmitButton.textContent = "Add Pet";
+addPetSubmitButton.type = "submit";
+addPetSubmitButton.className = "bg-black text-white self-center px-1 mt-4";
+addPetForm.appendChild(addPetSubmitButton);
+addPetView.appendChild(addPetForm);
+
+addPetForm.addEventListener("submit", function (event) {
+  event.preventDefault();
+
+  const name = addPetNameInput.value;
+  const birthdate = addPetBirthdateInput.value;
+  const weight = addPetWeightInput.value;
+  const image = addPetImageInput.value;
+
+  console.log(name, birthdate, weight, image);
+});
+
+document.body.appendChild(addPetView);
