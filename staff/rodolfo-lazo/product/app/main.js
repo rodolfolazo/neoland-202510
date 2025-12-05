@@ -273,20 +273,6 @@ loginForm.addEventListener("submit", function (event) {
     loginView.style.display = "none";
     homeView.style.display = "";
 
-    console.log(data.loggedInUserId);
-    const nombre = "";
-    /*
-    for (let i = 0; i < data.users.length; i++) {
-      if (data.loggedInUserId === data.users[i].id) {
-        nombre = data.users[i].name;
-      }
-    }
-      
-    const nombreHome = document.createElement("h2");
-    nombreHome.textContent = `Hola ${data.loggedInUserId}`;
-    homeView.appendChild(nombreHome);
-    */
-
     //Creo array de Pets de usuario logueado
 
     for (let i = 0; i < data.pets.length; i++) {
@@ -302,6 +288,21 @@ loginForm.addEventListener("submit", function (event) {
       liPet.textContent = `Nombre de mascota: ${data.listaPets[i].name}`;
       ulPets.appendChild(liPet);
     }
+
+    console.log(data.loggedInUserId);
+    let nombre = "";
+
+    for (let i = 0; i < data.users.length; i++) {
+      if (data.loggedInUserId === data.users[i].id) {
+        nombre = data.users[i].name;
+      }
+    }
+
+    const nombreHome = document.createElement("h2");
+    nombreHome.textContent = `Hola ${nombre}`;
+
+    //Añado título y lista al dom
+    homeView.appendChild(nombreHome);
     homeView.appendChild(ulPets);
   } catch (error) {
     loginFeedback.textContent = error.message;
@@ -371,7 +372,7 @@ homeLogout.addEventListener("click", function (event) {
   //data.loggedInUserId = null;
   logic.logoutUser();
   data.listaPets.length = 0;
-  document.querySelector("ul").remove();
+  homeView.querySelector("ul").remove();
 });
 
 document.body.appendChild(homeView);
