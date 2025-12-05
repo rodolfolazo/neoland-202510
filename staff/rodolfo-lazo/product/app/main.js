@@ -281,10 +281,11 @@ loginForm.addEventListener("submit", function (event) {
         nombre = data.users[i].name;
       }
     }
-      */
+      
     const nombreHome = document.createElement("h2");
     nombreHome.textContent = `Hola ${data.loggedInUserId}`;
     homeView.appendChild(nombreHome);
+    */
 
     //Creo array de Pets de usuario logueado
 
