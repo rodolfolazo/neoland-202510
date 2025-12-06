@@ -10,7 +10,7 @@ loginView.appendChild(loginTitle);
 
 const loginSubtitle = document.createElement("h2");
 loginSubtitle.textContent = "Login";
-loginSubtitle.className = "font-bold";
+loginSubtitle.className = "font-bold mb-4";
 loginView.appendChild(loginSubtitle);
 
 const loginForm = document.createElement("form");
@@ -72,29 +72,20 @@ loginForm.addEventListener("submit", function (event) {
     loginForm.reset();
     loginFeedback.textContent = "";
 
-    loginView.style.display = "none";
-    homeView.style.display = "";
-
     //Creo array de Pets de usuario logueado
 
-    for (let i = 0; i < data.pets.length; i++) {
-      if (data.pets[i].userId === data.loggedInUserId) {
-        data.listaPets.push(data.pets[i]);
-      }
-    }
+    const pets = logic.getPets();
 
-    //Creo ul de pets
-    const ulPets = document.createElement("ul");
-    for (let i = 0; i < data.listaPets.length; i++) {
+    /* for (let i = 0; i < pets.length; i++) {
       const liPet = document.createElement("li");
       liPet.className =
         "flex items-center gap-6 mb-2 border border-gray-400 p-2 mb-2";
 
       // Crear imagen redonda de 30x30px
       const petImg = document.createElement("img");
-      petImg.src = data.listaPets[i].image;
-      console.log(data.listaPets[i].image);
-      petImg.alt = data.listaPets[i].name;
+      petImg.src = pets[i].image;
+
+      petImg.alt = pets[i].name;
       petImg.style.width = "45px";
       petImg.style.height = "45px";
       petImg.style.borderRadius = "50%"; // hace la imagen circular
@@ -102,12 +93,12 @@ loginForm.addEventListener("submit", function (event) {
 
       // Crear texto
       const petText = document.createElement("span");
-      petText.textContent = `${data.listaPets[i].name}`;
+      petText.textContent = `${pets[i].name}`;
       petText.className = "w-[90px] shrink-0";
 
       // Crear Birth Date
       const petBirth = document.createElement("span");
-      petBirth.textContent = `${data.listaPets[i].birthdate}`;
+      petBirth.textContent = `${pets[i].birthdate}`;
 
       // Añadir imagen y texto al <li>
       liPet.appendChild(petImg);
@@ -116,7 +107,12 @@ loginForm.addEventListener("submit", function (event) {
 
       //liPet.textContent = `${data.listaPets[i].name}`;
       ulPets.appendChild(liPet);
-    }
+    } */
+
+    logic.renderPets(pets);
+
+    loginView.style.display = "none";
+    homeView.style.display = "";
 
     console.log(data.loggedInUserId);
     let nombre = "";

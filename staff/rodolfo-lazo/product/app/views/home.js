@@ -1,5 +1,3 @@
-// home
-
 const homeView = document.createElement("div");
 homeView.style.display = "none";
 
@@ -10,23 +8,18 @@ homeView.appendChild(homeTitle);
 
 const homeSubtitle = document.createElement("h2");
 homeSubtitle.textContent = "Welcome Home!";
+homeSubtitle.className = "mb-4";
 homeView.appendChild(homeSubtitle);
 
-const homeTopDiv = document.createElement("div");
-homeTopDiv.className = "flex flex-row justify-between bg-gray-100 p-4";
+const homeTopPanel = document.createElement("div");
+homeTopPanel.className = "flex justify-between mb-4";
+homeView.appendChild(homeTopPanel);
 
 const homeAddPetButton = document.createElement("button");
 homeAddPetButton.textContent = "+ Pet";
 homeAddPetButton.type = "button";
-homeAddPetButton.className = "bg-black text-white px-3 py-1";
-homeTopDiv.appendChild(homeAddPetButton);
-
-const homeLogout = document.createElement("a");
-homeLogout.textContent = "Logout";
-homeLogout.className = "bg-black text-white rounded px-3 py-1";
-homeTopDiv.appendChild(homeLogout);
-
-homeView.appendChild(homeTopDiv);
+homeAddPetButton.className = "bg-black text-white px-1";
+homeTopPanel.appendChild(homeAddPetButton);
 
 homeAddPetButton.addEventListener("click", function (event) {
   event.preventDefault();
@@ -35,16 +28,30 @@ homeAddPetButton.addEventListener("click", function (event) {
   addPetView.style.display = "";
 });
 
-homeLogout.addEventListener("click", function (event) {
+const homeLogoutButton = document.createElement("button");
+homeLogoutButton.textContent = "Logout";
+homeLogoutButton.type = "button";
+homeLogoutButton.className = "bg-black text-white px-1";
+homeTopPanel.appendChild(homeLogoutButton);
+
+homeLogoutButton.addEventListener("click", function (event) {
   event.preventDefault();
 
-  landingView.style.display = "";
-  homeView.style.display = "none";
-  //data.loggedInUserId = null;
   logic.logoutUser();
-  data.listaPets.length = 0;
-  homeView.querySelector("ul").remove();
-  homeView.querySelector("h3").remove();
+
+  for (let i = ulPets.children.length - 1; i >= 0; i--) {
+    const child = ulPets.children[i];
+
+    child.remove();
+  }
+
+  homeView.style.display = "none";
+  loginView.style.display = "";
 });
+
+//Creo ul de pets
+const ulPets = document.createElement("ul");
+
+homeView.appendChild(ulPets);
 
 document.body.appendChild(homeView);

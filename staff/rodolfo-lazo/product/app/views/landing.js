@@ -10,6 +10,7 @@ landingView.appendChild(landingTitle);
 
 const landingWelcome = document.createElement("p");
 landingWelcome.textContent = "Welcome!";
+landingWelcome.className = "mb-4";
 landingView.appendChild(landingWelcome);
 
 const landingAccess = document.createElement("nav");

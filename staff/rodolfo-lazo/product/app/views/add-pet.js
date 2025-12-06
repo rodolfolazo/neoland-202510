@@ -57,7 +57,7 @@ addPetForm.appendChild(addPetBirthdateLabel);
 //Input
 const addPetBirthdateInput = document.createElement("input");
 addPetBirthdateInput.id = "date";
-addPetBirthdateInput.type = "text";
+addPetBirthdateInput.type = "date";
 addPetBirthdateInput.className = "border px-1";
 addPetForm.appendChild(addPetBirthdateInput);
 
@@ -71,6 +71,7 @@ addPetForm.appendChild(addPetWeightLabel);
 const addPetWeightInput = document.createElement("input");
 addPetWeightInput.id = "weight";
 addPetWeightInput.type = "number";
+addPetWeightInput.step = "0.01";
 addPetWeightInput.className = "border px-1";
 addPetForm.appendChild(addPetWeightInput);
 
@@ -100,12 +101,27 @@ addPetForm.addEventListener("submit", function (event) {
 
   const name = addPetNameInput.value;
   const birthdate = addPetBirthdateInput.value;
-  const weight = addPetWeightInput.value;
+  const weight = parseFloat(addPetWeightInput.value);
   const image = addPetImageInput.value;
 
-  console.log(name, birthdate, weight, image);
-  logic.addPet(name, birthdate, image);
-  addPetForm.reset();
+  try {
+    logic.addPet(name, birthdate, weight, image);
+
+    addPetForm.reset();
+    addPetFeedback.textContent = "";
+
+    addPetView.style.display = "none";
+    homeView.style.display = "";
+    addPetForm.reset();
+    const pets = logic.getPets();
+    logic.limpiarLista();
+    logic.renderPets(pets);
+  } catch (error) {
+    addPetFeedback.textContent = error.message;
+  }
 });
+
+const addPetFeedback = document.createElement("p");
+addPetView.appendChild(addPetFeedback);
 
 document.body.appendChild(addPetView);
