@@ -57,7 +57,7 @@ addPetForm.appendChild(addPetBirthdateLabel);
 //Input
 const addPetBirthdateInput = document.createElement("input");
 addPetBirthdateInput.id = "date";
-addPetBirthdateInput.type = "date";
+addPetBirthdateInput.type = "text";
 addPetBirthdateInput.className = "border px-1";
 addPetForm.appendChild(addPetBirthdateInput);
 
@@ -104,6 +104,8 @@ addPetForm.addEventListener("submit", function (event) {
   const image = addPetImageInput.value;
 
   console.log(name, birthdate, weight, image);
+  logic.addPet(name, birthdate, image);
+  addPetForm.reset();
 });
 
 document.body.appendChild(addPetView);

@@ -66,24 +66,26 @@ Logic.prototype.logoutUser = function () {
   data.setLoggedInUserId(null);
 };
 
-Logic.prototype.addPet = function (name, birthdate, weight, image) {
+Logic.prototype.addPet = function (name, birthdate, image) {
   // TODO add pet related to logged-in user id
   if (typeof name !== "string" || name.length < 1) {
     throw new Error("Invalid name type");
   }
   //const regex = new RegExp("^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\\d{4}$");
-  const regex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
+  /*  const regex = /^(0[1-9]|[12][0-9]|3[01])-(0[1-9]|1[0-2])-\d{4}$/;
   if (!regex.test(birthdate)) {
     throw new Error("Invalid birth date");
-  }
-  if (typeof weight !== "number" || isNaN(weight)) {
+  } */
+  /* if (typeof weight !== "number" || isNaN(weight)) {
     throw new Error("Invalid weight");
-  }
-  const regexUrl =
+  } */
+  /* const regexUrl =
     /^(http?:\/\/|https?:\/\/|www\.)[\w.-]+(\.[\w.-]+)+[/\w._~:?#[\]@!$&'()*+,;=-]*$/;
   if (!regexUrl.test(image)) {
     throw new Error("Invalid url");
-  }
+  } */
+  const pet = new Pet(data.loggedInUserId, name, birthdate, image);
+  data.insertPet(pet);
 };
 
 // instance
