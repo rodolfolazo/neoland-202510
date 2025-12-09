@@ -112,10 +112,11 @@ addPetForm.addEventListener("submit", function (event) {
 
     addPetView.style.display = "none";
     homeView.style.display = "";
-    addPetForm.reset();
+    
     const pets = logic.getPets();
-    logic.limpiarLista();
-    logic.renderPets(pets);
+
+    clearPetList();
+    renderPetList(pets);
   } catch (error) {
     addPetFeedback.textContent = error.message;
   }

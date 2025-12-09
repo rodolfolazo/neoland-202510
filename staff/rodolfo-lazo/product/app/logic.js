@@ -1,4 +1,4 @@
-function Logic() {}
+function Logic() { }
 
 Logic.prototype.registerUser = function (
   name,
@@ -66,6 +66,20 @@ Logic.prototype.logoutUser = function () {
   data.setLoggedInUserId(null);
 };
 
+Logic.prototype.getUserName = function () {  
+  for (let i = 0; i < data.users.length; i++) {
+    const user = data.users[i]
+
+    if (data.getLoggedInUserId() === user.id) {
+      return user.name;      
+    }    
+  }
+  
+  throw new Error("user not found")  
+}
+
+
+
 Logic.prototype.addPet = function (name, birthdate, weight, image) {
   if (data.getLoggedInUserId() === null) throw new Error("user not logged in");
 
@@ -112,53 +126,9 @@ Logic.prototype.getPets = function () {
   return pets;
 };
 
-Logic.prototype.renderPets = function (arr) {
-  arr.innerHTML = "";
-  for (let i = 0; i < arr.length; i++) {
-    const liPet = document.createElement("li");
-    liPet.className =
-      "flex items-center gap-6 mb-2 border border-gray-400 p-2 mb-2";
 
-    // Crear imagen redonda de 30x30px
-    const petImg = document.createElement("img");
-    petImg.src = arr[i].image;
 
-    petImg.alt = arr[i].name;
-    petImg.style.width = "45px";
-    petImg.style.height = "45px";
-    petImg.style.borderRadius = "50%"; // hace la imagen circular
-    petImg.style.objectFit = "cover"; // asegura que se recorte bien
 
-    // Crear texto
-    const petText = document.createElement("span");
-    petText.textContent = `${arr[i].name}`;
-    petText.className = "w-[90px] shrink-0";
-
-    // Crear Birth Date
-    const petBirth = document.createElement("span");
-    petBirth.textContent = `${arr[i].birthdate}`;
-
-    // Añadir imagen y texto al <li>
-    liPet.appendChild(petImg);
-    liPet.appendChild(petText);
-    liPet.appendChild(petBirth);
-
-    //liPet.textContent = `${data.listaPets[i].name}`;
-    ulPets.appendChild(liPet);
-  }
-};
-
-Logic.prototype.limpiarLista = function () {
-  const lista = homeView.querySelector("ul");
-  while (lista.firstChild) {
-    lista.removeChild(lista.firstChild);
-  }
-};
-
-Logic.prototype.limpiarLista2 = function () {
-  const lista = homeView.querySelector("ul");
-  ul.replaceChildren();
-};
 
 // instance
 

@@ -76,60 +76,16 @@ loginForm.addEventListener("submit", function (event) {
 
     const pets = logic.getPets();
 
-    /* for (let i = 0; i < pets.length; i++) {
-      const liPet = document.createElement("li");
-      liPet.className =
-        "flex items-center gap-6 mb-2 border border-gray-400 p-2 mb-2";
+    renderPetList(pets)    
 
-      // Crear imagen redonda de 30x30px
-      const petImg = document.createElement("img");
-      petImg.src = pets[i].image;
+    const userName = logic.getUserName()
 
-      petImg.alt = pets[i].name;
-      petImg.style.width = "45px";
-      petImg.style.height = "45px";
-      petImg.style.borderRadius = "50%"; // hace la imagen circular
-      petImg.style.objectFit = "cover"; // asegura que se recorte bien
-
-      // Crear texto
-      const petText = document.createElement("span");
-      petText.textContent = `${pets[i].name}`;
-      petText.className = "w-[90px] shrink-0";
-
-      // Crear Birth Date
-      const petBirth = document.createElement("span");
-      petBirth.textContent = `${pets[i].birthdate}`;
-
-      // Añadir imagen y texto al <li>
-      liPet.appendChild(petImg);
-      liPet.appendChild(petText);
-      liPet.appendChild(petBirth);
-
-      //liPet.textContent = `${data.listaPets[i].name}`;
-      ulPets.appendChild(liPet);
-    } */
-
-    logic.renderPets(pets);
-
+    
+    nameHome.textContent = `Hola ${userName}`;
+    nameHome.className = "mb-2";    
+    
     loginView.style.display = "none";
     homeView.style.display = "";
-
-    console.log(data.loggedInUserId);
-    let nombre = "";
-
-    for (let i = 0; i < data.users.length; i++) {
-      if (data.loggedInUserId === data.users[i].id) {
-        nombre = data.users[i].name;
-      }
-    }
-
-    const nombreHome = document.createElement("h3");
-    nombreHome.textContent = `Hola ${nombre}`;
-    nombreHome.className = "mb-2";
-
-    //Añado título y lista al dom
-    homeView.appendChild(nombreHome);
-    homeView.appendChild(ulPets);
   } catch (error) {
     loginFeedback.textContent = error.message;
   }

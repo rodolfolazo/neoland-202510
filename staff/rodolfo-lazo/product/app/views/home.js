@@ -39,19 +39,63 @@ homeLogoutButton.addEventListener("click", function (event) {
 
   logic.logoutUser();
 
-  for (let i = ulPets.children.length - 1; i >= 0; i--) {
-    const child = ulPets.children[i];
+  //Limpiar nombre
+  nameHome.textContent = ""
 
-    child.remove();
-  }
+  clearPetList()
 
   homeView.style.display = "none";
   loginView.style.display = "";
 });
 
-//Creo ul de pets
-const ulPets = document.createElement("ul");
+const nameHome = document.createElement("h3");
+homeView.appendChild(nameHome)
 
-homeView.appendChild(ulPets);
+//Creo ul de pets
+const petList = document.createElement("ul");
+homeView.appendChild(petList);
 
 document.body.appendChild(homeView);
+
+function renderPetList(pets) {  
+  for (let i = 0; i < pets.length; i++) {
+    const pet = pets[i]
+    const petItem = document.createElement("li");
+    petItem.className =
+      "flex items-center gap-6 mb-2 border border-gray-400 p-2 mb-2";
+
+    // Crear imagen redonda de 30x30px
+    const petPhoto = document.createElement("img");
+    petPhoto.src = pet.image;
+
+    petPhoto.alt = pet.name;
+    petPhoto.style.width = "45px";
+    petPhoto.style.height = "45px";
+    petPhoto.style.borderRadius = "50%"; // hace la imagen circular
+    petPhoto.style.objectFit = "cover"; // asegura que se recorte bien
+
+    // Crear texto
+    const petName = document.createElement("span");
+    petName.textContent = pet.name;
+    petName.className = "w-[90px] shrink-0";
+
+    // Crear Birth Date
+    const petBirth = document.createElement("span");
+    petBirth.textContent = pet.birthdate;
+
+    // Añadir imagen y texto al <li>
+    petItem.appendChild(petPhoto);
+    petItem.appendChild(petName);
+    petItem.appendChild(petBirth);
+
+    //liPet.textContent = `${data.listaPets[i].name}`;
+    petList.appendChild(petItem);
+  }
+}
+
+function clearPetList() {
+  const lista = homeView.querySelector("ul");
+  while (lista.firstChild) {
+    lista.removeChild(lista.firstChild);
+  }
+};
