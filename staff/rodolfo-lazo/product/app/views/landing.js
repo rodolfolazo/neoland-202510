@@ -13,20 +13,20 @@ landingWelcome.textContent = "Welcome!";
 landingWelcome.className = "mb-4";
 landingView.appendChild(landingWelcome);
 
-const landingAccess = document.createElement("nav");
+const landingNavigation = document.createElement("nav");
 const landingLoginLink = document.createElement("a");
 landingLoginLink.textContent = "Login";
 landingLoginLink.href = "";
 landingLoginLink.className = "underline font-bold";
-landingAccess.appendChild(landingLoginLink);
+landingNavigation.appendChild(landingLoginLink);
 const landingOrText = document.createTextNode(" or ");
-landingAccess.appendChild(landingOrText);
+landingNavigation.appendChild(landingOrText);
 const landingRegisterLink = document.createElement("a");
 landingRegisterLink.textContent = "Register";
 landingRegisterLink.href = "";
 landingRegisterLink.className = "underline font-bold";
-landingAccess.appendChild(landingRegisterLink);
-landingView.appendChild(landingAccess);
+landingNavigation.appendChild(landingRegisterLink);
+landingView.appendChild(landingNavigation);
 
 landingLoginLink.addEventListener("click", function (event) {
   event.preventDefault();
