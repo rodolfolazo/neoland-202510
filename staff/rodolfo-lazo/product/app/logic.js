@@ -1,7 +1,19 @@
 function Logic() { }
 
-// LÓGICA DEL USUARIO
-// USUARIO: REGISTER
+/**
+ * Método para registrar un usuario
+ * @function registerUser
+ * @memberof Logic
+ * 
+ * @param {string} name 
+ * @param {string} email 
+ * @param {string} username 
+ * @param {string} password 
+ * @param {string} passwordRepeat 
+ * 
+ * @returns {void}
+ * @throws {Error} Lanza error si el nombre de usuario, email , username, password, passwordRepeat no son correctos
+ */
 Logic.prototype.registerUser = function (
   name,
   email,
@@ -48,7 +60,17 @@ Logic.prototype.registerUser = function (
   data.insertUser(user);
 };
 
-//USUARIO LOGIN
+
+/**
+ * Método para hacer el login de un usuario
+ * @function loginUser
+ * @memberof Logic
+ * 
+ * @param {string} username 
+ * @param {string} password
+ * 
+ * @returns {void}
+ */
 Logic.prototype.loginUser = function (username, password) {
   if (typeof username !== "string") throw new Error("invalid username type");
   if (username.length < 3) throw new Error("invalid username length");
@@ -66,13 +88,27 @@ Logic.prototype.loginUser = function (username, password) {
 };
 
 
-//USUARIO LOGOUT
+/**
+ * Método para poner el id de sesion como nulo
+ * @function logoutUser
+ * @memberof Logic
+ * 
+ * @returns {void}
+ */
 Logic.prototype.logoutUser = function () {
   data.setLoggedInUserId(null);
 };
 
 
-//USUARIO GET USER NAME
+/**
+ * Obtener el nombre del usuario logueado
+ * @function getUserName
+ * @memberof Logic
+ * 
+ * @returns {string} El nombre del usuario logueado
+ * @throws {Error} Lanza un error si no se encuentra un usuario con el ID actual
+ *
+ */
 Logic.prototype.getUserName = function () {  
   for (let i = 0; i < data.users.length; i++) {
     const user = data.users[i]
@@ -85,8 +121,21 @@ Logic.prototype.getUserName = function () {
   throw new Error("user not found")  
 }
 
-//LOGICA DEL PET
-//PETS: ADD PET
+/**
+ * Valida los datos y agrega una mascota al usuario actual
+ * @function addPet
+ * @memberof Logic
+ *
+ * @param {string} name - Nombre de la mascota
+ * @param {string} birthdate - Fecha de nacimiento
+ * @param {number} weight - Peso de la mascota
+ * @param {string} image - URL de la imagen
+ *
+ * @returns {void}
+ * @throws {Error} Si el usuario no está logueado
+ * @throws {Error} Si el usuario no existe
+ * @throws {Error} si los datos son inválidos
+ */
 Logic.prototype.addPet = function (name, birthdate, weight, image) {
   if (data.getLoggedInUserId() === null) throw new Error("user not logged in");
 
@@ -123,7 +172,15 @@ Logic.prototype.addPet = function (name, birthdate, weight, image) {
 };
 
 
-//PET: OBTENER PETS
+/**
+ * Obtiene todas las mascotas del usuario actualmente logueado
+ * @function getPets
+ * @memberof Logic
+ * 
+ * @returns {Array<Pet>} - Lista de mascotas asociadas al usuario
+ * @throws {Error} Si no hay usuario logueado
+ * @throws {Error} Si el usuario no existe
+ */
 Logic.prototype.getPets = function () {
   if (data.getLoggedInUserId() === null) throw new Error("user not logged in");
 
@@ -134,10 +191,6 @@ Logic.prototype.getPets = function () {
 
   return pets;
 };
-
-
-
-
 
 // instance
 
