@@ -1,5 +1,7 @@
 function Logic() { }
 
+// LÓGICA DEL USUARIO
+// USUARIO: REGISTER
 Logic.prototype.registerUser = function (
   name,
   email,
@@ -46,6 +48,7 @@ Logic.prototype.registerUser = function (
   data.insertUser(user);
 };
 
+//USUARIO LOGIN
 Logic.prototype.loginUser = function (username, password) {
   if (typeof username !== "string") throw new Error("invalid username type");
   if (username.length < 3) throw new Error("invalid username length");
@@ -62,10 +65,14 @@ Logic.prototype.loginUser = function (username, password) {
   data.setLoggedInUserId(user.id);
 };
 
+
+//USUARIO LOGOUT
 Logic.prototype.logoutUser = function () {
   data.setLoggedInUserId(null);
 };
 
+
+//USUARIO GET USER NAME
 Logic.prototype.getUserName = function () {  
   for (let i = 0; i < data.users.length; i++) {
     const user = data.users[i]
@@ -78,8 +85,8 @@ Logic.prototype.getUserName = function () {
   throw new Error("user not found")  
 }
 
-
-
+//LOGICA DEL PET
+//PETS: ADD PET
 Logic.prototype.addPet = function (name, birthdate, weight, image) {
   if (data.getLoggedInUserId() === null) throw new Error("user not logged in");
 
@@ -115,6 +122,8 @@ Logic.prototype.addPet = function (name, birthdate, weight, image) {
   data.insertPet(pet);
 };
 
+
+//PET: OBTENER PETS
 Logic.prototype.getPets = function () {
   if (data.getLoggedInUserId() === null) throw new Error("user not logged in");
 
