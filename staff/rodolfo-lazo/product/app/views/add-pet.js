@@ -1,7 +1,7 @@
 // VISTA ADD PET
 
-const addPetView = document.createElement("div");
-addPetView.style.display = "none";
+const addPetView = createView()
+hideView(addPetView)
 
 const addPetTitle = document.createElement("h1");
 addPetTitle.textContent = "MyPet";
