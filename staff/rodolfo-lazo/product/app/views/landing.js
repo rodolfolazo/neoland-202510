@@ -1,45 +1,48 @@
 // landing
 
-const landingView = document.createElement("div");
+const landingView = createView()
 // landingView.style.display = 'none'
 
-const landingTitle = document.createElement("h1");
-landingTitle.textContent = "MyPet";
-landingTitle.className = "font-bold text-xl";
-landingView.appendChild(landingTitle);
+const landingTitle = createTitle()
+setTextContent(landingTitle, 'MyPet')
+setClass(landingTitle,'font-bold text-xl')
+addChild(landingView,landingTitle)
 
 const landingWelcome = document.createElement("p");
-landingWelcome.textContent = "Welcome!";
-landingWelcome.className = "mb-4";
-landingView.appendChild(landingWelcome);
+setTextContent(landingWelcome, 'Welcome!')
+setClass(landingWelcome,'mb-4')
+addChild(landingView,landingWelcome)
 
-const landingNavigation = document.createElement("nav");
-const landingLoginLink = document.createElement("a");
-landingLoginLink.textContent = "Login";
-landingLoginLink.href = "";
-landingLoginLink.className = "underline font-bold";
-landingNavigation.appendChild(landingLoginLink);
-const landingOrText = document.createTextNode(" or ");
-landingNavigation.appendChild(landingOrText);
-const landingRegisterLink = document.createElement("a");
-landingRegisterLink.textContent = "Register";
-landingRegisterLink.href = "";
-landingRegisterLink.className = "underline font-bold";
-landingNavigation.appendChild(landingRegisterLink);
-landingView.appendChild(landingNavigation);
+const landingNavigation = createNavigation()
+const landingLoginLink = createLink()
+setTextContent(landingLoginLink,'Login')
+setHref(landingLoginLink,'')
+setClass(landingLoginLink,'underline font-bold')
+addChild(landingNavigation,landingLoginLink)
+
+const landingOrText = createTextNode(' or ')
+addChild(landingNavigation,landingOrText)
+
+const landingRegisterLink = createLink()
+setTextContent(landingRegisterLink,'Register')
+setHref(landingRegisterLink,'')
+setClass(landingRegisterLink,'underline font-bold')
+addChild(landingNavigation,landingRegisterLink)
+addChild(landingView, landingNavigation)
 
 landingLoginLink.addEventListener("click", function (event) {
   event.preventDefault();
 
-  landingView.style.display = "none";
-  loginView.style.display = "";
+  hideView(landingView)
+  showView(loginView)  
 });
 
 landingRegisterLink.addEventListener("click", function (event) {
   event.preventDefault();
-
-  landingView.style.display = "none";
-  registerView.style.display = "";
+  
+  hideView(landingView)
+  showView(registerView)  
 });
 
-document.body.appendChild(landingView);
+
+addChild(document.body, landingView)

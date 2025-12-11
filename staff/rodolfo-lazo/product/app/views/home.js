@@ -1,5 +1,5 @@
-const homeView = document.createElement("div");
-homeView.style.display = "none";
+const homeView = createView()
+hideView(homeView)
 
 const homeTitle = document.createElement("h1");
 homeTitle.textContent = "MyPet";
