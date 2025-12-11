@@ -1,61 +1,61 @@
 const homeView = createView()
 hideView(homeView)
 
-const homeTitle = document.createElement("h1");
-homeTitle.textContent = "MyPet";
-homeTitle.className = "font-bold text-xl";
-homeView.appendChild(homeTitle);
+const homeTitle = createTitle()
+setTextContent(homeTitle, 'MyPet')
+setClass(homeTitle, 'font-bold text-xl')
+addChild(homeView,homeTitle)
 
-const homeSubtitle = document.createElement("h2");
-homeSubtitle.textContent = "Welcome Home!";
-homeSubtitle.className = "mb-4";
-homeView.appendChild(homeSubtitle);
+const homeSubtitle = createSubtitle()
+setTextContent(homeSubtitle,'Welcome Home!')
+setClass(homeSubtitle,'mb-4')
+addChild(homeView, homeSubtitle)
 
-const homeTopPanel = document.createElement("div");
-homeTopPanel.className = "flex justify-between mb-4";
-homeView.appendChild(homeTopPanel);
+const homeTopPanel = createPanel()
+setClass(homeTopPanel,'flex justify-between mb-4')
+addChild(homeView, homeTopPanel)
 
-const homeAddPetButton = document.createElement("button");
-homeAddPetButton.textContent = "+ Pet";
-homeAddPetButton.type = "button";
-homeAddPetButton.className = "bg-black text-white px-1";
-homeTopPanel.appendChild(homeAddPetButton);
+const homeAddPetButton = createButton()
+setTextContent(homeAddPetButton, '+ Pet')
+setType(homeAddPetButton, 'button')
+setClass(homeAddPetButton, 'bg-black text-white px-1')
+addChild(homeTopPanel, homeAddPetButton)
 
 homeAddPetButton.addEventListener("click", function (event) {
   event.preventDefault();
-
-  homeView.style.display = "none";
-  addPetView.style.display = "";
+  
+  hideView(homeView)
+  showView(addPetView)  
 });
 
 const homeLogoutButton = document.createElement("button");
-homeLogoutButton.textContent = "Logout";
-homeLogoutButton.type = "button";
-homeLogoutButton.className = "bg-black text-white px-1";
-homeTopPanel.appendChild(homeLogoutButton);
+setTextContent(homeLogoutButton, 'Logout')
+setType(homeLogoutButton, 'button')
+setClass(homeLogoutButton, 'bg-black text-white px-1')
+addChild(homeTopPanel, homeLogoutButton)
 
 homeLogoutButton.addEventListener("click", function (event) {
   event.preventDefault();
 
   logic.logoutUser();
 
-  //Limpiar nombre
-  nameHome.textContent = ""
+  //Limpiar nombre  
+  setTextContent(nameHome, '')
 
   clearPetList()
 
-  homeView.style.display = "none";
-  loginView.style.display = "";
+  hideView(homeView)  
+  showView(loginView)
 });
 
 const nameHome = document.createElement("h3");
-homeView.appendChild(nameHome)
+addChild(homeView, nameHome)
 
 //Creo ul de pets
-const petList = document.createElement("ul");
-homeView.appendChild(petList);
+const petList = createUnorderedList()
+addChild(homeView, petList)
 
-document.body.appendChild(homeView);
+addChild(document.body, homeView)
 
 function renderPetList(pets) {  
   for (let i = 0; i < pets.length; i++) {
@@ -69,27 +69,27 @@ function renderPetList(pets) {
     petPhoto.src = pet.image;
 
     petPhoto.alt = pet.name;
-    petPhoto.style.width = "45px";
+    /* petPhoto.style.width = "45px";
     petPhoto.style.height = "45px";
     petPhoto.style.borderRadius = "50%"; // hace la imagen circular
-    petPhoto.style.objectFit = "cover"; // asegura que se recorte bien
+    petPhoto.style.objectFit = "cover"; // asegura que se recorte bien */
+    setClass(petPhoto, 'w-[45px] h-[45px] rounded-full object-cover')
 
     // Crear texto
     const petName = document.createElement("span");
-    petName.textContent = pet.name;
-    petName.className = "w-[90px] shrink-0";
-
+    setTextContent(petName, pet.name)
+    setClass(petName, 'w-[90px] shrink-0')
+    
     // Crear Birth Date
-    const petBirth = document.createElement("span");
-    petBirth.textContent = pet.birthdate;
+    const petBirth = document.createElement("span");    
+    setTextContent(petBirth,pet.birthdate)
 
-    // Añadir imagen y texto al <li>
-    petItem.appendChild(petPhoto);
-    petItem.appendChild(petName);
-    petItem.appendChild(petBirth);
-
-    //liPet.textContent = `${data.listaPets[i].name}`;
-    petList.appendChild(petItem);
+    // Añadir imagen y texto al <li>    
+    addChild(petItem, petPhoto)
+    addChild(petItem, petName)
+    addChild(petItem, petBirth)
+        
+    addChild(petList,petItem)
   }
 }
 

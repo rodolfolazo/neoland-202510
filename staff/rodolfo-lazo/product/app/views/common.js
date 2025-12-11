@@ -69,7 +69,7 @@ function createLabel(){
 }
 
 function createInput(){
-    return createInput("input")
+    return createElement("input")
 }
 
 function createButton(){
@@ -82,6 +82,10 @@ function createPanel(){
 
 function createUnorderedList(){
     return createElement('ul')
+}
+
+function createName(){
+    return createElement('h3')
 }
 
 function createListItem(){
@@ -97,7 +101,7 @@ function setSource(element, value){
 }
 
 function setFor(element, value) {
-    element.htmlfor = value
+    element.htmlFor = value
 }
 
 function setId(element, value) {
