@@ -53,7 +53,8 @@ loginShowPasswordButton.addEventListener("click", function (event) {
   } else {
     setType(loginPasswordInput, 'password')
     setTextContent(loginShowPasswordButton, 'Show')
-    setClass(loginPasswordInput, 'border px-1')        
+    setClass(loginPasswordInput, 'border px-1')    
+    
   }
 });
 

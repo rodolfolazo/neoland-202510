@@ -1,3 +1,6 @@
+//id del pet seleccionado para borrar
+let petId = ''
+
 const homeView = createView()
 hideView(homeView)
 
@@ -85,7 +88,7 @@ function renderPetList(pets) {
     setDataId(petDelete, pet.id)
     setTextContent(petDelete, '🗑️')
     addClass(petDelete, 'ml-auto')
-    addClass(petDelete, 'bg-black')
+    addClass(petDelete, 'bg-black')    
     addClass(petDelete, 'petBin')
 
     // Añadir imagen y texto al <li>    
@@ -131,5 +134,19 @@ addChild(document.body, modal)
 petList.addEventListener('click', function(evt){
   if (evt.target.classList.contains('petBin')){
     removeClass(modal, 'hidden')
+    petId = evt.target.dataset.id    
   }
+})
+
+modalNo.addEventListener('click', function(evt){
+  addClass(modal, 'hidden')
+})
+
+modalYes.addEventListener('click', function(evt){  
+  addClass(modal, 'hidden')
+  logic.deletePet(petId)
+  petId = ''
+  clearPetList()
+  const pets = logic.getPets();
+  renderPetList(pets)    
 })

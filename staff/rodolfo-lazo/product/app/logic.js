@@ -192,6 +192,24 @@ Logic.prototype.getPets = function () {
   return pets;
 };
 
+/**
+ * Elimina una mascota dado un id de mascota
+ * @function deletePet
+ * @memberof Logic
+ * 
+ * @param {string} petId
+ * 
+ * @return {void}
+ */
+Logic.prototype.deletePet = function(petId){
+  for(let i=0; i<data.pets.length; i++){
+    const pet = data.pets[i]
+    if (pet.id === petId){
+      data.pets.splice(i,1)
+    }
+  }
+}
+
 // instance
 
 const logic = new Logic();
