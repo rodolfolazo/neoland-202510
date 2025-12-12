@@ -68,11 +68,7 @@ function renderPetList(pets) {
     const petPhoto = document.createElement("img");
     petPhoto.src = pet.image;
 
-    petPhoto.alt = pet.name;
-    /* petPhoto.style.width = "45px";
-    petPhoto.style.height = "45px";
-    petPhoto.style.borderRadius = "50%"; // hace la imagen circular
-    petPhoto.style.objectFit = "cover"; // asegura que se recorte bien */
+    petPhoto.alt = pet.name;    
     setClass(petPhoto, 'w-[45px] h-[45px] rounded-full object-cover')
 
     // Crear texto
@@ -84,10 +80,19 @@ function renderPetList(pets) {
     const petBirth = document.createElement("span");    
     setTextContent(petBirth,pet.birthdate)
 
+    //Crear Delete
+    const petDelete = createElement('span')    
+    setDataId(petDelete, pet.id)
+    setTextContent(petDelete, '🗑️')
+    addClass(petDelete, 'ml-auto')
+    addClass(petDelete, 'bg-black')
+    addClass(petDelete, 'petBin')
+
     // Añadir imagen y texto al <li>    
     addChild(petItem, petPhoto)
     addChild(petItem, petName)
     addChild(petItem, petBirth)
+    addChild(petItem, petDelete)
         
     addChild(petList,petItem)
   }
@@ -99,3 +104,32 @@ function clearPetList() {
     lista.removeChild(lista.firstChild);
   }
 };
+
+//Ventana Modal
+const modal = createElement('div')
+setClass(modal, 'hidden fixed inset-0 bg-black/75 flex items-center justify-center')
+const modalContent = createElement('div')
+setClass(modalContent, 'bg-white rounded-lg shadow-lg w-80 p-6 relative')
+const modalTitle = createElement('p')
+setTextContent(modalTitle, 'Delete Pet?')
+setClass(modalTitle, 'text-center')
+const modalButtons = createElement('div')
+setClass(modalButtons,'flex justify-center gap-4')
+const modalYes = createElement('span')
+setTextContent(modalYes, '✅')
+const modalNo = createElement('span')
+setTextContent(modalNo, '❌')
+addChild(modalButtons,modalYes)
+addChild(modalButtons,modalNo)
+addChild(modalContent, modalTitle)
+addChild(modalContent, modalButtons)
+addChild(modal, modalContent)
+addChild(document.body, modal)
+
+
+//Detector de eventos de cesta de borrado
+petList.addEventListener('click', function(evt){
+  if (evt.target.classList.contains('petBin')){
+    removeClass(modal, 'hidden')
+  }
+})

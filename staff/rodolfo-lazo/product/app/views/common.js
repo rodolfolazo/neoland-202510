@@ -20,6 +20,15 @@ function setClass(element, clazz) {
     element.className = clazz
 }
 
+function addClass(element, value){
+    element.classList.add(value)
+}
+
+function removeClass(element,value){
+    element.classList.remove(value)
+}   
+
+
 function setTextContent(element, content) {
     element.textContent = content
 }
@@ -132,3 +141,6 @@ function showView(view) {
     changeDisplay(view, '')
 }
 
+function setDataId(element,value){
+    element.setAttribute('data-id', value)
+}
