@@ -204,6 +204,9 @@ Logic.prototype.getPets = function () {
 Logic.prototype.deletePet = function(petId){
   for(let i=0; i<data.pets.length; i++){
     const pet = data.pets[i]
+
+    if(data.getLoggedInUserId !== logic.findUserIdbyPetId(petId)) throw new Error("User is not logged in")
+
     if (pet.id === petId){
       data.pets.splice(i,1)
     }
