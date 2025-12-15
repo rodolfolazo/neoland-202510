@@ -1,152 +1,155 @@
-//id del pet seleccionado para borrar
-let petId = ''
-
 const homeView = createView()
 hideView(homeView)
 
 const homeTitle = createTitle()
 setTextContent(homeTitle, 'MyPet')
-setClass(homeTitle, 'font-bold text-xl')
-addChild(homeView,homeTitle)
+addChild(homeView, homeTitle)
 
-const homeSubtitle = createSubtitle()
-setTextContent(homeSubtitle,'Welcome Home!')
-setClass(homeSubtitle,'mb-4')
+const homeSubtitle = createTitle2()
+setTextContent(homeSubtitle, 'Welcome Home!')
 addChild(homeView, homeSubtitle)
 
 const homeTopPanel = createPanel()
-setClass(homeTopPanel,'flex justify-between mb-4')
+setClass(homeTopPanel, 'flex justify-between')
 addChild(homeView, homeTopPanel)
 
 const homeAddPetButton = createButton()
 setTextContent(homeAddPetButton, '+ Pet')
 setType(homeAddPetButton, 'button')
-setClass(homeAddPetButton, 'bg-black text-white px-1')
 addChild(homeTopPanel, homeAddPetButton)
 
-homeAddPetButton.addEventListener("click", function (event) {
-  event.preventDefault();
-  
-  hideView(homeView)
-  showView(addPetView)  
-});
+homeAddPetButton.addEventListener('click', function (event) {
+    event.preventDefault()
 
-const homeLogoutButton = document.createElement("button");
+    hideView(homeView)
+    showView(addPetView)
+})
+
+const homeLogoutButton = createButton()
 setTextContent(homeLogoutButton, 'Logout')
 setType(homeLogoutButton, 'button')
-setClass(homeLogoutButton, 'bg-black text-white px-1')
 addChild(homeTopPanel, homeLogoutButton)
 
-homeLogoutButton.addEventListener("click", function (event) {
-  event.preventDefault();
+homeLogoutButton.addEventListener('click', function (event) {
+    event.preventDefault()
 
-  logic.logoutUser();
+    logic.logoutUser()
 
-  //Limpiar nombre  
-  setTextContent(nameHome, '')
+    clearHomePetList()
+    setTextContent(homeFeedback, '')
 
-  clearPetList()
+    hideView(homeView)
+    showView(loginView)
+})
 
-  hideView(homeView)  
-  showView(loginView)
-});
-
-const nameHome = document.createElement("h3");
-addChild(homeView, nameHome)
-
-//Creo ul de pets
-const petList = createUnorderedList()
-addChild(homeView, petList)
+const homePetList = createUnorderedList()
+addChild(homeView, homePetList)
+setClass(homePetList, 'flex flex-col gap-2 mt-2')
 
 addChild(document.body, homeView)
 
-function renderPetList(pets) {  
-  for (let i = 0; i < pets.length; i++) {
-    const pet = pets[i]
-    const petItem = document.createElement("li");
-    petItem.className =
-      "flex items-center gap-6 mb-2 border border-gray-400 p-2 mb-2";
+let selectedPetId = null
 
-    // Crear imagen redonda de 30x30px
-    const petPhoto = document.createElement("img");
-    petPhoto.src = pet.image;
+const homeDeletePanel = createPanel()
+hideView(homeDeletePanel)
+setClass(homeDeletePanel, 'w-full h-full fixed top-0 left-0 bg-black/75 flex justify-center items-center')
+addChild(homeView, homeDeletePanel)
 
-    petPhoto.alt = pet.name;    
-    setClass(petPhoto, 'w-[45px] h-[45px] rounded-full object-cover')
+const homeDeleteConfirmPanel = createPanel()
+setClass(homeDeleteConfirmPanel, 'bg-white border-black border-2 p-2')
 
-    // Crear texto
-    const petName = document.createElement("span");
-    setTextContent(petName, pet.name)
-    setClass(petName, 'w-[90px] shrink-0')
-    
-    // Crear Birth Date
-    const petBirth = document.createElement("span");    
-    setTextContent(petBirth,pet.birthdate)
+const homeDeletePanelParagraph = createParagraph()
+setClass(homeDeletePanelParagraph, 'text-center')
+setTextContent(homeDeletePanelParagraph, 'Delete Pet?')
+addChild(homeDeleteConfirmPanel, homeDeletePanelParagraph)
 
-    //Crear Delete
-    const petDelete = createElement('span')    
-    setDataId(petDelete, pet.id)
-    setTextContent(petDelete, '🗑️')
-    addClass(petDelete, 'ml-auto')
-    addClass(petDelete, 'bg-black')    
-    addClass(petDelete, 'petBin')
+const homeDeleteButtonsPanel = createPanel()
+setClass(homeDeleteButtonsPanel, 'flex justify-center gap-2')
 
-    // Añadir imagen y texto al <li>    
-    addChild(petItem, petPhoto)
-    addChild(petItem, petName)
-    addChild(petItem, petBirth)
-    addChild(petItem, petDelete)
+const homeDeleteCancelButton = createButton()
+setTextContent(homeDeleteCancelButton, '❌')
+addChild(homeDeleteButtonsPanel, homeDeleteCancelButton)
+
+homeDeleteCancelButton.addEventListener('click', function(event) {
+    event.preventDefault()
+
+    hideView(homeDeletePanel)
+})
+
+const homeDeleteConfirmButton = createButton()
+setTextContent(homeDeleteConfirmButton, '✅')
+addChild(homeDeleteButtonsPanel, homeDeleteConfirmButton)
+
+homeDeleteConfirmButton.addEventListener('click', function(event) {
+    event.preventDefault()
+
+    try {
+        logic.deletePet(selectedPetId)
+
+        clearHomePetList()
+        renderHomePetList()
+
+        hideView(homeDeletePanel)
+    } catch(error) {
+        setTextContent(homeFeedback, error.message)
         
-    addChild(petList,petItem)
-  }
+        hideView(homeDeletePanel)
+    }
+})
+
+addChild(homeDeleteConfirmPanel, homeDeleteButtonsPanel)
+
+addChild(homeDeletePanel, homeDeleteConfirmPanel)
+
+const homeFeedback = createParagraph()
+addChild(homeView, homeFeedback)
+
+// reusable functions
+
+function renderHomePetList() {
+    const pets = logic.getPets()
+
+    for (let i = 0; i < pets.length; i++) {
+        const pet = pets[i]
+
+        const petItem = createListItem()
+        setClass(petItem, 'flex items-center border-2 border-black p-2 justify-between')
+
+        const panel = createPanel()
+        setClass(panel, 'flex items-center gap-4')
+
+        const image = createImage()
+        setSource(image, pet.image)
+        setClass(image, 'rounded-full w-10 h-10 object-cover')
+        addChild(panel, image)
+
+        const name = createParagraph()
+        setTextContent(name, pet.name)
+        addChild(panel, name)
+
+        addChild(petItem, panel)
+
+        const deleteButton = createButton()
+        setTextContent(deleteButton, '🗑️')
+        addClass(deleteButton, 'justify-self-end')
+        addChild(petItem, deleteButton)
+
+        deleteButton.addEventListener('click', function(event) {
+            event.preventDefault()
+
+            selectedPetId = pet.id
+
+            showView(homeDeletePanel)
+        })
+
+        addChild(homePetList, petItem)
+    }
 }
 
-function clearPetList() {
-  const lista = homeView.querySelector("ul");
-  while (lista.firstChild) {
-    lista.removeChild(lista.firstChild);
-  }
-};
+function clearHomePetList() {
+    for (let i = homePetList.children.length - 1; i >= 0; i--) {
+        const child = homePetList.children[i]
 
-//Ventana Modal
-const modal = createElement('div')
-setClass(modal, 'hidden fixed inset-0 bg-black/75 flex items-center justify-center')
-const modalContent = createElement('div')
-setClass(modalContent, 'bg-white rounded-lg shadow-lg w-80 p-6 relative')
-const modalTitle = createElement('p')
-setTextContent(modalTitle, 'Delete Pet?')
-setClass(modalTitle, 'text-center')
-const modalButtons = createElement('div')
-setClass(modalButtons,'flex justify-center gap-4')
-const modalYes = createElement('span')
-setTextContent(modalYes, '✅')
-const modalNo = createElement('span')
-setTextContent(modalNo, '❌')
-addChild(modalButtons,modalYes)
-addChild(modalButtons,modalNo)
-addChild(modalContent, modalTitle)
-addChild(modalContent, modalButtons)
-addChild(modal, modalContent)
-addChild(document.body, modal)
-
-
-//Detector de eventos de cesta de borrado
-petList.addEventListener('click', function(evt){
-  if (evt.target.classList.contains('petBin')){
-    removeClass(modal, 'hidden')
-    petId = evt.target.dataset.id    
-  }
-})
-
-modalNo.addEventListener('click', function(evt){
-  addClass(modal, 'hidden')
-})
-
-modalYes.addEventListener('click', function(evt){  
-  addClass(modal, 'hidden')
-  logic.deletePet(petId)
-  petId = ''
-  clearPetList()
-  const pets = logic.getPets();
-  renderPetList(pets)    
-})
+        removeChild(homePetList, child)
+    }
+}
