@@ -13,25 +13,42 @@ function App() {
   const displayValue = displayState[0]
   const setDisplayValue = displayState[1]
 
+  const helpState = useState(null)
+  const helpValue = helpState[0]
+  const setHelpValue = helpState[1]
+
+
   const handleNumberClicked = (num) => {
+    let aux 
+    let operation
     if (num === 'AC'){
-      setDisplayValue('0')
-    }else if (displayValue === '0'){
-      setDisplayValue(num)
-    }else if (num === '⌫'){
+      aux = '0'
+    }else if (num === '⌫'){      
       if (displayValue.length>1){
-        setDisplayValue(displayValue.slice(0,-1))
+        aux = displayValue.slice(0,-1)
       }else{
-        setDisplayValue('0')
+        aux = '0'
       }      
+    }else if (displayValue === '0'){
+      aux = num
+    }else if(num === '+'){
+      setHelpValue(displayValue+'+')      
+      aux = '0'
+    }else if(num === '='){
+      aux = String(Number(helpValue.slice(0,-1))+Number(displayValue))
+      setHelpValue(null)
     }else{
-      setDisplayValue(displayValue + num)
+      aux = displayValue + num
     }
+
+    setDisplayValue(aux)
+    
   }
 
   return (
     <div className="border border-2 m-2 p-2 rounded-2xl bg-gray-800 text-white">
-      <div className="flex justify-end px-2 text-white mb-4 text-3xl">{displayValue}</div>
+      <div className="h-3 flex justify-end px-2 text-stone-500 text-lg">{helpValue}</div>
+      <div className="flex justify-end px-2 text-white mb-4 text-3xl mt-6">{displayValue}</div>
       <div className="p-2">
         <div className="flex justify-between mb-4">
           <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center" onClick={() => handleNumberClicked('⌫')}>
