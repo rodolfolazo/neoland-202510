@@ -14,6 +14,8 @@ function App() {
   const setDisplayValue = displayState[1]
 
   
+
+  
   const handleNumberClicked = (num) => {
     if (num === 'AC'){
       setDisplayValue('0')
@@ -23,7 +25,6 @@ function App() {
       setDisplayValue(displayValue + num)
     }
   }
-
 
   return (
     <div className="border border-2 m-2 p-2 rounded-2xl bg-gray-800 text-white">
@@ -36,7 +37,7 @@ function App() {
           <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center" onClick={() => handleNumberClicked('AC')}>
             AC
           </div>
-          <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center">
+          <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center" onClick={() => handleNumberClicked('+')}>
             %
           </div>
           <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center bg-orange-400">
@@ -81,7 +82,7 @@ function App() {
           <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center" onClick={() => handleNumberClicked('3')}>
             3
           </div>
-          <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center bg-orange-400">
+          <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center bg-orange-400" onClick={() => handleNumberClicked('+')}>
             +
           </div>
         </div>
@@ -95,7 +96,7 @@ function App() {
           <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center">
             ,
           </div>
-          <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center bg-orange-400">
+          <div className="bg-gray-600 p-2 rounded-full w-10 h-10 flex justify-center items-center bg-orange-400" onClick={() => handleNumberClicked('=')}>
             =
           </div>
         </div>
