@@ -103,7 +103,7 @@ function App() {
     const lastIndexResta = displayValue.lastIndexOf('-')    
     const lastIndexProd = displayValue.lastIndexOf('÷')    
     const lastIndexDiv = displayValue.lastIndexOf('×')
-    
+
     let maximo = Math.max(lastIndexDiv,lastIndexProd,lastIndexResta,lastIndexSuma)
 
     if ((displayValue.lastIndexOf(',') < maximo || displayValue.lastIndexOf(',') === -1) && displayValue.at(-1) !== ')') {
@@ -113,6 +113,9 @@ function App() {
   }
 
   const handleSignesClicked = () => {
+
+    if (displayValue.at(-1) === '+' || displayValue.at(-1) === '-' || displayValue.at(-1) === '×'|| displayValue.at(-1) === '÷') return
+
     let arr = []
 
     const indexSuma = displayValue.lastIndexOf('+')
@@ -142,7 +145,7 @@ function App() {
 
     const result = eval(operation)
 
-    setDisplayValue(String(result))
+    setDisplayValue(String(result).replace('.', ','))
   }
 
   const handleBackClicked = () => {
