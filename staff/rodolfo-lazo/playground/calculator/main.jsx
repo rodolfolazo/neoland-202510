@@ -87,7 +87,16 @@ function App() {
   const handleAddClicked = () => setDisplayValue(displayValue + '+')
 
   const handleCommaClicked = () => {
-    //Si hay un signo 
+    //6,5,					error
+    //6,2345,				error
+    //6,234 + 12,		correcto
+    //6,18 + 3,14,	incorrecto
+    //6,18 + 458		correcto
+
+    //Si no existe ninguna , puedo agregarla
+    //Si el indice de mi ultima coma es mayor al indice de mi ultimo simbolo no puedo agregarla
+    //Si el indice de mi ulitimo simbolo es superior a mi ultima coma, puedo agregar
+
     const arraySignos = []
 
     const indexSuma = displayValue.lastIndexOf('+')
@@ -99,20 +108,19 @@ function App() {
     const indexDiv = displayValue.lastIndexOf('×')
     arraySignos.push(indexDiv)
 
-
-    let max1 = arraySignos[0];
-
+    //Determinar el mayor índice
+    let maximo = arraySignos[0];
     for (let n of arraySignos) {
-      if (n > max1) max1 = n;
+      if (n > maximo) maximo = n;
     }
 
-    if (displayValue.lastIndexOf(',')< max1 || displayValue.lastIndexOf(',')===-1){
+    if ((displayValue.lastIndexOf(',') < maximo || displayValue.lastIndexOf(',') === -1) && displayValue.at(-1) !== ')') {
       setDisplayValue(displayValue + ',')
     }
-    
+
   }
 
-  const handleSignesClicked = () => {    
+  const handleSignesClicked = () => {
     let arr = []
 
     const indexSuma = displayValue.lastIndexOf('+')
@@ -128,10 +136,10 @@ function App() {
 
     for (let n of arr) {
       if (n > maximo) maximo = n;
-    }   
+    }
 
-    let prev = displayValue.slice(0,maximo+1)
-    let after = displayValue.slice(maximo+1)    
+    let prev = displayValue.slice(0, maximo + 1)
+    let after = displayValue.slice(maximo + 1)
     after = '(' + '-' + after + ')'
 
     setDisplayValue(prev + after)
@@ -145,6 +153,17 @@ function App() {
     setDisplayValue(String(result))
   }
 
+  const handleBackClicked = () => {
+    let aux
+    if (displayValue.length > 1) {
+      aux = displayValue.slice(0, -1)
+    } else {
+      aux = '0'
+    }
+
+    setDisplayValue(aux)
+  }
+
   console.log('App -> render')
 
   return <div className="border-2 m-2 p-2 rounded-2xl bg-gray-800 text-white">
@@ -152,7 +171,7 @@ function App() {
 
     <div className="p-2 flex flex-col gap-2">
       <div className="flex justify-between">
-        <div className="bg-gray-400 p-2 rounded-full w-10 h-10 flex justify-center items-center cursor-pointer">⌫</div>
+        <div className="bg-gray-400 p-2 rounded-full w-10 h-10 flex justify-center items-center cursor-pointer" onClick={handleBackClicked}>⌫</div>
         <div className="bg-gray-400 p-2 rounded-full w-10 h-10 flex justify-center items-center cursor-pointer" onClick={handleAllClearClicked}>AC</div>
         <div className="bg-gray-400 p-2 rounded-full w-10 h-10 flex justify-center items-center cursor-pointer">%</div>
         <div className="bg-orange-400 p-2 rounded-full w-10 h-10 flex justify-center items-center cursor-pointer" onClick={handleDivideClicked}>÷</div>
