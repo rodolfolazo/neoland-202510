@@ -99,20 +99,12 @@ function App() {
 
     const arraySignos = []
 
-    const indexSuma = displayValue.lastIndexOf('+')
-    arraySignos.push(indexSuma)
-    const indexResta = displayValue.lastIndexOf('-')
-    arraySignos.push(indexResta)
-    const indexProd = displayValue.lastIndexOf('÷')
-    arraySignos.push(indexProd)
-    const indexDiv = displayValue.lastIndexOf('×')
-    arraySignos.push(indexDiv)
-
-    //Determinar el mayor índice
-    let maximo = arraySignos[0];
-    for (let n of arraySignos) {
-      if (n > maximo) maximo = n;
-    }
+    const lastIndexSuma = displayValue.lastIndexOf('+')    
+    const lastIndexResta = displayValue.lastIndexOf('-')    
+    const lastIndexProd = displayValue.lastIndexOf('÷')    
+    const lastIndexDiv = displayValue.lastIndexOf('×')
+    
+    let maximo = Math.max(lastIndexDiv,lastIndexProd,lastIndexResta,lastIndexSuma)
 
     if ((displayValue.lastIndexOf(',') < maximo || displayValue.lastIndexOf(',') === -1) && displayValue.at(-1) !== ')') {
       setDisplayValue(displayValue + ',')
