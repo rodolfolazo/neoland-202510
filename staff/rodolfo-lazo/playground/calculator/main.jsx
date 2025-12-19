@@ -153,8 +153,10 @@ function App() {
     let after
 
     // Casos:
+    // 123
     // 123 - ( -4,3)
     //123 - 4,3
+
 
     if (displayValue.lastIndexOf(')') > maximo) {
       prev = displayValue.slice(0, displayValue.lastIndexOf('('))
