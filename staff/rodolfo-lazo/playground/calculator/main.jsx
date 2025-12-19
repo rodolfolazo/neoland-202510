@@ -79,34 +79,34 @@ function App() {
   const handleAllClearClicked = () => setDisplayValue('0')
 
   const handleDivideClicked = () => {
-    if (displayValue.at(-1)=== '÷'){
+    if (displayValue.at(-1) === '÷') {
       return
-    }else{
+    } else {
       setDisplayValue(displayValue + '÷')
     }
   }
 
   const handleMultiplyClicked = () => {
-    if (displayValue.at(-1) === '×'){
+    if (displayValue.at(-1) === '×') {
       return
-    }else{
+    } else {
       setDisplayValue(displayValue + '×')
     }
   }
-    
+
 
   const handleSubtractClicked = () => {
-    if (displayValue.at(-1) === '-'){
+    if (displayValue.at(-1) === '-') {
       return
-    }else{
+    } else {
       setDisplayValue(displayValue + '-')
     }
   }
 
   const handleAddClicked = () => {
-    if (displayValue.at(-1) === '+'){
+    if (displayValue.at(-1) === '+') {
       return
-    }else{
+    } else {
       setDisplayValue(displayValue + '+')
     }
   }
@@ -139,24 +139,36 @@ function App() {
 
   const handleSignesClicked = () => {
 
-    if (displayValue.at(-1) === '+' || displayValue.at(-1) === '-' || displayValue.at(-1) === '×' || displayValue.at(-1) === '÷' || displayValue.at(-1) === ',') return    
+    if (displayValue.at(-1) === '+' || displayValue.at(-1) === '-' || displayValue.at(-1) === '×' || displayValue.at(-1) === '÷' || displayValue.at(-1) === ',') return
 
-    const indexSuma = displayValue.lastIndexOf('+')    
-    const indexResta = displayValue.lastIndexOf('-')    
-    const indexProd = displayValue.lastIndexOf('÷')    
+    const indexSuma = displayValue.lastIndexOf('+')
+    const indexResta = displayValue.lastIndexOf('-')
+    const indexProd = displayValue.lastIndexOf('÷')
     const indexDiv = displayValue.lastIndexOf('×')
-    
+
 
     let maximo = Math.max(indexSuma, indexResta, indexProd, indexDiv)
 
-    let prev = displayValue.slice(0, maximo + 1)
-    let after = displayValue.slice(maximo + 1)
-    after = '(' + '-' + after + ')'
+    let prev
+    let after
+
+    // Casos:
+    // 123 - ( -4,3)
+    //123 - 4,3
+
+    if (displayValue.lastIndexOf(')') > maximo) {
+      prev = displayValue.slice(0, displayValue.lastIndexOf('('))
+      after = displayValue.slice(displayValue.lastIndexOf('(') + 2, -1)      
+    } else {
+      prev = displayValue.slice(0, maximo + 1)
+      after = displayValue.slice(maximo + 1)
+      after = '(' + '-' + after + ')'
+    }
 
     setDisplayValue(prev + after)
   }
 
-  const handleResultClicked = () => {    
+  const handleResultClicked = () => {
     const operation = displayValue.replaceAll('÷', '/').replaceAll('×', '*').replaceAll(',', '.')
 
     const result = eval(operation)
