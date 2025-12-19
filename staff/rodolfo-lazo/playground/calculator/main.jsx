@@ -153,14 +153,16 @@ function App() {
     let after
 
     // Casos:
-    // 123
-    // 123 - ( -4,3)
-    //123 - 4,3
+    // 123    (else)
+    // (-123) if
+    // 123 - ( -4,3)  if
+    //123 - 4,3   (else)
 
+    //TODO : Si hay un cero en el ultimo operando no hacer nada
 
     if (displayValue.lastIndexOf(')') > maximo) {
       prev = displayValue.slice(0, displayValue.lastIndexOf('('))
-      after = displayValue.slice(displayValue.lastIndexOf('(') + 2, -1)      
+      after = displayValue.slice(displayValue.lastIndexOf('(') + 2, -1)
     } else {
       prev = displayValue.slice(0, maximo + 1)
       after = displayValue.slice(maximo + 1)
