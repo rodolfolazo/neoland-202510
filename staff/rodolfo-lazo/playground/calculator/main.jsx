@@ -78,13 +78,38 @@ function App() {
 
   const handleAllClearClicked = () => setDisplayValue('0')
 
-  const handleDivideClicked = () => setDisplayValue(displayValue + '÷')
+  const handleDivideClicked = () => {
+    if (displayValue.at(-1)=== '÷'){
+      return
+    }else{
+      setDisplayValue(displayValue + '÷')
+    }
+  }
 
-  const handleMultiplyClicked = () => setDisplayValue(displayValue + '×')
+  const handleMultiplyClicked = () => {
+    if (displayValue.at(-1) === '×'){
+      return
+    }else{
+      setDisplayValue(displayValue + '×')
+    }
+  }
+    
 
-  const handleSubtractClicked = () => setDisplayValue(displayValue + '-')
+  const handleSubtractClicked = () => {
+    if (displayValue.at(-1) === '-'){
+      return
+    }else{
+      setDisplayValue(displayValue + '-')
+    }
+  }
 
-  const handleAddClicked = () => setDisplayValue(displayValue + '+')
+  const handleAddClicked = () => {
+    if (displayValue.at(-1) === '+'){
+      return
+    }else{
+      setDisplayValue(displayValue + '+')
+    }
+  }
 
   const handleCommaClicked = () => {
     //6,5,					error
@@ -92,19 +117,19 @@ function App() {
     //6,234 + 12,		correcto
     //6,18 + 3,14,	incorrecto
     //6,18 + 458		correcto
+    //(-(-(-5)))+(-)	incorreto
+    //(-(-(-5))),   incorrecto
 
     //Si no existe ninguna , puedo agregarla
-    //Si el indice de mi ultima coma es mayor al indice de mi ultimo simbolo no puedo agregarla
-    //Si el indice de mi ulitimo simbolo es superior a mi ultima coma, puedo agregar
+    //Si el indice de mi ultima coma es mayor al indice de mi ultimo simbolo no puedo agregarla    
+    //No puedo poner una coma luego de un paréntesis    
 
-    const arraySignos = []
-
-    const lastIndexSuma = displayValue.lastIndexOf('+')    
-    const lastIndexResta = displayValue.lastIndexOf('-')    
-    const lastIndexProd = displayValue.lastIndexOf('÷')    
+    const lastIndexSuma = displayValue.lastIndexOf('+')
+    const lastIndexResta = displayValue.lastIndexOf('-')
+    const lastIndexProd = displayValue.lastIndexOf('÷')
     const lastIndexDiv = displayValue.lastIndexOf('×')
 
-    let maximo = Math.max(lastIndexDiv,lastIndexProd,lastIndexResta,lastIndexSuma)
+    let maximo = Math.max(lastIndexDiv, lastIndexProd, lastIndexResta, lastIndexSuma)
 
     if ((displayValue.lastIndexOf(',') < maximo || displayValue.lastIndexOf(',') === -1) && displayValue.at(-1) !== ')') {
       setDisplayValue(displayValue + ',')
@@ -114,24 +139,15 @@ function App() {
 
   const handleSignesClicked = () => {
 
-    if (displayValue.at(-1) === '+' || displayValue.at(-1) === '-' || displayValue.at(-1) === '×'|| displayValue.at(-1) === '÷') return
+    if (displayValue.at(-1) === '+' || displayValue.at(-1) === '-' || displayValue.at(-1) === '×' || displayValue.at(-1) === '÷' || displayValue.at(-1) === ',') return    
 
-    let arr = []
-
-    const indexSuma = displayValue.lastIndexOf('+')
-    arr.push(indexSuma)
-    const indexResta = displayValue.lastIndexOf('-')
-    arr.push(indexResta)
-    const indexProd = displayValue.lastIndexOf('÷')
-    arr.push(indexProd)
+    const indexSuma = displayValue.lastIndexOf('+')    
+    const indexResta = displayValue.lastIndexOf('-')    
+    const indexProd = displayValue.lastIndexOf('÷')    
     const indexDiv = displayValue.lastIndexOf('×')
-    arr.push(indexDiv)
+    
 
-    let maximo = arr[0];
-
-    for (let n of arr) {
-      if (n > maximo) maximo = n;
-    }
+    let maximo = Math.max(indexSuma, indexResta, indexProd, indexDiv)
 
     let prev = displayValue.slice(0, maximo + 1)
     let after = displayValue.slice(maximo + 1)
@@ -140,7 +156,7 @@ function App() {
     setDisplayValue(prev + after)
   }
 
-  const handleResultClicked = () => {
+  const handleResultClicked = () => {    
     const operation = displayValue.replaceAll('÷', '/').replaceAll('×', '*').replaceAll(',', '.')
 
     const result = eval(operation)
