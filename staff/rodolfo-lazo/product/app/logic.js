@@ -1,114 +1,116 @@
-function Logic() {
-}
+class Logic {
+    constructor() {
+    }
 
-Logic.prototype.registerUser = function (name, email, username, password, passwordRepeat) {
-    if (typeof name !== 'string') throw new Error('invalid name type')
-    if (name.length < 1) throw new Error('invalid name length')
+    registerUser(name, email, username, password, passwordRepeat) {
+        if (typeof name !== 'string') throw new Error('invalid name type')
+        if (name.length < 1) throw new Error('invalid name length')
 
-    if (typeof email !== 'string') throw new Error('invalid email type')
-    if (email.length < 6) throw new Error('invalid email length')
+        if (typeof email !== 'string') throw new Error('invalid email type')
+        if (email.length < 6) throw new Error('invalid email length')
 
-    if (typeof username !== 'string') throw new Error('invalid username type')
-    if (username.length < 3) throw new Error('invalid username length')
+        if (typeof username !== 'string') throw new Error('invalid username type')
+        if (username.length < 3) throw new Error('invalid username length')
 
-    if (typeof password !== 'string') throw new Error('invalid password type')
-    if (password.length < 8) throw new Error('invalid password length')
+        if (typeof password !== 'string') throw new Error('invalid password type')
+        if (password.length < 8) throw new Error('invalid password length')
 
-    if (typeof passwordRepeat !== 'string') throw new Error('invalid passwordRepeat type')
-    if (passwordRepeat.length < 8) throw new Error('invalid passwordRepeat length')
+        if (typeof passwordRepeat !== 'string') throw new Error('invalid passwordRepeat type')
+        if (passwordRepeat.length < 8) throw new Error('invalid passwordRepeat length')
 
-    if (password !== passwordRepeat) throw new Error('passwords do not match')
+        if (password !== passwordRepeat) throw new Error('passwords do not match')
 
-    let user = data.findUserByEmail(email)
+        let user = data.findUserByEmail(email)
 
-    if (user !== null) throw new Error('user email already exists')
+        if (user !== null) throw new Error('user email already exists')
 
-    user = data.findUserByUsername(username)
+        user = data.findUserByUsername(username)
 
-    if (user !== null) throw new Error('user username already exists')
+        if (user !== null) throw new Error('user username already exists')
 
-    user = new User('user-' + data.usersCount, name, email, username, password, 'regular')
+        user = new User('user-' + data.usersCount, name, email, username, password, 'regular')
 
-    data.insertUser(user)
-}
+        data.insertUser(user)
+    }
 
-Logic.prototype.loginUser = function (username, password) {
-    if (typeof username !== 'string') throw new Error('invalid username type')
-    if (username.length < 3) throw new Error('invalid username length')
+    loginUser(username, password) {
+        if (typeof username !== 'string') throw new Error('invalid username type')
+        if (username.length < 3) throw new Error('invalid username length')
 
-    if (typeof password !== 'string') throw new Error('invalid password type')
-    if (password.length < 8) throw new Error('invalid password length')
+        if (typeof password !== 'string') throw new Error('invalid password type')
+        if (password.length < 8) throw new Error('invalid password length')
 
-    const user = data.findUserByUsername(username)
+        const user = data.findUserByUsername(username)
 
-    if (user === null) throw new Error('user not found')
+        if (user === null) throw new Error('user not found')
 
-    if (user.password !== password) throw new Error('incorrect password')
+        if (user.password !== password) throw new Error('incorrect password')
 
-    data.setLoggedInUserId(user.id)
-}
+        data.setLoggedInUserId(user.id)
+    }
 
-Logic.prototype.logoutUser = function () {
-    data.setLoggedInUserId(null)
-}
+    logoutUser() {
+        data.setLoggedInUserId(null)
+    }
 
-Logic.prototype.addPet = function (name, birthdate, weight, image) {
-    if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
+    addPet(name, birthdate, weight, image) {
+        if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
 
-    const user = data.findUserById(data.getLoggedInUserId())
-    if (user === null) throw new Error('user not found')
+        const user = data.findUserById(data.getLoggedInUserId())
+        if (user === null) throw new Error('user not found')
 
-    if (typeof name !== 'string') throw new Error('invalid name type')
-    if (name.length < 1) throw new Error('invalid name length')
+        if (typeof name !== 'string') throw new Error('invalid name type')
+        if (name.length < 1) throw new Error('invalid name length')
 
-    if (typeof birthdate !== 'string') throw new Error('invalid birthdate type')
-    
-    const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/
-    if (!isoDateRegex.test(birthdate)) throw new Error('invalid birthdate format')
+        if (typeof birthdate !== 'string') throw new Error('invalid birthdate type')
 
-    if (typeof weight !== 'number' || isNaN(weight)) throw new Error('invalid weight type')
+        const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/
+        if (!isoDateRegex.test(birthdate)) throw new Error('invalid birthdate format')
 
-    if (typeof image !== 'string') throw new Error('invalid image type')
-    
-    const urlRegex = /(www|http:|https:)+[^\s]+[\w]/
-    if (!urlRegex.test(image)) throw new Error('invalid image format')
+        if (typeof weight !== 'number' || isNaN(weight)) throw new Error('invalid weight type')
 
-    const pet = new Pet('pet-' + data.petsCount, data.getLoggedInUserId(), name, birthdate, weight, image)
+        if (typeof image !== 'string') throw new Error('invalid image type')
 
-    data.insertPet(pet)
-}
+        const urlRegex = /(www|http:|https:)+[^\s]+[\w]/
+        if (!urlRegex.test(image)) throw new Error('invalid image format')
 
-Logic.prototype.getPets = function() {
-    if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
+        const pet = new Pet('pet-' + data.petsCount, data.getLoggedInUserId(), name, birthdate, weight, image)
 
-    const user = data.findUserById(data.getLoggedInUserId())
-    if (user === null) throw new Error('user not found')
+        data.insertPet(pet)
+    }
 
-    const pets = data.findPetsByUserId(data.getLoggedInUserId())
+    getPets() {
+        if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
 
-    return pets
-}
+        const user = data.findUserById(data.getLoggedInUserId())
+        if (user === null) throw new Error('user not found')
 
-Logic.prototype.deletePet = function(petId) {
-    if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
+        const pets = data.findPetsByUserId(data.getLoggedInUserId())
 
-    const user = data.findUserById(data.getLoggedInUserId())
-    if (user === null) throw new Error('user not found')
+        return pets
+    }
 
-    if (typeof petId !== 'string') throw new Error('invalid pet-id type')
+    deletePet(petId) {
+        if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
 
-    const petIdRegex = /^\pet-[0-9]+$/
-    if (!petIdRegex.test(petId)) throw new Error('invalid pet-id format')
+        const user = data.findUserById(data.getLoggedInUserId())
+        if (user === null) throw new Error('user not found')
 
-    const pet = data.findPetById(petId)
+        if (typeof petId !== 'string') throw new Error('invalid pet-id type')
 
-    if (pet === null) throw new Error('pet not found')
+        const petIdRegex = /^\pet-[0-9]+$/
+        if (!petIdRegex.test(petId)) throw new Error('invalid pet-id format')
 
-    if (pet.userId !== data.getLoggedInUserId()) throw new Error('user not owner of pet')
+        const pet = data.findPetById(petId)
 
-    const petIndex = data.pets.indexOf(pet)
+        if (pet === null) throw new Error('pet not found')
 
-    data.pets.splice(petIndex, 1)
+        if (pet.userId !== data.getLoggedInUserId()) throw new Error('user not owner of pet')
+
+        const petIndex = data.pets.indexOf(pet)
+
+        data.pets.splice(petIndex, 1)
+    }
 }
 
 // instance
