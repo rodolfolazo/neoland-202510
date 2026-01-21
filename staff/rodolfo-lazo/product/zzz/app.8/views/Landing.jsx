@@ -1,26 +1,40 @@
 function Landing({ onGoToLogin, onGoToRegister }) {
-    console.log('Landing -> call')
+  console.log("Landing -> call");
 
-    const handleLoginClick = event => {
-        event.preventDefault()
+  const handleLoginClick = (event) => {
+    event.preventDefault();
 
-        onGoToLogin()
-    }
+    onGoToLogin();
+  };
 
-    const handleRegisterClick = event => {
-        event.preventDefault()
+  const handleRegisterClick = (event) => {
+    event.preventDefault();
 
-        onGoToRegister()
-    }
+    onGoToRegister();
+  };
 
-    console.log('Landing -> render')
+  console.log("Landing -> render");
 
-    return <div className="p-4">
-        <h1 className="font-bold text-xl">MyPet</h1>
-        <p>Welcome!</p>
+  return (
+    <div className='p-4'>
+      <h1 className='font-bold text-xl'>MyPet</h1>
+      <p>Welcome!</p>
 
-        <nav>
-            <a className="cursor-pointer underline font-bold" onClick={handleLoginClick}>Login</a> or <a className="cursor-pointer underline font-bold" onClick={handleRegisterClick}>Register</a>
-        </nav>
+      <nav>
+        <a
+          className='cursor-pointer underline font-bold'
+          onClick={handleLoginClick}
+        >
+          Login
+        </a>{" "}
+        or{" "}
+        <a
+          className='cursor-pointer underline font-bold'
+          onClick={handleRegisterClick}
+        >
+          Register
+        </a>
+      </nav>
     </div>
+  );
 }
