@@ -124,4 +124,17 @@ class Collection {
       callback(element);
     }
   }
+
+  map(callback){
+    const mapped = new Collection()
+
+    for(let i = 0; i<this.count; i++){
+        const element = this[i]
+
+        const mappedElement = callback(element)
+        mapped[mapped.count] = mappedElement
+        mapped.count++
+    }
+    return mapped
+  }
 }
