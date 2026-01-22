@@ -134,39 +134,84 @@
 // case name to uppercase
 
 {
-    const names = new Collection()
-    names[0] = 'Rodolfo'
-    names[1] = 'Serito'
-    names[2] = 'Agus'
-    names[3] = 'Albert'
-    names[4] = 'Juanico'
-    names.count = 5
+  const names = new Collection();
+  names[0] = "Rodolfo";
+  names[1] = "Serito";
+  names[2] = "Agus";
+  names[3] = "Albert";
+  names[4] = "Juanico";
+  names.count = 5;
 
-    const namesInUppercase = names.map(name => name.toUpperCase())
-    console.assert(namesInUppercase.count === 5, 'El número de elementos es 5')
-    console.assert(namesInUppercase[0] === 'RODOLFO', 'namesInUpperCase[0] is RODOLFO')
-    console.assert(namesInUppercase[1] === 'SERITO', 'namesInUpperCase[1] is SERITO')
-    console.assert(namesInUppercase[2] === 'AGUS', 'namesInUpperCase[2] is AGUS')
-    console.assert(namesInUppercase[3]=== 'ALBERT', 'namesInUpperCase[3] is ALBERT')
-    console.assert(namesInUppercase[4]=== 'JUANICO', 'namesInUpperCase[4] is JUANICO')
-    
+  const namesInUppercase = names.map((name) => name.toUpperCase());
+  console.assert(namesInUppercase.count === 5, "El número de elementos es 5");
+  console.assert(
+    namesInUppercase[0] === "RODOLFO",
+    "namesInUpperCase[0] is RODOLFO",
+  );
+  console.assert(
+    namesInUppercase[1] === "SERITO",
+    "namesInUpperCase[1] is SERITO",
+  );
+  console.assert(namesInUppercase[2] === "AGUS", "namesInUpperCase[2] is AGUS");
+  console.assert(
+    namesInUppercase[3] === "ALBERT",
+    "namesInUpperCase[3] is ALBERT",
+  );
+  console.assert(
+    namesInUppercase[4] === "JUANICO",
+    "namesInUpperCase[4] is JUANICO",
+  );
 }
 
 // test filter
 // edades menor a 18 años
 {
-  const edades = new Collection()
-  edades[0] = 17
-  edades[1] = 55
-  edades[2] = 13
-  edades[3] = 47
-  edades[4] = 33
-  edades[5] = 11
-  edades.count = 6
-  
-  const edadesFiltradas = edades.filter( edad => edad <= 18)
-  console.assert(edadesFiltradas.count === 3, ' El número de edades menores de 18 son 3')
-  console.assert(edadesFiltradas[0] === 17, 'La primera edad es 17')
-  console.assert(edadesFiltradas[1] === 13, 'La segunda edad es 13')
-  console.assert(edadesFiltradas[2] === 11, 'La tercera edad es 11')
+  const edades = new Collection();
+  edades[0] = 17;
+  edades[1] = 55;
+  edades[2] = 13;
+  edades[3] = 47;
+  edades[4] = 33;
+  edades[5] = 11;
+  edades.count = 6;
+
+  const edadesFiltradas = edades.filter((edad) => edad <= 18);
+  console.assert(
+    edadesFiltradas.count === 3,
+    " El número de edades menores de 18 son 3",
+  );
+  console.assert(edadesFiltradas[0] === 17, "La primera edad es 17");
+  console.assert(edadesFiltradas[1] === 13, "La segunda edad es 13");
+  console.assert(edadesFiltradas[2] === 11, "La tercera edad es 11");
+}
+
+// test some
+// ¿Existe alguno mayor que 18 años?
+
+{
+  const edades = new Collection();
+  edades[0] = 17;
+  edades[1] = 55;
+  edades[2] = 13;
+  edades[3] = 47;
+  edades[4] = 33;
+  edades[5] = 11;
+  edades.count = 6;
+
+  const hayAdultos = edades.some((edad) => edad >= 18);
+  console.assert(hayAdultos === true);
+}
+
+// test every
+// ¿Son todos mayores de edad?
+
+{
+  const ages = new Collection();
+  ages[0] = 47;
+  ages[1] = 15;
+  ages[2] = 33;
+  ages.count = 3;
+
+  let isEveryoneAdult = ages.every((age) => age >= 18);
+  console.assert(isEveryoneAdult === true, "Todos son adultos");
 }

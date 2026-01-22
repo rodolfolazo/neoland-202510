@@ -150,4 +150,31 @@ class Collection {
     }
     return filtered
   }
+
+  some(callback){   
+
+    for(let i=0; i<this.count; i++){
+      const element = this[i]
+      if (callback(element)){
+        return true
+      }
+    }
+    return false
+  }
+
+  every(callback){    
+
+    for(let i=0; i<this.count; i++){
+      const element = this[i]
+      if (callback(element)){
+        continue
+      }else{
+        return false
+      }
+    }
+    return true
+  }
+
+
+
 }
