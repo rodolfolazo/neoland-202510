@@ -40,8 +40,7 @@ console.assert(nums[0] === 3.141516, 'nums[0] is 3.141516')
 console.assert(nums[1] === 666, 'nums[1] is 666')
 console.assert(nums[2] === 2000, 'nums[2] is 2000')
 
-// TODO test remove
-// TODO test removeFirst
+
 // TODO test update
 // TODO test updateFirst
 // TODO test push
@@ -84,3 +83,37 @@ prices.forEach(price => total += price * 1.21)
 // console.log(total)
 // 302.5
 console.assert(total === 302.5, 'total is 302.5')
+
+// TODO test remove
+const colorsCollection = new Collection()
+
+colorsCollection.add("red")
+colorsCollection.add("green")
+colorsCollection.add("blue")
+colorsCollection.add("green")
+
+console.log(colorsCollection)
+console.log("Eliminamos green")
+colorsCollection.remove2("green")
+console.assert(colorsCollection.count === 2, 'El número de elementos es 2')
+console.assert(colorsCollection[1] === 'blue')
+console.assert(colorsCollection[colorsCollection.count-1] === 'blue')
+console.log("Resultado:")
+console.log(colorsCollection)
+
+
+// TODO test removeFirst
+const citiesCollection = new Collection()
+
+citiesCollection.add('Gent')
+citiesCollection.add('Brugge')
+citiesCollection.add('Krakow')
+citiesCollection.add('Krakow')
+citiesCollection.add('Zagreb')
+
+console.log(citiesCollection)
+console.log("Eliminamos sólo 1 Krakow")
+citiesCollection.removeFirst2('Krakow')
+console.assert(citiesCollection.count === 4, 'El número de elementos es 4')
+console.assert(citiesCollection[3] === 'Zagreb' )
+console.log(citiesCollection)
