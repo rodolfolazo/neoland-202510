@@ -102,14 +102,14 @@
   colorsCollection.add("blue");
   colorsCollection.add("green");
 
-  console.log(colorsCollection);
-  console.log("Eliminamos green");
+  //console.log(colorsCollection);
+  //console.log("Eliminamos green");
   colorsCollection.remove2("green");
   console.assert(colorsCollection.count === 2, "El número de elementos es 2");
   console.assert(colorsCollection[1] === "blue");
   console.assert(colorsCollection[colorsCollection.count - 1] === "blue");
-  console.log("Resultado:");
-  console.log(colorsCollection);
+  //console.log("Resultado:");
+  //console.log(colorsCollection);
 }
 
 // TODO test removeFirst
@@ -122,16 +122,15 @@
   citiesCollection.add("Krakow");
   citiesCollection.add("Zagreb");
 
-  console.log(citiesCollection);
-  console.log("Eliminamos sólo 1 Krakow");
+  //console.log(citiesCollection);
+  //console.log("Eliminamos sólo 1 Krakow");
   citiesCollection.removeFirst2("Krakow");
   console.assert(citiesCollection.count === 4, "El número de elementos es 4");
   console.assert(citiesCollection[3] === "Zagreb");
-  console.log(citiesCollection);
+  //console.log(citiesCollection);
 }
 
 //test map
-
 // case name to uppercase
 
 {
@@ -151,4 +150,23 @@
     console.assert(namesInUppercase[3]=== 'ALBERT', 'namesInUpperCase[3] is ALBERT')
     console.assert(namesInUppercase[4]=== 'JUANICO', 'namesInUpperCase[4] is JUANICO')
     
+}
+
+// test filter
+// edades menor a 18 años
+{
+  const edades = new Collection()
+  edades[0] = 17
+  edades[1] = 55
+  edades[2] = 13
+  edades[3] = 47
+  edades[4] = 33
+  edades[5] = 11
+  edades.count = 6
+  
+  const edadesFiltradas = edades.filter( edad => edad <= 18)
+  console.assert(edadesFiltradas.count === 3, ' El número de edades menores de 18 son 3')
+  console.assert(edadesFiltradas[0] === 17, 'La primera edad es 17')
+  console.assert(edadesFiltradas[1] === 13, 'La segunda edad es 13')
+  console.assert(edadesFiltradas[2] === 11, 'La tercera edad es 11')
 }
