@@ -183,6 +183,7 @@
   console.assert(edadesFiltradas[0] === 17, "La primera edad es 17");
   console.assert(edadesFiltradas[1] === 13, "La segunda edad es 13");
   console.assert(edadesFiltradas[2] === 11, "La tercera edad es 11");
+  // console.log(edadesFiltradas)
 }
 
 // test some
@@ -199,7 +200,7 @@
   edades.count = 6;
 
   const hayAdultos = edades.some((edad) => edad >= 18);
-  console.assert(hayAdultos === true);
+  console.assert(hayAdultos === true);  
 }
 
 // test every
@@ -208,10 +209,60 @@
 {
   const ages = new Collection();
   ages[0] = 47;
-  ages[1] = 15;
+  ages[1] = 25;
   ages[2] = 33;
   ages.count = 3;
 
   let isEveryoneAdult = ages.every((age) => age >= 18);
   console.assert(isEveryoneAdult === true, "Todos son adultos");
+  // console.log(isEveryoneAdult)
+}
+
+
+{
+  const persons = new Collection();
+  persons[0] = {
+    name : 'Mario',
+    role : 'frontend'
+  }
+  persons[1] = {
+    name : 'Daniela',
+    role : 'frontend'
+  }
+  persons[2] = {
+    name : 'Piotr',
+    role : 'backend'
+  }
+  persons[3] = {
+    name : 'Arkadiusz',
+    role : 'backend'
+  }
+  persons[4] = {
+    name : 'Nelly',
+    role : 'bbdd'
+  }
+  persons.count = 5
+
+  let firstDB = persons.find(person => person.role === 'bbdd')
+  console.assert(firstDB.name === 'Nelly' && firstDB.role === 'bbdd')
+}
+
+
+{
+  const ages = new Collection();
+  ages[0] = 47;
+  ages[1] = 25;
+  ages[2] = 33;
+  ages.count = 3;
+
+  total1 = ages.reduce((total,num)=>{
+    return total + num
+  },100)
+
+  total2 = ages.reduce((total,num) => {
+    return total + num
+  })
+
+  console.assert(total1 === 205, "La suma total empezando con 100 es 205" )
+  console.assert(total2 === 105 , 'La suma total empezando de 0 es 105')
 }

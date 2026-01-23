@@ -166,15 +166,62 @@ class Collection {
 
     for(let i=0; i<this.count; i++){
       const element = this[i]
-      if (callback(element)){
-        continue
-      }else{
+      if (!callback(element)){
         return false
       }
     }
     return true
   }
 
+  find(callback){
 
+    for(let i=0; i<this.count; i++){
+      const element = this[i]
+      if(callback(element)){
+        return element
+      }
+    }
+  }
+
+  reduce(callback, aggreg=null){
+
+    let start
+
+    if(aggreg !== null){
+      start = aggreg 
+      for(let i=0; i<this.count; i++){
+        const element = this[i]
+        start += this[i]
+      }
+    }else{
+      start = this[0]
+      for (let i=1; i<this.count; i++){
+        const element = this[i]
+        start += this[i]
+      }
+    }     
+    return start
+
+  }
+
+  reduce2(callback, aggreg=null){
+
+    let start
+    let i
+
+    if(aggreg !== null){
+      start = aggreg
+      i = 0
+    }else{
+      start = this[0]
+      i = 1
+    }
+    for( i; i<this.count; i++){
+      const element = this[i]
+      start += this[i]
+    }
+
+    return start
+  }
 
 }
