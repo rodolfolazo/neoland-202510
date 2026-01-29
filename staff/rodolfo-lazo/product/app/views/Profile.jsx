@@ -12,7 +12,7 @@ export function Profile({ onGoToHome }) {
     const handleBackClick = event => {
         event.preventDefault()
 
-        onGoToHome()   
+        onGoToHome()
     }
 
     const handleChangeEmailClick = event => {
