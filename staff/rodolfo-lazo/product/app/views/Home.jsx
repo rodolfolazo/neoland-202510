@@ -1,6 +1,12 @@
-const { useState } = React
+import { useState } from 'react'
 
-function Home({ onGoToAddPet, onGoToLogin }) {
+import { Anchor } from './components/commons/Anchor'
+import { Button } from './components/commons/Button'
+import { PetList } from './components/PetList'
+
+import { logic } from '../logic'
+
+export function Home({ onGoToAddPet, onGoToLogin, onGoToProfile }) {
     console.log('Home -> call')
 
     const [message, setMessage] = useState('')
@@ -25,15 +31,24 @@ function Home({ onGoToAddPet, onGoToLogin }) {
         }
     }
 
+    const handleProfileClick = event => {
+        event.preventDefault()
+
+        onGoToProfile()
+    }
+
     console.log('Home -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>
 
-        <h2 className="font-bold">Welcome Home!</h2>
+        <h2 className="font-bold">Welcome, Home!</h2>
 
         <div className="flex justify-between">
-            <Button type="button" onClick={handleAddPetClick}>+ Pet</Button>
+            <Anchor onClick={handleAddPetClick}>+ Pet</Anchor>
+
+            <Anchor onClick={handleProfileClick}>Profile</Anchor>
+
             <Button type="button" onClick={handleLogoutClick}>Logout</Button>
         </div>
 

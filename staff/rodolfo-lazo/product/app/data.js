@@ -1,6 +1,6 @@
 // models
 
-class User {
+export class User {
     constructor(id, name, email, username, password, role) {
         this.id = id
         this.name = name
@@ -11,7 +11,7 @@ class User {
     }
 }
 
-class Pet {
+export class Pet {
     constructor(id, userId, /*chip,*/ name, /*gender,*/ birthdate, weight, /*species, race, colors,*/ image) {
         this.id = id
         this.userId = userId
@@ -113,5 +113,5 @@ class Data {
 
 // instance
 
-const data = new Data()
+export const data = new Data()
 

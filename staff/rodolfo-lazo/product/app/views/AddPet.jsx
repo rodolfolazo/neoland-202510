@@ -1,6 +1,13 @@
-const { useState } = React
+import { useState } from 'react'
 
-function AddPet({ onGoToHome }) {
+import { Form } from './components/commons/Form'
+import { Field } from './components/commons/Field'
+import { Button } from './components/commons/Button'
+import { Anchor } from './components/commons/Anchor'
+
+import { logic } from '../logic'
+
+export function AddPet({ onGoToHome }) {
     console.log('AddPet -> call')
 
     const [message, setMessage] = useState('')
@@ -40,7 +47,7 @@ function AddPet({ onGoToHome }) {
             <div className="flex justify-between">
                 <h2 className="font-bold">Add Pet</h2>
 
-                <a className="cursor-pointer underline font-bold" onClick={handleBackClick}>&lt; Back</a>
+                <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
             </div>
 
             <Form onSubmit={handleAddPetSubmit}>
