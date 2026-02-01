@@ -1,5 +1,5 @@
-Node
-===================
+VITE
+========================================================================================
 
 - Inicializar package.json
 npm init -y
@@ -7,13 +7,30 @@ npm init -y
 - El package.json debe de tener incluido módulos para usar import / export
 type : module
 
-- Cargar dependencias de desarrollo. (mira el package.json e instala todo lo del package.json)
+- Cargar dependencias de desarrollo. (mira el package.json e instala todo lo del package.json de un proyecto existente)
 npm install
 
-- Instalar vite como dependencia de desarrollo
-npm i -D vite @vitejs/plugin-react
-npm install vite --save-dev
+- Instalamos react
+npm install react react-dom
 
+- Instalar vite y plugin-react como dependencia de desarrollo
+npm install vite --save-dev
+npm i -D vite @vitejs/plugin-react
+
+- Agregamos : vite.config.js a la raiz del proyecto
+
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+export default defineConfig({
+    plugins: [react()]
+})
+
+- Ejecutar vite
+npm vite
+npx vite
+
+========================================================================================
 Forma antigua de instalar vite
 npm init -y
 npm install vite
@@ -25,26 +42,13 @@ cd mi-proyecto
 npm install
 npm run dev
 
-- Ejecutar vite
-npm vite
-npx vite
-
 - Ver árbol de dependencias nivel de profundidad 10
 npm list --depth:10
-
-- Agregamos : vite.config.js a la raiz del proyecto
-
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-
-export default defineConfig({
-    plugins: [react()]
-})
-
-- Instalamos react
-npm i react react-dom
+========================================================================================
 
 
+NODE
+========================================================================================
 - Tunel con cloudflared
 cloudflared tunnel --url http://localhost:8080
 
