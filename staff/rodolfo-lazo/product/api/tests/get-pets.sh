@@ -1,0 +1,3 @@
+curl -H 'Authorization: Basic user-0' \
+ http://localhost:8080/pets -v
+
