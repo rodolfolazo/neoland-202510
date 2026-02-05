@@ -147,4 +147,7 @@ api.put("/pets/:petId", jsonBodyParser, (req, res) => {
   }
 });
 
+//Update username
+//Update name
+
 api.listen(8080, () => console.log("API listening on port 8080"));
