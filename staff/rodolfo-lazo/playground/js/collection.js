@@ -1,73 +1,76 @@
 var collection = {
-  count: 0,
-};
+    count: 0
+}
 
-// TODO implement add method
+collection.add = function(item) {
+    this[this.count] = item
+    this.count++
+}
 
-collection.add = function (item) {
-  this[this.count] = item;
-  this.count++;
-};
+collection.add('Peter')
+console.log(collection)
+// { 0: 'Peter', count: 1 }
 
-// TODO implement remove method
-collection.removeIndex = function (index) {
-  if (index < 0 || index >= this.count) {
-    console.warn("Índice fuera de rango");
-    return;
-  }
+collection.add('Wendy')
+console.log(collection)
+// { 0: 'Peter', 1: 'Wendy', count: 2 }
 
-  // Mover todos los elementos hacia atrás
-  for (let i = index; i < this.count - 1; i++) {
-    this[i] = this[i + 1];
-  }
+collection.add('James')
+console.log(collection)
+// { 0: 'Peter', 1: 'Wendy', 2: 'James', count: 3 }
 
-  // Eliminar el último elemento duplicado
-  delete this[this.count - 1];
+collection.remove = function(item) {
+    for (var i = 0; i < this.count; i++)
+        if (this[i] === item)
+            delete this[i]
+}
 
-  // Actualizar el contador
-  this.count--;
-};
+collection.remove('Wendy')
+console.log(collection)
+// { 0: 'Peter', 2: 'James', count: 3 }
 
-collection.remove = function (item) {
-  for (let i = 0; i < this.count; i++) {
-    if (this[i] === item) {
-      delete this[i];
-    }
-  }
-};
+collection.add('Wendy')
+collection.add('Pepito')
+collection.add('Wendy')
+console.log(collection)
+// { 0: 'Peter', 2: 'James', 3: 'Wendy', 4: 'Pepito', 5: 'Wendy', count: 6 }
 
-collection.removeFirst = function (item) {
-  for (var i = 0; i < this.count; i++) {
-    if (this[i] === item) {
-      delete this[i];
-      return;
-    }
-  }
-};
+collection.removeFirst = function(item) {
+    for (var i = 0; i < this.count; i++)
+        if (this[i] === item) {
+            delete this[i]
 
-collection.update = function (oldItem, newItem) {
-  for (var i = 0; i < this.count; i++) {
-    if (this[i] === oldItem) {
-      this[i] = newItem;
-    }
-  }
-};
+            return
+        }
+}
 
-collection.updateFirst = function (oldItem, newItem) {
-  for (var i = 0; i < this.count; i++) {
-    if (this[i] === oldItem) {
-      this[i] = newItem;
-      return;
-    }
-  }
-};
+collection.removeFirst('Wendy')
+console.log(collection)
+// { 0: 'Peter', 2: 'James', 4: 'Pepito', 5: 'Wendy', count: 6 }
 
-debugger;
-collection.add("Peter");
-collection.add("James");
-collection.add("Pepito");
-collection.add("Wendy");
-collection.add("Pepito");
+collection.add('Pepito')
+console.log(collection)
+// { 0: 'Peter', 2: 'James', 4: 'Pepito', 5: 'Wendy', 6: 'Pepito', count: 7 }
 
-collection.updateFirst("Pepito", "Jiminy");
-console.log(collection);
+collection.update = function(target, replacement) {
+    for (var i = 0; i < this.count; i++)
+        if (this[i] === target)
+            this[i] = replacement
+}
+
+collection.update('Pepito', 'Jiminy')
+console.log(collection)
+// { 0: 'Peter', 2: 'James', 4: 'Jiminy', 5: 'Wendy', 6: 'Jiminy', count: 7 }
+
+collection.updateFirst = function(target, replacement) {
+    for (var i = 0; i < this.count; i++)
+        if (this[i] === target) {
+            this[i] = replacement
+
+            return
+        }
+}
+
+collection.updateFirst('Jiminy', 'Pepito')
+console.log(collection)
+// { 0: 'Peter', 2: 'James', 4: 'Pepito', 5: 'Wendy', 6: 'Jiminy', count: 7 }

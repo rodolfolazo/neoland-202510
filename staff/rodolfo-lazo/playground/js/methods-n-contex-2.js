@@ -1,30 +1,30 @@
 var peter = {
-  name: "Peter",
-};
+    name: 'Peter'
+}
 
-peter.salute = function (to) {
-  return this.name + ": Hello, " + to.name + "!";
-};
+peter.salute = function(to) {
+    return this.name + ': Hello, ' + to.name + '!'
+}
 
 var wendy = {
-  name: "wendy",
-};
+    name: 'wendy'
+}
 
 wendy.salute = peter.salute;
 
 var james = {
-  name: "James",
-};
+    name: 'James'
+}
 
 james.salute = wendy.salute;
 
-console.log(peter.salute(wendy));
+console.log(peter.salute(wendy))
 // Peter: Hello, Wendy!
 
-console.log(wendy.salute(james));
+console.log(wendy.salute(james))
 // Wendy: Hello, James!
 
-console.log(james.salute(peter));
+console.log(james.salute(peter))
 // James: Hello, Peter!
 
 /*

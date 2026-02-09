@@ -22,7 +22,7 @@ var e = !d;
 
 var f = a + d;
 
-var g = "hello";
+var g = 'hello';
 
 var h = b + e + g;
 
@@ -46,7 +46,7 @@ var q = h - g;
 
 var r = null + f;
 
-var s = f + "" + f;
+var s = f + '' + f;
 
 var t = a * null;
 
@@ -54,54 +54,54 @@ var u = undefined * null;
 
 var v = undefined + c;
 
-var w = m * "" * g;
+var w = m * '' * g;
 
 var x = {};
 
-x["name"] = "Peter";
+x['name'] = 'Peter';
 
 var y = x;
 
-y["name"] = "Wendy";
+y['name'] = 'Wendy';
 
-x["surname"] = "Darling";
+x['surname'] = 'Darling';
 
-var z = { name: "James" };
+var z = { 'name': 'James' };
 
-y["uncle"] = z;
+y['uncle'] = z;
 
-z["surname"] = "Bond";
+z['surname'] = 'Bond';
 
-z["niece"] = x;
+z['niece'] = x;
 
-x["uncle"]["surname"] = "Hook";
+x['uncle']['surname'] = 'Hook';
 
-z["niece"]["age"] = 13;
+z['niece']['age'] = 13;
 
-y["age"] = y["age"] + 1;
+y['age'] = y['age'] + 1;
 
-x["age"]++;
+x['age']++;
 
-x["age"] = x["age"] - 4;
+x['age'] = x['age'] - 4;
 
-y["age"] -= 3;
+y['age'] -= 3;
 
-x["age"] += 1;
+x['age'] += 1;
 
 //x['uncle']['age'] = 45;
 x.uncle.age = 45;
 
 var shelf = {};
 
-shelf["0"] = "Peter Pan Book";
-shelf["1"] = "Little Red Riding Hood Book";
-shelf["2"] = "The Little Prince Book";
-shelf["3"] = "The Lord of The Rings Book";
-shelf["4"] = "Harry Potter Book";
-shelf["5"] = "The World of Sophia Book";
+shelf['0'] = 'Peter Pan Book';
+shelf['1'] = 'Little Red Riding Hood Book';
+shelf['2'] = 'The Little Prince Book';
+shelf['3'] = 'The Lord of The Rings Book';
+shelf['4'] = 'Harry Potter Book';
+shelf['5'] = 'The World of Sophia Book';
 //shelf.6 = 'The Shinning Book';
 //shelf['6'] = 'The Shinning Book';
-shelf[6] = "The Shinning Book";
+shelf[6] = 'The Shinning Book';
 
 //console.log(a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z, shelf);
 
@@ -149,18 +149,18 @@ for (var index = 0; index < 7; index++) {
 */
 
 var car1 = {
-  brand: "Ford",
-  model: "Fiesta",
-  year: 2018,
-  registration: "ABC123",
-};
+    brand: 'Ford',
+    model: 'Fiesta',
+    year: 2018,
+    registration: 'ABC123'
+}
 
 var car2 = {
-  brand: "Ford",
-  model: "Fiesta",
-  year: 2018,
-  registration: "DEF456",
-};
+    brand: 'Ford',
+    model: 'Fiesta',
+    year: 2018,
+    registration: 'DEF456'
+}
 
 /*
 console.log(car1.brand === car2.brand)
@@ -170,48 +170,40 @@ console.log(car1.registration === car2.registration)
 console.log(car1 === car2)
 */
 
-var cars = [];
+var cars = []
 
 //cars['0'] = car1
 //cars[0] = car1
-cars[cars.length] = car1;
+cars[cars.length] = car1
 //cars[1] = car2
-cars[cars.length] = car2;
+cars[cars.length] = car2
 
 var car3 = {
-  brand: "Fiat",
-  model: "500",
-  year: 2024,
-  registration: "PEQ678",
-};
+    brand: 'Fiat',
+    model: '500',
+    year: 2024,
+    registration: 'PEQ678'
+}
 
 //cars[2] = car3
-cars[cars.length] = car3;
+cars[cars.length] = car3
 
 var car4 = {
-  brand: "Citroen",
-  model: "C4",
-  year: 2020,
-  registration: "NPI789",
-};
+    brand: 'Citroen',
+    model: 'C4',
+    year: 2020,
+    registration: 'NPI789'
+}
 
-cars[7] = car4;
+cars[7] = car4
 
 //console.log(cars)
 
-var printCar = function (car) {
-  var carInfo =
-    car.brand +
-    " " +
-    car.model +
-    " (" +
-    car.year +
-    ", " +
-    car.registration +
-    ")";
-
-  console.log(carInfo);
-};
+var printCar = function(car) {
+    var carInfo = car.brand + ' ' + car.model + ' (' + car.year + ', ' + car.registration + ')'
+    
+    console.log(carInfo)
+}
 
 /*
 printCar(car1)
@@ -220,49 +212,41 @@ printCar(car3)
 printCar(car4)
 */
 
-var cart = [];
+var cart = []
 
-cart[0] = { title: "Chocolate Milka", price: 2.85, quantity: 4 };
-cart[1] = { title: "Redbull", price: 1.6, quantity: 7 };
-cart[2] = { title: "Champiñones", price: 1.75, quantity: 2.8 };
-cart[3] = { title: "Boniato", price: 2, quantity: 3.1 };
+cart[0] = { title: 'Chocolate Milka', price: 2.85, quantity: 4 }
+cart[1] = { title: 'Redbull', price: 1.6, quantity: 7 }
+cart[2] = { title: 'Champiñones', price: 1.75, quantity: 2.8 }
+cart[3] = { title: 'Boniato', price: 2, quantity: 3.1 }
 
-var generateTicket = function (items) {
-  var text = "SuperCoolMarket\n";
-  text += "----------------------------------\n";
+var generateTicket = function(items) {
+    var text = 'SuperCoolMarket\n'
+    text += '----------------------------------\n'
 
-  var total = 0;
+    var total = 0
 
-  for (var i = 0; i < items.length; i++) {
-    var item = items[i];
+    for (var i = 0; i < items.length; i++) {
+        var item = items[i]
 
-    var subtotal = item.quantity * item.price;
+        var subtotal = item.quantity * item.price
+    
+        text += item.title + '\t' + item.quantity + ' * ' + item.price + '\t = ' + subtotal + '\n'
 
-    text +=
-      item.title +
-      "\t" +
-      item.quantity +
-      " * " +
-      item.price +
-      "\t = " +
-      subtotal +
-      "\n";
+        total += subtotal
+    }
 
-    total += subtotal;
-  }
+    text += '----------------------------------\n'
 
-  text += "----------------------------------\n";
+    text += 'Total \t\t\t ' + total + '\n\n'
 
-  text += "Total \t\t\t " + total + "\n\n";
+    text += 'Date \t\t\t ' + new Date().toLocaleDateString()
 
-  text += "Date \t\t\t " + new Date().toLocaleDateString();
+    return text
+}
 
-  return text;
-};
+var ticket = generateTicket(cart)
 
-var ticket = generateTicket(cart);
-
-console.log(ticket);
+console.log(ticket)
 /*
 SuperCoolMarket
 ----------------------------------
@@ -276,4 +260,4 @@ Total                          ...
 Date                    ../../....
 */
 
-console.log("The End");
+console.log('The End');
