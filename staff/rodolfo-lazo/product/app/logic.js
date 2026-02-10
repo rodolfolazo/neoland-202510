@@ -139,9 +139,6 @@ class Logic {
     if (data.getLoggedInUserId() === null)
       throw new Error("user not logged in");
 
-    const user = data.findUserById(data.getLoggedInUserId());
-    if (user === null) throw new Error("user not found");
-
     if (typeof name !== "string") throw new Error("invalid name type");
     if (name.length < 1) throw new Error("invalid name length");
 
@@ -158,16 +155,25 @@ class Logic {
 
     if (!URL_REGEX.test(image)) throw new Error("invalid image format");
 
-    const pet = new Pet(
-      "pet-" + data.petsCount,
-      data.getLoggedInUserId(),
-      name,
-      birthdate,
-      weight,
-      image,
-    );
+    return fetch("http://localhost:8080/pets", {
+      method: "POST",
+      headers: {
+        "Authorization": "Basic " + data.getLoggedInUserId(),
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, birthdate, weight, image }),
+    }).then((res) => {
+      debugger;
+      const { status } = res;
 
-    data.insertPet(pet);
+      if (status === 201) return;
+
+      return res.json().then((body) => {
+        debugger;
+        const { error, message } = body;
+        throw new Error(message);
+      });
+    });
   }
 
   getPets() {
