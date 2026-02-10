@@ -1,164 +1,211 @@
-import { data, User, Pet } from './data'
+import { data, User, Pet } from "./data";
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-const URL_REGEX = /(www|http:|https:)+[^\s]+[\w]/
-const ISODATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
-const PET_ID_REGEX = /^\pet-[0-9]+$/
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const URL_REGEX = /(www|http:|https:)+[^\s]+[\w]/;
+const ISODATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+const PET_ID_REGEX = /^\pet-[0-9]+$/;
 
 class Logic {
-    constructor() {
-    }
+  constructor() {}
 
-    registerUser(name, email, username, password, passwordRepeat) {
-        if (typeof name !== 'string') throw new Error('invalid name type')
-        if (name.length < 1) throw new Error('invalid name length')
+  registerUser(name, email, username, password, passwordRepeat) {
+    if (typeof name !== "string") throw new Error("invalid name type");
+    if (name.length < 1) throw new Error("invalid name length");
 
-        if (typeof email !== 'string') throw new Error('invalid email type')
-        if (email.length < 6) throw new Error('invalid email length')
-        if (!EMAIL_REGEX.test(email)) throw new Error('invalid email format')
+    if (typeof email !== "string") throw new Error("invalid email type");
+    if (email.length < 6) throw new Error("invalid email length");
+    if (!EMAIL_REGEX.test(email)) throw new Error("invalid email format");
 
-        if (typeof username !== 'string') throw new Error('invalid username type')
-        if (username.length < 3) throw new Error('invalid username length')
+    if (typeof username !== "string") throw new Error("invalid username type");
+    if (username.length < 3) throw new Error("invalid username length");
 
-        if (typeof password !== 'string') throw new Error('invalid password type')
-        if (password.length < 8) throw new Error('invalid password length')
+    if (typeof password !== "string") throw new Error("invalid password type");
+    if (password.length < 8) throw new Error("invalid password length");
 
-        if (typeof passwordRepeat !== 'string') throw new Error('invalid passwordRepeat type')
-        if (passwordRepeat.length < 8) throw new Error('invalid passwordRepeat length')
+    if (typeof passwordRepeat !== "string")
+      throw new Error("invalid passwordRepeat type");
+    if (passwordRepeat.length < 8)
+      throw new Error("invalid passwordRepeat length");
 
-        if (password !== passwordRepeat) throw new Error('passwords do not match')
+    if (password !== passwordRepeat) throw new Error("passwords do not match");
 
-        let user = data.findUserByEmail(email)
+    return fetch("http://localhost:8080/users", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ name, email, username, password, passwordRepeat }),
+    }).then((res) => {
+      debugger;
+      const { status } = res;
 
-        if (user !== null) throw new Error('user email already exists')
+      if (status === 201) return;
 
-        user = data.findUserByUsername(username)
+      return res.json().then((body) => {
+        debugger;
+        const { error, message } = body;
 
-        if (user !== null) throw new Error('user username already exists')
+        throw new Error(message);
+      });
+    });
+  }
 
-        user = new User('user-' + data.usersCount, name, email, username, password, 'regular')
+  loginUser(username, password) {
+    if (typeof username !== "string") throw new Error("invalid username type");
+    if (username.length < 3) throw new Error("invalid username length");
 
-        data.insertUser(user)
-    }
+    if (typeof password !== "string") throw new Error("invalid password type");
+    if (password.length < 8) throw new Error("invalid password length");
 
-    loginUser(username, password) {
-        if (typeof username !== 'string') throw new Error('invalid username type')
-        if (username.length < 3) throw new Error('invalid username length')
+    return fetch("http://localhost:8080/users/auth", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username, password }),
+    }).then((res) => {
+      debugger;
+      const { status } = res;
 
-        if (typeof password !== 'string') throw new Error('invalid password type')
-        if (password.length < 8) throw new Error('invalid password length')
+      if (status === 200)
+        return res.json().then((userId) => {
+          debugger;
+          data.setLoggedInUserId(userId);
+        });
 
-        const user = data.findUserByUsername(username)
+      return res.json().then((body) => {
+        debugger;
+        const { error, message } = body;
 
-        if (user === null) throw new Error('user not found')
+        throw new Error(message);
+      });
+    });
+  }
 
-        if (user.password !== password) throw new Error('incorrect password')
+  logoutUser() {
+    data.setLoggedInUserId(null);
+  }
 
-        data.setLoggedInUserId(user.id)
-    }
+  changeUserEmail(email, newEmail, newEmailRepeat) {
+    if (typeof email !== "string") throw new Error("invalid email type");
+    if (email.length < 6) throw new Error("invalid email length");
+    if (!EMAIL_REGEX.test(email)) throw new Error("invalid email format");
 
-    logoutUser() {
-        data.setLoggedInUserId(null)
-    }
+    if (typeof newEmail !== "string") throw new Error("invalid newEmail type");
+    if (newEmail.length < 6) throw new Error("invalid newEmail length");
+    if (!EMAIL_REGEX.test(newEmail)) throw new Error("invalid newEmail format");
 
-    changeUserEmail(email, newEmail, newEmailRepeat) {
-        if (typeof email !== 'string') throw new Error('invalid email type')
-        if (email.length < 6) throw new Error('invalid email length')
-        if (!EMAIL_REGEX.test(email)) throw new Error('invalid email format')
+    if (typeof newEmailRepeat !== "string")
+      throw new Error("invalid newEmailRepeat type");
+    if (newEmailRepeat.length < 6)
+      throw new Error("invalid newEmailRepeat length");
+    if (!EMAIL_REGEX.test(newEmailRepeat))
+      throw new Error("invalid newEmailRepeat format");
 
-        if (typeof newEmail !== 'string') throw new Error('invalid newEmail type')
-        if (newEmail.length < 6) throw new Error('invalid newEmail length')
-        if (!EMAIL_REGEX.test(newEmail)) throw new Error('invalid newEmail format')
+    if (newEmail !== newEmailRepeat)
+      throw new Error("newEmail and newEmailRepeat do not match");
 
-        if (typeof newEmailRepeat !== 'string') throw new Error('invalid newEmailRepeat type')
-        if (newEmailRepeat.length < 6) throw new Error('invalid newEmailRepeat length')
-        if (!EMAIL_REGEX.test(newEmailRepeat)) throw new Error('invalid newEmailRepeat format')
+    const user = data.findUserById(data.getLoggedInUserId());
 
-        if (newEmail !== newEmailRepeat) throw new Error('newEmail and newEmailRepeat do not match')
+    if (user.email !== email) throw new Error("email do not belong to user");
 
-        const user = data.findUserById(data.getLoggedInUserId())
+    user.email = newEmail;
+  }
 
-        if (user.email !== email) throw new Error('email do not belong to user')
+  changeUserPassword(password, newPassword, newPasswordRepeat) {
+    if (typeof password !== "string") throw new Error("invalid password type");
+    if (password.length < 8) throw new Error("invalid password length");
 
-        user.email = newEmail
-    }
+    if (typeof newPassword !== "string")
+      throw new Error("invalid newPassword type");
+    if (newPassword.length < 8) throw new Error("invalid newPassword length");
 
-    changeUserPassword(password, newPassword, newPasswordRepeat) {
-        if (typeof password !== 'string') throw new Error('invalid password type')
-        if (password.length < 8) throw new Error('invalid password length')
+    if (typeof newPasswordRepeat !== "string")
+      throw new Error("invalid newPasswordRepeat type");
+    if (newPasswordRepeat.length < 8)
+      throw new Error("invalid newPasswordRepeat length");
 
-        if (typeof newPassword !== 'string') throw new Error('invalid newPassword type')
-        if (newPassword.length < 8) throw new Error('invalid newPassword length')
+    if (newPassword !== newPasswordRepeat)
+      throw new Error("newPassword and newPasswordRepeat do not match");
 
-        if (typeof newPasswordRepeat !== 'string') throw new Error('invalid newPasswordRepeat type')
-        if (newPasswordRepeat.length < 8) throw new Error('invalid newPasswordRepeat length')
+    const user = data.findUserById(data.getLoggedInUserId());
 
-        if (newPassword !== newPasswordRepeat) throw new Error('newPassword and newPasswordRepeat do not match')
+    if (user.password !== password) throw new Error("incorrect password");
 
-        const user = data.findUserById(data.getLoggedInUserId())
+    user.password = newPassword;
+  }
 
-        if (user.password !== password) throw new Error('incorrect password')
+  addPet(name, birthdate, weight, image) {
+    if (data.getLoggedInUserId() === null)
+      throw new Error("user not logged in");
 
-        user.password = newPassword
-    }
+    const user = data.findUserById(data.getLoggedInUserId());
+    if (user === null) throw new Error("user not found");
 
-    addPet(name, birthdate, weight, image) {
-        if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
+    if (typeof name !== "string") throw new Error("invalid name type");
+    if (name.length < 1) throw new Error("invalid name length");
 
-        const user = data.findUserById(data.getLoggedInUserId())
-        if (user === null) throw new Error('user not found')
+    if (typeof birthdate !== "string")
+      throw new Error("invalid birthdate type");
 
-        if (typeof name !== 'string') throw new Error('invalid name type')
-        if (name.length < 1) throw new Error('invalid name length')
+    if (!ISODATE_REGEX.test(birthdate))
+      throw new Error("invalid birthdate format");
 
-        if (typeof birthdate !== 'string') throw new Error('invalid birthdate type')
+    if (typeof weight !== "number" || isNaN(weight))
+      throw new Error("invalid weight type");
 
-        if (!ISODATE_REGEX.test(birthdate)) throw new Error('invalid birthdate format')
+    if (typeof image !== "string") throw new Error("invalid image type");
 
-        if (typeof weight !== 'number' || isNaN(weight)) throw new Error('invalid weight type')
+    if (!URL_REGEX.test(image)) throw new Error("invalid image format");
 
-        if (typeof image !== 'string') throw new Error('invalid image type')
+    const pet = new Pet(
+      "pet-" + data.petsCount,
+      data.getLoggedInUserId(),
+      name,
+      birthdate,
+      weight,
+      image,
+    );
 
-        if (!URL_REGEX.test(image)) throw new Error('invalid image format')
+    data.insertPet(pet);
+  }
 
-        const pet = new Pet('pet-' + data.petsCount, data.getLoggedInUserId(), name, birthdate, weight, image)
+  getPets() {
+    if (data.getLoggedInUserId() === null)
+      throw new Error("user not logged in");
 
-        data.insertPet(pet)
-    }
+    const user = data.findUserById(data.getLoggedInUserId());
+    if (user === null) throw new Error("user not found");
 
-    getPets() {
-        if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
+    const pets = data.findPetsByUserId(data.getLoggedInUserId());
 
-        const user = data.findUserById(data.getLoggedInUserId())
-        if (user === null) throw new Error('user not found')
+    return pets;
+  }
 
-        const pets = data.findPetsByUserId(data.getLoggedInUserId())
+  deletePet(petId) {
+    if (data.getLoggedInUserId() === null)
+      throw new Error("user not logged in");
 
-        return pets
-    }
+    const user = data.findUserById(data.getLoggedInUserId());
+    if (user === null) throw new Error("user not found");
 
-    deletePet(petId) {
-        if (data.getLoggedInUserId() === null) throw new Error('user not logged in')
+    if (typeof petId !== "string") throw new Error("invalid pet-id type");
 
-        const user = data.findUserById(data.getLoggedInUserId())
-        if (user === null) throw new Error('user not found')
+    if (!PET_ID_REGEX.test(petId)) throw new Error("invalid pet-id format");
 
-        if (typeof petId !== 'string') throw new Error('invalid pet-id type')
+    const pet = data.findPetById(petId);
 
-        if (!PET_ID_REGEX.test(petId)) throw new Error('invalid pet-id format')
+    if (pet === null) throw new Error("pet not found");
 
-        const pet = data.findPetById(petId)
+    if (pet.userId !== data.getLoggedInUserId())
+      throw new Error("user not owner of pet");
 
-        if (pet === null) throw new Error('pet not found')
+    const petIndex = data.pets.indexOf(pet);
 
-        if (pet.userId !== data.getLoggedInUserId()) throw new Error('user not owner of pet')
-
-        const petIndex = data.pets.indexOf(pet)
-
-        data.pets.splice(petIndex, 1)
-    }
+    data.pets.splice(petIndex, 1);
+  }
 }
 
 // instance
 
-export const logic = new Logic()
+export const logic = new Logic();

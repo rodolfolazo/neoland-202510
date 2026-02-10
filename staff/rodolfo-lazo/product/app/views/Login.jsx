@@ -1,62 +1,71 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { Form } from './components/commons/Form'
-import { Field } from './components/commons/Field'
-import { PasswordField } from './components/commons/PasswordField'
-import { Button } from './components/commons/Button'
-import { Anchor } from './components/commons/Anchor'
+import { Form } from "./components/commons/Form";
+import { Field } from "./components/commons/Field";
+import { PasswordField } from "./components/commons/PasswordField";
+import { Button } from "./components/commons/Button";
+import { Anchor } from "./components/commons/Anchor";
 
-import { logic } from '../logic'
+import { logic } from "../logic";
 
 export function Login({ onGoToHome, onGoToRegister }) {
-    console.log('Login -> call')
+  console.log("Login -> call");
 
-    const [message, setMessage] = useState('')
+  const [message, setMessage] = useState("");
 
-    const handleLoginSubmit = event => {
-        event.preventDefault()
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
 
-        const form = event.target
+    const form = event.target;
 
-        const username = form.username.value
-        const password = form.password.value
+    const username = form.username.value;
+    const password = form.password.value;
 
-        try {
-            logic.loginUser(username, password)
-
-            form.reset()
-
-            setMessage('')
-
-            onGoToHome()
-        } catch (error) {
-            setMessage(error.message)
-        }
+    try {
+      logic
+        .loginUser(username, password)
+        .then(() => {
+          form.reset();
+          setMessage("");
+          onGoToHome();
+        })
+        .catch((error) => {
+          setMessage(error.message);
+        });
+    } catch (error) {
+      setMessage(error.message);
     }
+  };
 
-    const handleRegisterClick = event => {
-        event.preventDefault()
+  const handleRegisterClick = (event) => {
+    event.preventDefault();
 
-        onGoToRegister()
-    }
+    onGoToRegister();
+  };
 
-    console.log('Login -> render')
+  console.log("Login -> render");
 
-    return <div className="p-4">
-        <h1 className="font-bold text-xl">MyPet</h1>
+  return (
+    <div className="p-4">
+      <h1 className="font-bold text-xl">MyPet</h1>
 
-        <h2 className="font-bold">Login</h2>
+      <h2 className="font-bold">Login</h2>
 
-        <Form onSubmit={handleLoginSubmit}>
-            <Field alias="username" type="text">Username</Field>
+      <Form onSubmit={handleLoginSubmit}>
+        <Field alias="username" type="text">
+          Username
+        </Field>
 
-            <PasswordField alias="password">Password</PasswordField>
+        <PasswordField alias="password">Password</PasswordField>
 
-            <Button className="self-center" type="submit">Login</Button>
-        </Form>
+        <Button className="self-center" type="submit">
+          Login
+        </Button>
+      </Form>
 
-        <Anchor onClick={handleRegisterClick}>Register</Anchor>
+      <Anchor onClick={handleRegisterClick}>Register</Anchor>
 
-        <p>{message}</p>
+      <p>{message}</p>
     </div>
+  );
 }

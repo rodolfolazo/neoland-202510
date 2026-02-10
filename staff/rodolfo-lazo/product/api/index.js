@@ -1,14 +1,14 @@
-//import express from 'express'
-//import cors from 'cors'
 const express = require("express");
+const cors = require("cors");
+
 const { logic } = require("./logic");
-//const cors = require("cors");
 
 const api = express();
-//api.use(cors());
 
 const jsonBodyParser = express.json();
 //api.use(express.json())
+
+api.use(cors());
 
 const people = [
   { id: "person-0", name: "Carlo", age: 34 },

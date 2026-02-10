@@ -1,71 +1,84 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { Form } from './components/commons/Form'
-import { Field } from './components/commons/Field'
-import { PasswordField } from './components/commons/PasswordField'
-import { Button } from './components/commons/Button'
-import { Anchor } from './components/commons/Anchor'
+import { Form } from "./components/commons/Form";
+import { Field } from "./components/commons/Field";
+import { PasswordField } from "./components/commons/PasswordField";
+import { Button } from "./components/commons/Button";
+import { Anchor } from "./components/commons/Anchor";
 
-import { logic } from '../logic'
+import { logic } from "../logic";
 
 export function Register({ onGoToLogin }) {
-    console.log('Register -> call')
+  console.log("Register -> call");
 
-    const [message, setMessage] = useState('')
+  const [message, setMessage] = useState("");
 
-    const handleRegisterSubmit = event => {
-        event.preventDefault()
+  const handleRegisterSubmit = (event) => {
+    event.preventDefault();
 
-        const form = event.target
+    const form = event.target;
 
-        const name = form.name.value
-        const email = form.email.value
-        const username = form.username.value
-        const password = form.password.value
-        const passwordRepeat = form.passwordRepeat.value
+    const name = form.name.value;
+    const email = form.email.value;
+    const username = form.username.value;
+    const password = form.password.value;
+    const passwordRepeat = form.passwordRepeat.value;
 
-        try {
-            logic.registerUser(name, email, username, password, passwordRepeat)
+    try {
+      logic
+        .registerUser(name, email, username, password, passwordRepeat)
+        .then(() => {
+          form.reset();
 
-            form.reset()
+          setMessage("");
 
-            setMessage('')
-
-            onGoToLogin()
-        } catch (error) {
-            setMessage(error.message)
-        }
+          onGoToLogin();
+        })
+        .catch((error) => setMessage(error.message));
+    } catch (error) {
+      setMessage(error.message);
     }
+  };
 
-    const handleLoginClick = event => {
-        event.preventDefault()
+  const handleLoginClick = (event) => {
+    event.preventDefault();
 
-        onGoToLogin()
-    }
+    onGoToLogin();
+  };
 
-    console.log('Register -> render')
+  console.log("Register -> render");
 
-    return <div className="p-4">
-            <h1 className="font-bold text-xl">MyPet</h1>
+  return (
+    <div className="p-4">
+      <h1 className="font-bold text-xl">MyPet</h1>
 
-            <h2 className="font-bold">Register</h2>
+      <h2 className="font-bold">Register</h2>
 
-            <Form onSubmit={handleRegisterSubmit}>
-                <Field alias="name" type="text">Name</Field>
+      <Form onSubmit={handleRegisterSubmit}>
+        <Field alias="name" type="text">
+          Name
+        </Field>
 
-                <Field alias="email" type="email">E-mail</Field>
+        <Field alias="email" type="email">
+          E-mail
+        </Field>
 
-                <Field alias="username" type="text">Username</Field>
+        <Field alias="username" type="text">
+          Username
+        </Field>
 
-                <PasswordField alias="password">Password</PasswordField>
+        <PasswordField alias="password">Password</PasswordField>
 
-                <PasswordField alias="passwordRepeat">Repeat Password</PasswordField>
+        <PasswordField alias="passwordRepeat">Repeat Password</PasswordField>
 
-                <Button className="self-center" type="submit">Register</Button>
-            </Form>
+        <Button className="self-center" type="submit">
+          Register
+        </Button>
+      </Form>
 
-            <Anchor onClick={handleLoginClick}>Login</Anchor>
+      <Anchor onClick={handleLoginClick}>Login</Anchor>
 
-            <p>{message}</p>
-        </div>
+      <p>{message}</p>
+    </div>
+  );
 }
