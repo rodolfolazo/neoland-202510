@@ -15,9 +15,12 @@ export function PetList() {
     console.log("PetList -> useEffect");
 
     try {
-      const pets = logic.getPets();
-
-      setPets(pets);
+      logic
+        .getPets()
+        .then((pets) => {
+          setPets(pets);
+        })
+        .catch((error) => setMessage(error.message));
     } catch (error) {
       setMessage(error.message);
     }
@@ -43,12 +46,18 @@ export function PetList() {
     event.preventDefault();
 
     try {
-      logic.deletePet(petId);
-
-      const pets = logic.getPets();
-
-      setPetId(null);
-      setPets(pets);
+      logic
+        .removePet(petId)
+        .then(() => {
+          return logic.getPets();
+        })
+        .then((pets) => {
+          setPetId(null);
+          setPets(pets);
+        })
+        .catch((error) => {
+          setFeedback({ error: error.message, level: "error" });
+        });
     } catch (error) {
       setMessage(error.message);
     }

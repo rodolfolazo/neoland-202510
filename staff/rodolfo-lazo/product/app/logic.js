@@ -158,7 +158,7 @@ class Logic {
     return fetch("http://localhost:8080/pets", {
       method: "POST",
       headers: {
-        "Authorization": "Basic " + data.getLoggedInUserId(),
+        Authorization: "Basic " + data.getLoggedInUserId(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ name, birthdate, weight, image }),
@@ -171,6 +171,7 @@ class Logic {
       return res.json().then((body) => {
         debugger;
         const { error, message } = body;
+
         throw new Error(message);
       });
     });
@@ -180,35 +181,56 @@ class Logic {
     if (data.getLoggedInUserId() === null)
       throw new Error("user not logged in");
 
-    const user = data.findUserById(data.getLoggedInUserId());
-    if (user === null) throw new Error("user not found");
+    return fetch("http://localhost:8080/pets", {
+      method: "GET",
+      headers: {
+        Authorization: "Basic " + data.getLoggedInUserId(),
+      },
+    }).then((res) => {
+      debugger;
+      const { status } = res;
 
-    const pets = data.findPetsByUserId(data.getLoggedInUserId());
+      if (status === 200)
+        return res.json().then((pets) => {
+          debugger;
+          return pets;
+        });
 
-    return pets;
+      return res.json().then((body) => {
+        debugger;
+        const { error, message } = body;
+
+        throw new Error(message);
+      });
+    });
   }
 
-  deletePet(petId) {
+  removePet(petId) {
     if (data.getLoggedInUserId() === null)
       throw new Error("user not logged in");
-
-    const user = data.findUserById(data.getLoggedInUserId());
-    if (user === null) throw new Error("user not found");
 
     if (typeof petId !== "string") throw new Error("invalid pet-id type");
 
     if (!PET_ID_REGEX.test(petId)) throw new Error("invalid pet-id format");
 
-    const pet = data.findPetById(petId);
+    return fetch("http://localhost:8080/pets/" + petId, {
+      method: "DELETE",
+      headers: {
+        Authorization: "Basic " + data.getLoggedInUserId(),
+      },
+    }).then((res) => {
+      debugger;
+      const { status } = res;
 
-    if (pet === null) throw new Error("pet not found");
+      if (status === 204) return;
 
-    if (pet.userId !== data.getLoggedInUserId())
-      throw new Error("user not owner of pet");
+      return res.json().then((body) => {
+        debugger;
+        const { error, message } = body;
 
-    const petIndex = data.pets.indexOf(pet);
-
-    data.pets.splice(petIndex, 1);
+        throw new Error(message);
+      });
+    });
   }
 }
 

@@ -73,14 +73,6 @@ class Data {
         return null
     }
 
-    setLoggedInUserId(userId) {
-        this.loggedInUserId = userId
-    }
-
-    getLoggedInUserId() {
-        return this.loggedInUserId
-    }
-
     insertPet(pet) {
         this.pets.push(pet)
         this.petsCount++

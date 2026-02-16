@@ -13,12 +13,12 @@
 
         if (status === 201)
             return
-
+        
         return res.json()
             .then(body => {
                 debugger
                 const { error, message } = body
-
+                
                 console.error(error, message)
             })
     })
@@ -39,16 +39,16 @@
 
         if (status === 200)
             return res.json()
-                .then(userId => {
+                .then(userId => { 
                     debugger
                     console.log(userId)
                 })
-
+        
         return res.json()
             .then(body => {
                 debugger
                 const { error, message } = body
-
+                
                 console.error(error, message)
             })
     })
@@ -70,12 +70,12 @@
 
         if (status === 204)
             return
-
+    
         return res.json()
             .then(body => {
                 debugger
                 const { error, message } = body
-
+                
                 console.error(error, message)
             })
     })
@@ -98,12 +98,12 @@
 
         if (status === 204)
             return
-
+    
         return res.json()
             .then(body => {
                 debugger
                 const { error, message } = body
-
+                
                 console.error(error, message)
             })
     })
@@ -125,12 +125,12 @@
 
         if (status === 201)
             return
-
+        
         return res.json()
             .then(body => {
                 debugger
                 const { error, message } = body
-
+                
                 console.error(error, message)
             })
     })
@@ -154,12 +154,12 @@
                     debugger
                     console.log(pets)
                 })
-
+        
         return res.json()
             .then(body => {
                 debugger
                 const { error, message } = body
-
+                
                 console.error(error, message)
             })
     })
@@ -179,12 +179,12 @@
 
         if (status === 204)
             return
-
+        
         return res.json()
             .then(body => {
                 debugger
                 const { error, message } = body
-
+                
                 console.error(error, message)
             })
     })
