@@ -1,96 +1,65 @@
-const { useState } = React;
+const { useState } = React
 
 function Login({ onGoToHome, onGoToRegister }) {
-  console.log("Login -> call");
+    console.log('Login -> call')
 
-  const [message, setMessage] = useState("");
-  const [passwordType, setPasswordType] = useState("password");
+    const [message, setMessage] = useState('')
+    const [passwordType, setPasswordType] = useState('password')
 
-  const handleLoginSubmit = (event) => {
-    event.preventDefault();
+    const handleLoginSubmit = event => {
+        event.preventDefault()
 
-    const form = event.target;
+        const form = event.target
 
-    const username = form.username.value;
-    const password = form.password.value;
+        const username = form.username.value
+        const password = form.password.value
 
-    try {
-      logic.loginUser(username, password);
+        try {
+            logic.loginUser(username, password)
 
-      form.reset();
+            form.reset()
 
-      setMessage("");
-      setPasswordType("password");
+            setMessage('')
+            setPasswordType('password')
 
-      onGoToHome();
-    } catch (error) {
-      setMessage(error.message);
+            onGoToHome()
+        } catch (error) {
+            setMessage(error.message)
+        }
     }
-  };
 
-  const handleTogglePasswordClick = (event) => {
-    event.preventDefault();
+    const handleTogglePasswordClick = event => {
+        event.preventDefault()
 
-    setPasswordType(passwordType === "password" ? "text" : "password");
-  };
+        setPasswordType(passwordType === 'password' ? 'text' : 'password')
+    }
 
-  const handleRegisterClick = (event) => {
-    event.preventDefault();
+    const handleRegisterClick = event => {
+        event.preventDefault()
 
-    onGoToRegister();
-  };
+        onGoToRegister()
+    }
 
-  console.log("Login -> render");
+    console.log('Login -> render')
 
-  return (
-    <div className="p-4">
-      <h1 className="font-bold text-xl">MyPet</h1>
+    return <div className="p-4">
+        <h1 className="font-bold text-xl">MyPet</h1>
 
-      <h2 className="font-bold">Login</h2>
+        <h2 className="font-bold">Login</h2>
 
-      <form className="flex flex-col" onSubmit={handleLoginSubmit}>
-        <label htmlFor="username">Username</label>
-        <input
-          id="username"
-          name="username"
-          autoComplete="username"
-          type="text"
-          className="border px-1"
-        />
+        <form className="flex flex-col" onSubmit={handleLoginSubmit}>
+            <label htmlFor="username">Username</label>
+            <input id="username" name="username" autoComplete="username" type="text" className="border px-1" />
 
-        <label htmlFor="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          autoComplete="off"
-          type={passwordType}
-          className={
-            passwordType === "password"
-              ? "border px-1"
-              : "border px-1 bg-[gold]"
-          }
-        />
-        <button
-          className="self-end"
-          type="button"
-          onClick={handleTogglePasswordClick}
-        >
-          {passwordType === "password" ? "Show" : "Hide"}
-        </button>
+            <label htmlFor="password">Password</label>
+            <input id="password" name="password" autoComplete="off" type={passwordType} className={passwordType === 'password' ? 'border px-1' : 'border px-1 bg-[gold]'} />
+            <button className="self-end" type="button" onClick={handleTogglePasswordClick}>{passwordType === 'password' ? 'Show' : 'Hide'}</button>
 
-        <button className="bg-black text-white px-1 self-center" type="submit">
-          Login
-        </button>
-      </form>
+            <button className="bg-black text-white px-1 self-center" type="submit">Login</button>
+        </form>
 
-      <a
-        className="cursor-pointer underline font-bold"
-        onClick={handleRegisterClick}
-      >
-        Register
-      </a>
+        <a className="cursor-pointer underline font-bold" onClick={handleRegisterClick}>Register</a>
 
-      <p>{message}</p>
+        <p>{message}</p>
     </div>
-  );
 }

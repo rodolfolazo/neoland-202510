@@ -95,12 +95,6 @@ function App() {
         setPasswordRepeatType(passwordRepeatType === 'password' ? 'text' : 'password')
     }
 
-    const handleLogout = event =>{
-        event.preventDefault()
-        setView('landing')
-        logic.logoutUser()
-    }
-
     console.log('App -> render')
 
     // landing
@@ -179,7 +173,7 @@ function App() {
 
             <div className="flex justify-between">
                 <button className="bg-black text-white px-1" type="button">+ Pet</button>
-                <button className="bg-black text-white px-1" type="button" onClick={handleLogout}>Logout</button>
+                <button className="bg-black text-white px-1" type="button">Logout</button>
             </div>
 
             <ul className="flex flex-col gap-2 mt-2">

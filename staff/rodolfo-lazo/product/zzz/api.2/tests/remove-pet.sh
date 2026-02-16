@@ -1,0 +1,1 @@
+curl -X DELETE -H 'Authorization: Basic user-0' http://localhost:8080/pets/pet-2 -v
