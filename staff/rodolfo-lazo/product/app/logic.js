@@ -105,14 +105,29 @@ class Logic {
     if (newEmail !== newEmailRepeat)
       throw new Error("newEmail and newEmailRepeat do not match");
 
-    const user = data.findUserById(data.getLoggedInUserId());
+    return fetch("http://localhost:8080/users/email", {
+      method: "PATCH",
+      headers: {
+        Authorization: `Basic ${data.getLoggedInUserId()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email, newEmail, newEmailRepeat }),
+    }).then((res) => {
+      debugger;
+      const { status } = res;
+      if (status === 204) return;
 
-    if (user.email !== email) throw new Error("email do not belong to user");
-
-    user.email = newEmail;
+      return res.json().then((data) => {
+        const { error, message } = data;
+        throw new Error(message);
+      });
+    });
   }
 
   changeUserPassword(password, newPassword, newPasswordRepeat) {
+    if (data.getLoggedInUserId() === null)
+      throw new Error("user not logged in");
+
     if (typeof password !== "string") throw new Error("invalid password type");
     if (password.length < 8) throw new Error("invalid password length");
 
@@ -128,11 +143,24 @@ class Logic {
     if (newPassword !== newPasswordRepeat)
       throw new Error("newPassword and newPasswordRepeat do not match");
 
-    const user = data.findUserById(data.getLoggedInUserId());
+    return fetch("http://localhost:8080/users/password", {
+      method: "PATCH",
+      headers: {
+        Authorization: `Basic ${data.getLoggedInUserId()}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ password, newPassword, newPasswordRepeat }),
+    }).then((res) => {
+      debugger;
+      const { status } = res;
+      if (status === 204) return;
 
-    if (user.password !== password) throw new Error("incorrect password");
-
-    user.password = newPassword;
+      return res.json().then((data) => {
+        debugger;
+        const { error, message } = data;
+        throw new Error(message);
+      });
+    });
   }
 
   addPet(name, birthdate, weight, image) {
@@ -187,19 +215,15 @@ class Logic {
         Authorization: "Basic " + data.getLoggedInUserId(),
       },
     }).then((res) => {
-      debugger;
       const { status } = res;
 
       if (status === 200)
         return res.json().then((pets) => {
-          debugger;
           return pets;
         });
 
       return res.json().then((body) => {
-        debugger;
         const { error, message } = body;
-
         throw new Error(message);
       });
     });
