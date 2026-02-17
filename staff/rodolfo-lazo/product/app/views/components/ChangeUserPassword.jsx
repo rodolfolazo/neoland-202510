@@ -3,13 +3,14 @@ import { useState } from "react";
 import { Form } from "./commons/Form";
 import { PasswordField } from "./commons/PasswordField";
 import { Button } from "./commons/Button";
+import { Feedback } from "./commons/Feedback";
 
 import { logic } from "../../logic";
 
 export function ChangeUserPassword() {
   console.log("ChangeUserPassword -> call");
 
-  const [message, setMessage] = useState("");
+  const [feedback, setFeedback] = useState(null); // { message, level }
 
   const handleChangePasswordSubmit = (event) => {
     event.preventDefault();
@@ -24,15 +25,17 @@ export function ChangeUserPassword() {
       logic
         .changeUserPassword(password, newPassword, newPasswordRepeat)
         .then(() => {
-          debugger;
           form.reset();
+          setFeedback({
+            message: "user password successfully updated",
+            level: "success",
+          });
         })
-        .catch((error) => {
-          debugger;
-          setMessage(error.message);
-        });
+        .catch((error) =>
+          setFeedback({ message: error.message, level: "error" }),
+        );
     } catch (error) {
-      setMessage(error.message);
+      setFeedback({ message: error.message, level: "error" });
     }
   };
 
@@ -58,7 +61,7 @@ export function ChangeUserPassword() {
         </Button>
       </Form>
 
-      <p>{message}</p>
+      {feedback && <Feedback feedback={feedback} />}
     </div>
   );
 }

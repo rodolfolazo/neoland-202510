@@ -1,69 +1,85 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { Form } from './components/commons/Form'
-import { Field } from './components/commons/Field'
-import { Button } from './components/commons/Button'
-import { Anchor } from './components/commons/Anchor'
+import { Form } from "./components/commons/Form";
+import { Field } from "./components/commons/Field";
+import { Button } from "./components/commons/Button";
+import { Anchor } from "./components/commons/Anchor";
+import { Feedback } from "./components/commons/Feedback";
 
-import { logic } from '../logic'
+import { logic } from "../logic";
 
 export function AddPet({ onGoToHome }) {
-    console.log('AddPet -> call')
+  console.log("AddPet -> call");
 
-    const [message, setMessage] = useState('')
+  const [feedback, setFeedback] = useState(null); // { message, level }
 
-    const handleBackClick = event => {
-        event.preventDefault()
+  const handleBackClick = (event) => {
+    event.preventDefault();
 
-        onGoToHome()
+    onGoToHome();
+  };
+
+  const handleAddPetSubmit = (event) => {
+    event.preventDefault();
+
+    const form = event.target;
+
+    const name = form.name.value;
+    const birthdate = form.birthdate.value;
+    const weight = Number(form.weight.value);
+    const image = form.image.value;
+
+    try {
+      logic
+        .addPet(name, birthdate, weight, image)
+        .then(() => {
+          form.reset();
+
+          onGoToHome();
+        })
+        .catch((error) =>
+          setFeedback({ message: error.message, level: "error" }),
+        );
+    } catch (error) {
+      setFeedback({ message: error.message, level: "error" });
     }
+  };
 
-    const handleAddPetSubmit = event => {
-        event.preventDefault()
+  console.log("AddPet -> render");
 
-        const form = event.target
+  return (
+    <div className="p-4">
+      <h1 className="font-bold text-xl">MyPet</h1>
 
-        const name = form.name.value
-        const birthdate = form.birthdate.value
-        const weight = Number(form.weight.value)
-        const image = form.image.value
+      <div className="flex justify-between">
+        <h2 className="font-bold">Add Pet</h2>
 
-        try {
-            logic.addPet(name, birthdate, weight, image)
-                .then(() => {
-                    form.reset()
+        <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
+      </div>
 
-                    onGoToHome()
-                })
-                .catch(error => setMessage(error.message))
-        } catch (error) {
-            setMessage(error.message)
-        }
-    }
+      <Form onSubmit={handleAddPetSubmit}>
+        <Field alias="name" type="text">
+          Name
+        </Field>
 
-    console.log('AddPet -> render')
+        <Field alias="birthdate" type="date">
+          Birthdate
+        </Field>
 
-    return <div className="p-4">
-        <h1 className="font-bold text-xl">MyPet</h1>
+        <Field alias="weight" type="number">
+          Weight (kg)
+        </Field>
 
-        <div className="flex justify-between">
-            <h2 className="font-bold">Add Pet</h2>
+        <Field alias="image" type="url">
+          Image
+        </Field>
 
-            <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
-        </div>
+        <Button className="self-center mt-4" type="submit">
+          Add Pet
+        </Button>
+      </Form>
 
-        <Form onSubmit={handleAddPetSubmit}>
-            <Field alias="name" type="text">Name</Field>
-
-            <Field alias="birthdate" type="date">Birthdate</Field>
-
-            <Field alias="weight" type="number">Weight (kg)</Field>
-
-            <Field alias="image" type="url">Image</Field>
-
-            <Button className="self-center mt-4" type="submit">Add Pet</Button>
-        </Form>
-
-        <p>{message}</p>
+      {feedback && <Feedback feedback={feedback} />}
     </div>
+  );
 }

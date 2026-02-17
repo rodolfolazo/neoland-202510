@@ -1,4 +1,4 @@
-import { data, User, Pet } from "./data";
+import { data } from "./data";
 
 const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 const URL_REGEX = /(www|http:|https:)+[^\s]+[\w]/;
@@ -36,13 +36,11 @@ class Logic {
       },
       body: JSON.stringify({ name, email, username, password, passwordRepeat }),
     }).then((res) => {
-      debugger;
       const { status } = res;
 
       if (status === 201) return;
 
       return res.json().then((body) => {
-        debugger;
         const { error, message } = body;
 
         throw new Error(message);
@@ -64,17 +62,14 @@ class Logic {
       },
       body: JSON.stringify({ username, password }),
     }).then((res) => {
-      debugger;
       const { status } = res;
 
       if (status === 200)
         return res.json().then((userId) => {
-          debugger;
           data.setLoggedInUserId(userId);
         });
 
       return res.json().then((body) => {
-        debugger;
         const { error, message } = body;
 
         throw new Error(message);
@@ -87,6 +82,9 @@ class Logic {
   }
 
   changeUserEmail(email, newEmail, newEmailRepeat) {
+    if (data.getLoggedInUserId() === null)
+      throw new Error("user not logged in");
+
     if (typeof email !== "string") throw new Error("invalid email type");
     if (email.length < 6) throw new Error("invalid email length");
     if (!EMAIL_REGEX.test(email)) throw new Error("invalid email format");
@@ -108,17 +106,18 @@ class Logic {
     return fetch("http://localhost:8080/users/email", {
       method: "PATCH",
       headers: {
-        Authorization: `Basic ${data.getLoggedInUserId()}`,
+        Authorization: "Basic " + data.getLoggedInUserId(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ email, newEmail, newEmailRepeat }),
     }).then((res) => {
-      debugger;
       const { status } = res;
+
       if (status === 204) return;
 
-      return res.json().then((data) => {
-        const { error, message } = data;
+      return res.json().then((body) => {
+        const { error, message } = body;
+
         throw new Error(message);
       });
     });
@@ -146,18 +145,18 @@ class Logic {
     return fetch("http://localhost:8080/users/password", {
       method: "PATCH",
       headers: {
-        Authorization: `Basic ${data.getLoggedInUserId()}`,
+        Authorization: "Basic " + data.getLoggedInUserId(),
         "Content-Type": "application/json",
       },
       body: JSON.stringify({ password, newPassword, newPasswordRepeat }),
     }).then((res) => {
-      debugger;
       const { status } = res;
+
       if (status === 204) return;
 
-      return res.json().then((data) => {
-        debugger;
-        const { error, message } = data;
+      return res.json().then((body) => {
+        const { error, message } = body;
+
         throw new Error(message);
       });
     });
@@ -191,13 +190,11 @@ class Logic {
       },
       body: JSON.stringify({ name, birthdate, weight, image }),
     }).then((res) => {
-      debugger;
       const { status } = res;
 
       if (status === 201) return;
 
       return res.json().then((body) => {
-        debugger;
         const { error, message } = body;
 
         throw new Error(message);
@@ -224,6 +221,7 @@ class Logic {
 
       return res.json().then((body) => {
         const { error, message } = body;
+
         throw new Error(message);
       });
     });
@@ -243,13 +241,37 @@ class Logic {
         Authorization: "Basic " + data.getLoggedInUserId(),
       },
     }).then((res) => {
-      debugger;
       const { status } = res;
 
       if (status === 204) return;
 
       return res.json().then((body) => {
-        debugger;
+        const { error, message } = body;
+
+        throw new Error(message);
+      });
+    });
+  }
+
+  getPet(petId) {
+    if (data.getLoggedInUserId() === null)
+      throw new Error("user not logged in");
+
+    if (typeof petId !== "string") throw new Error("invalid pet-id type");
+
+    if (!PET_ID_REGEX.test(petId)) throw new Error("invalid pet-id format");
+
+    return fetch("http://localhost:8080/pets/" + petId, {
+      // method: 'GET',
+      headers: {
+        Authorization: "Basic " + data.getLoggedInUserId(),
+      },
+    }).then((res) => {
+      const { status } = res;
+
+      if (status === 200) return res.json().then((pet) => pet);
+
+      return res.json().then((body) => {
         const { error, message } = body;
 
         throw new Error(message);

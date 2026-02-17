@@ -5,10 +5,10 @@ import { Feedback } from "./commons/Feedback";
 
 import { logic } from "../../logic";
 
-export function PetList() {
+export function PetList({ onGoToPetDetail }) {
   console.log("PetList -> call");
 
-  const [feedback, setFeedback] = useState(null);
+  const [feedback, setFeedback] = useState(null); // { message, level }
   const [pets, setPets] = useState([]);
   const [petId, setPetId] = useState(null);
 
@@ -29,23 +29,15 @@ export function PetList() {
     }
   }, []);
 
-  const handleDeletePetClick = (event) => {
-    event.preventDefault();
+  const handleRemovePetClick = (petId) => setPetId(petId);
 
-    const button = event.target;
-
-    const petId = button.id;
-
-    setPetId(petId);
-  };
-
-  const handleCancelDeletePetClick = (event) => {
+  const handleCancelRemovePetClick = (event) => {
     event.preventDefault();
 
     setPetId(null);
   };
 
-  const handleConfirmDeletePetClick = (event) => {
+  const handleConfirmRemovePetClick = (event) => {
     event.preventDefault();
 
     try {
@@ -66,13 +58,18 @@ export function PetList() {
     }
   };
 
+  const handleGoToPetDetailClick = (petId) => onGoToPetDetail(petId);
+
   console.log("PetList -> render");
 
   return (
     <div>
       <ul className="flex flex-col gap-2 mt-2">
         {pets.map((pet) => (
-          <li className="flex items-center border-2 border-black p-2 justify-between">
+          <li
+            className="flex items-center border-2 border-black p-2 justify-between"
+            onClick={() => handleGoToPetDetailClick(pet.id)}
+          >
             <div className="flex items-center gap-4">
               <img
                 src={pet.image}
@@ -83,9 +80,12 @@ export function PetList() {
             </div>
 
             <Button
-              id={pet.id}
               className="justify-self-end"
-              onClick={handleDeletePetClick}
+              onClick={(event) => {
+                event.stopPropagation();
+
+                handleRemovePetClick(pet.id);
+              }}
             >
               🗑️
             </Button>
@@ -99,8 +99,8 @@ export function PetList() {
             <p className="text-center">Delete Pet?</p>
 
             <div className="flex justify-center gap-2">
-              <Button onClick={handleCancelDeletePetClick}>❌</Button>
-              <Button onClick={handleConfirmDeletePetClick}>✅</Button>
+              <Button onClick={handleCancelRemovePetClick}>❌</Button>
+              <Button onClick={handleConfirmRemovePetClick}>✅</Button>
             </div>
           </div>
         </div>

@@ -1,59 +1,75 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { Anchor } from './components/commons/Anchor'
-import { Button } from './components/commons/Button'
-import { PetList } from './components/PetList'
+import { Anchor } from "./components/commons/Anchor";
+import { Button } from "./components/commons/Button";
+import { Feedback } from "./components/commons/Feedback";
 
-import { logic } from '../logic'
+import { PetList } from "./components/PetList";
 
-export function Home({ onGoToAddPet, onGoToLogin, onGoToProfile }) {
-    console.log('Home -> call')
+import { logic } from "../logic";
 
-    const [message, setMessage] = useState('')
+export function Home({
+  onGoToAddPet,
+  onGoToLogin,
+  onGoToProfile,
+  onGoToPetDetail,
+}) {
+  console.log("Home -> call");
 
-    const handleAddPetClick = event => {
-        event.preventDefault()
+  const [feedback, setFeedback] = useState(null); // { message, level }
 
-        onGoToAddPet()
+  const handleAddPetClick = (event) => {
+    event.preventDefault();
+
+    onGoToAddPet();
+  };
+
+  const handleLogoutClick = (event) => {
+    event.preventDefault();
+
+    try {
+      logic.logoutUser();
+
+      setFeedback(null);
+
+      onGoToLogin();
+    } catch (error) {
+      setFeedback({
+        message: "sorry, there was an error on logout, please, try it later",
+        level: "error",
+      });
     }
+  };
 
-    const handleLogoutClick = event => {
-        event.preventDefault()
+  const handleProfileClick = (event) => {
+    event.preventDefault();
 
-        try {
-            logic.logoutUser()
+    onGoToProfile();
+  };
 
-            setMessage('')
+  const handleGoToPetDetail = (petId) => onGoToPetDetail(petId);
 
-            onGoToLogin()
-        } catch (error) {
-            setMessage('sorry, there was an error on logout, please, try it later')
-        }
-    }
+  console.log("Home -> render");
 
-    const handleProfileClick = event => {
-        event.preventDefault()
+  return (
+    <div className="p-4">
+      <h1 className="font-bold text-xl">MyPet</h1>
 
-        onGoToProfile()
-    }
+      <h2 className="font-bold">Welcome, Home!</h2>
 
-    console.log('Home -> render')
+      <div className="flex justify-between">
+        <Anchor onClick={handleAddPetClick}>+ Pet</Anchor>
 
-    return <div className="p-4">
-        <h1 className="font-bold text-xl">MyPet</h1>
+        <Anchor onClick={handleProfileClick}>Profile</Anchor>
 
-        <h2 className="font-bold">Welcome, Home!</h2>
+        <Button type="button" onClick={handleLogoutClick}>
+          Logout
+        </Button>
+      </div>
 
-        <div className="flex justify-between">
-            <Anchor onClick={handleAddPetClick}>+ Pet</Anchor>
+      <PetList onGoToPetDetail={handleGoToPetDetail} />
 
-            <Anchor onClick={handleProfileClick}>Profile</Anchor>
-
-            <Button type="button" onClick={handleLogoutClick}>Logout</Button>
-        </div>
-
-        <PetList />
-
-        <p>{message}</p>
+      {feedback && <Feedback feedback={feedback} />}
     </div>
-} 
+  );
+}

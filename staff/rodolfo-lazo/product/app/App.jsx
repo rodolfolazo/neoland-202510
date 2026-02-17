@@ -54,6 +54,7 @@ export function App() {
           onGoToAddPet={handleGoToAddPet}
           onGoToLogin={handleGoToLogin}
           onGoToProfile={handleGoToProfile}
+          onGoToPetDetail={handleGoToPetDetail}
         />
       )}
 
