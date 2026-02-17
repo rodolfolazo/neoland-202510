@@ -13,8 +13,6 @@ api.use(cors());
 
 api.get("/", (req, res) => res.json({ message: "Hello! from API ;)" }));
 
-api.get("/hello", (req, res) => res.json({ message: "Hello Rodolfo" }));
-
 api.post("/users", jsonBodyParser, (req, res) => {
   try {
     const { name, email, username, password, passwordRepeat } = req.body;
@@ -43,7 +41,7 @@ api.post("/users/auth", jsonBodyParser, (req, res) => {
   }
 });
 
-api.patch("/users/email", jsonBodyParser, (req, res) => {
+api.patch("/users/me/email", jsonBodyParser, (req, res) => {
   try {
     const userId = req.headers.authorization.slice(6);
 
@@ -59,7 +57,7 @@ api.patch("/users/email", jsonBodyParser, (req, res) => {
   }
 });
 
-api.patch("/users/password", jsonBodyParser, (req, res) => {
+api.patch("/users/me/password", jsonBodyParser, (req, res) => {
   try {
     const userId = req.headers.authorization.slice(6);
 
@@ -82,6 +80,22 @@ api.get("/users/me", jsonBodyParser, (req, res) => {
     const user = logic.getUser(userId);
 
     res.json(user);
+  } catch (error) {
+    res
+      .status(400)
+      .json({ error: error.constructor.name, message: error.message });
+  }
+});
+
+api.patch("/users/me/image", jsonBodyParser, (req, res) => {
+  try {
+    const userId = req.headers.authorization.slice(6);
+
+    const { image } = req.body;
+
+    logic.changeUserImage(userId, image);
+
+    res.status(204).send();
   } catch (error) {
     res
       .status(400)
@@ -151,4 +165,4 @@ api.get("/pets/:petId", (req, res) => {
   }
 });
 
-api.listen(8080, "0.0.0.0", () => console.log("API listening on port 8080"));
+api.listen(8080, () => console.log("API listening on port 8080"));

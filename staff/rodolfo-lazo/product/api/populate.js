@@ -7,6 +7,7 @@ data.insertUser(
     "peter@pan.com",
     "peterpan",
     "123123123",
+    "https://pngimg.com/uploads/peter_pan/peter_pan_PNG11.png",
     "regular",
   ),
 );
@@ -17,6 +18,7 @@ data.insertUser(
     "wendy@darling.com",
     "wendydarling",
     "123123123",
+    "https://static.wikia.nocookie.net/disney/images/5/53/Profile_-_Wendy_Darling.jpeg/revision/latest?cb=20190312151612",
     "regular",
   ),
 );
@@ -27,6 +29,7 @@ data.insertUser(
     "campa@nilla.com",
     "campanilla",
     "123123123",
+    "https://static.wikia.nocookie.net/dominios-encantados/images/3/3a/WIKI_CAMPANILLA.jpg/revision/latest/scale-to-width-down/1000?cb=20141220094516&path-prefix=es",
     "regular",
   ),
 );
@@ -37,6 +40,7 @@ data.insertUser(
     "pepito@grillo.com",
     "pepitogrillo",
     "123123123",
+    "https://media.licdn.com/dms/image/v2/C4D12AQFckegFflFZSw/article-cover_image-shrink_600_2000/article-cover_image-shrink_600_2000/0/1595497385163?e=2147483647&v=beta&t=MM5ft6lUnwnWao3zfuBvD4lRlTGtHUhZTqfbv_8DHHA",
     "regular",
   ),
 );
