@@ -107,7 +107,12 @@ class Logic {
 
     if (otherUser) throw new Error("newEmail belongs to another user");
 
-    user.email = newEmail;
+    const { name, username, password, image } = user;
+
+    //Revisar creo que no se está actualizando el email debería de ser newEmail
+    data.updateUser(
+      new User(userId, name, newEmail, username, password, image),
+    );
   }
 
   changeUserPassword(userId, password, newPassword, newPasswordRepeat) {
@@ -135,7 +140,11 @@ class Logic {
 
     if (user.password !== password) throw new Error("incorrect password");
 
-    user.password = newPassword;
+    const { name, email, username, image } = user;
+
+    data.updateUser(
+      new User(userId, name, email, username, newPassword, image),
+    );
   }
 
   getUser(userId) {
@@ -161,15 +170,14 @@ class Logic {
 
     if (!user) throw new Error("user not found");
 
-    user.image = image;
+    const { name, email, username, password } = user;
+
+    data.updateUser(new User(userId, name, email, username, password, image));
   }
 
   addPet(userId, name, birthdate, weight, image) {
     if (typeof userId !== "string") throw new Error("invalid userId type");
     if (!USER_ID_REGEX.test(userId)) throw new Error("invalid userId format");
-
-    const user = data.findUserById(userId);
-    if (!user) throw new Error("user not found");
 
     if (typeof name !== "string") throw new Error("invalid name type");
     if (name.length < 1) throw new Error("invalid name length");
@@ -184,6 +192,9 @@ class Logic {
 
     if (typeof image !== "string") throw new Error("invalid image type");
     if (!URL_REGEX.test(image)) throw new Error("invalid image format");
+
+    const user = data.findUserById(userId);
+    if (!user) throw new Error("user not found");
 
     const pet = new Pet(
       "pet-" + data.petsCount,
@@ -279,6 +290,38 @@ class Logic {
     if (pet.userId !== userId) throw new Error("user not owner of pet");
 
     return pet;
+  }
+
+  modifyPet(userId, petId, name, birthdate, weight, image) {
+    if (typeof userId !== "string") throw new Error("invalid userId type");
+    if (!USER_ID_REGEX.test(userId)) throw new Error("invalid userId format");
+
+    if (typeof petId !== "string") throw new Error("invalid pet-id type");
+    if (!PET_ID_REGEX.test(petId)) throw new Error("invalid pet-id format");
+
+    if (typeof name !== "string") throw new Error("invalid name type");
+    if (name.length < 1) throw new Error("invalid name length");
+
+    if (typeof birthdate !== "string")
+      throw new Error("invalid birthdate type");
+    if (!ISODATE_REGEX.test(birthdate))
+      throw new Error("invalid birthdate format");
+
+    if (typeof weight !== "number" || isNaN(weight))
+      throw new Error("invalid weight type");
+
+    if (typeof image !== "string") throw new Error("invalid image type");
+    if (!URL_REGEX.test(image)) throw new Error("invalid image format");
+
+    const user = data.findUserById(userId);
+    if (!user) throw new Error("user not found");
+
+    const pet = data.findPetById(petId);
+    if (!pet) throw new Error("pet not found");
+
+    if (pet.userId !== userId) throw new Error("User not owner of pet");
+
+    data.updatePet(new Pet(petId, userId, name, birthdate, weight, image));
   }
 }
 

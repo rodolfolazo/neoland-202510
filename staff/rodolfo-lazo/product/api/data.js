@@ -52,33 +52,23 @@ class Data {
   }
 
   findUserByEmail(email) {
-    for (let i = 0; i < this.users.length; i++) {
-      const user = this.users[i];
-
-      if (user.email === email) return user;
-    }
-
-    return null;
+    const user = this.users.find((user) => user.email === email);
+    return user || null;
   }
 
   findUserByUsername(username) {
-    for (let i = 0; i < this.users.length; i++) {
-      const user = this.users[i];
-
-      if (user.username === username) return user;
-    }
-
-    return null;
+    const user = this.users.find((user) => user.username === username);
+    return user || null;
   }
 
   findUserById(id) {
-    for (let i = 0; i < this.users.length; i++) {
-      const user = this.users[i];
+    const user = this.users.find((user) => user.id === id);
+    return user || null;
+  }
 
-      if (user.id === id) return user;
-    }
-
-    return null;
+  updateUser(updatedUser) {
+    const index = this.users.findIndex((user) => user.id === updatedUser.id);
+    this.users[index] = updatedUser;
   }
 
   insertPet(pet) {
@@ -87,25 +77,23 @@ class Data {
   }
 
   findPetsByUserId(userId) {
-    const foundPets = [];
-
-    for (let i = 0; i < this.pets.length; i++) {
-      const pet = this.pets[i];
-
-      if (pet.userId === userId) foundPets.push(pet);
-    }
-
-    return foundPets;
+    const foundPets = this.pets.filter((pet) => pet.userId === userId);
+    return foundPets || null;
   }
 
   findPetById(petId) {
-    for (let i = 0; i < this.pets.length; i++) {
-      const pet = this.pets[i];
+    const pet = this.pets.find((pet) => pet.id === petId);
+    return pet || null;
+  }
 
-      if (pet.id === petId) return pet;
-    }
+  updatePet(updatedPet) {
+    const index = this.pets.findIndex((pet) => pet.id === updatedPet.id);
+    this.pets[index] = updatedPet;
+  }
 
-    return null;
+  deletePet(petId) {
+    const index = this.pets.findIndex((pet) => pet.id === petId);
+    data.pets.splice(index, 1);
   }
 }
 

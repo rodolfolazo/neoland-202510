@@ -165,7 +165,7 @@ api.get("/pets/:petId", (req, res) => {
   }
 });
 
-api.patch("/pets/:petId", jsonBodyParser, (req, res) => {
+api.put("/pets/:petId", jsonBodyParser, (req, res) => {
   try {
     debugger;
     const userId = req.headers.authorization.slice(6);
@@ -174,7 +174,7 @@ api.patch("/pets/:petId", jsonBodyParser, (req, res) => {
 
     const { name, birthdate, weight, image } = req.body;
 
-    logic.updatePet(userId, petId, name, birthdate, weight, image);
+    logic.modifyPet(userId, petId, name, birthdate, weight, image);
 
     res.status(204).send();
   } catch (error) {
