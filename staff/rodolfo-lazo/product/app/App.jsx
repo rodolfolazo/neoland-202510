@@ -7,7 +7,8 @@ import { Home } from "./views/Home";
 import { AddPet } from "./views/AddPet";
 import { Profile } from "./views/Profile";
 import { PetDetail } from "./views/PetDetail";
-import { PetUpdate } from "./views/PetUpdate";
+//import { PetUpdate } from "./views/PetUpdate";
+import { PetUpdate1 } from "./views/PetUpdate1";
 
 export function App() {
   console.log("App -> call");
@@ -78,7 +79,7 @@ export function App() {
       )}
 
       {view === "update-pet" && (
-        <PetUpdate petId={petId} onGoToHome={handleGoToHome} />
+        <PetUpdate1 petId={petId} onGoToHome={handleGoToHome} />
       )}
     </>
   );

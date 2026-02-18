@@ -327,6 +327,7 @@ class Logic {
   }
 
   updatePet(petId, name, birthdate, weight, image) {
+    debugger;
     if (data.getLoggedInUserId() === null)
       throw new Error("user not logged in");
 
@@ -354,11 +355,13 @@ class Logic {
       },
       body: JSON.stringify({ name, birthdate, weight, image }),
     }).then((res) => {
+      debugger;
       const { status } = res;
 
       if (status === 204) return;
 
       return res.json().then((body) => {
+        debugger;
         const { error, message } = body;
 
         throw new Error(message);

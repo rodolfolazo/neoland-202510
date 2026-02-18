@@ -83,7 +83,7 @@ export function Home({
         <img className="rounded-full w-10 h-10 object-cover" src={image} />
       </h2>
 
-      <div className="flex justify-between">
+      <div className="flex justify-between mb-10 mt-5">
         <Anchor onClick={handleAddPetClick}>+ Pet</Anchor>
 
         <Anchor onClick={handleProfileClick}>Profile</Anchor>
