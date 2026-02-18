@@ -165,4 +165,23 @@ api.get("/pets/:petId", (req, res) => {
   }
 });
 
+api.patch("/pets/:petId", jsonBodyParser, (req, res) => {
+  try {
+    debugger;
+    const userId = req.headers.authorization.slice(6);
+
+    const { petId } = req.params;
+
+    const { name, birthdate, weight, image } = req.body;
+
+    logic.updatePet(userId, petId, name, birthdate, weight, image);
+
+    res.status(204).send();
+  } catch (error) {
+    res
+      .status(400)
+      .json({ error: error.constructor.name, message: error.message });
+  }
+});
+
 api.listen(8080, () => console.log("API listening on port 8080"));

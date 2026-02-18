@@ -1,0 +1,1 @@
+curl -X PATCH -H 'Authorization: Basic user-0' -H 'Content-Type: application/json' -d '{"name":"Pinina","birthdate":"2022-01-01","weight":10,"image":"https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExNTVhMDRuNzh2c2Z4cmxzN2U0aHRsOTFzMDBvcnoydG1wZTc4dXBnbSZlcD12MV9naWZzX3RyZW5kaW5nJmN0PWc/FY8c5SKwiNf1EtZKGs/giphy.gif"}' http://localhost:8080/pets/pet-0 -v
