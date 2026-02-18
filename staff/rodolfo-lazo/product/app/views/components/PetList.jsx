@@ -5,7 +5,7 @@ import { Feedback } from "./commons/Feedback";
 
 import { logic } from "../../logic";
 
-export function PetList({ onGoToPetDetail }) {
+export function PetList({ onGoToPetDetail, onGoToUpdatePet }) {
   console.log("PetList -> call");
 
   const [feedback, setFeedback] = useState(null); // { message, level }
@@ -60,6 +60,10 @@ export function PetList({ onGoToPetDetail }) {
 
   const handleGoToPetDetailClick = (petId) => onGoToPetDetail(petId);
 
+  const handleUpdatePetClick = (petId) => {
+    onGoToUpdatePet(petId);
+  };
+
   console.log("PetList -> render");
 
   return (
@@ -79,16 +83,27 @@ export function PetList({ onGoToPetDetail }) {
               <p>{pet.name}</p>
             </div>
 
-            <Button
-              className="justify-self-end"
-              onClick={(event) => {
-                event.stopPropagation();
+            <div>
+              <Button
+                className="justify-self-end"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleUpdatePetClick(pet.id);
+                }}
+              >
+                ⚙️
+              </Button>
 
-                handleRemovePetClick(pet.id);
-              }}
-            >
-              🗑️
-            </Button>
+              <Button
+                className="justify-self-end ml-2"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  handleRemovePetClick(pet.id);
+                }}
+              >
+                🗑️
+              </Button>
+            </div>
           </li>
         ))}
       </ul>

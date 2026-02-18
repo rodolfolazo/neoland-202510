@@ -9,7 +9,15 @@ const PET_ID_REGEX = /^\pet-[0-9]+$/;
 class Logic {
   constructor() {}
 
-  registerUser(name, email, username, password, passwordRepeat) {
+  registerUser(
+    name,
+    email,
+    username,
+    password,
+    passwordRepeat,
+    image = null,
+    role = "regular",
+  ) {
     if (typeof name !== "string") throw new Error("invalid name type");
     if (name.length < 1) throw new Error("invalid name length");
 
@@ -44,8 +52,8 @@ class Logic {
       email,
       username,
       password,
-      null,
-      "regular",
+      image,
+      role,
     );
 
     data.insertUser(user);

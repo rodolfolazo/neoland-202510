@@ -7,6 +7,7 @@ import { Home } from "./views/Home";
 import { AddPet } from "./views/AddPet";
 import { Profile } from "./views/Profile";
 import { PetDetail } from "./views/PetDetail";
+import { PetUpdate } from "./views/PetUpdate";
 
 export function App() {
   console.log("App -> call");
@@ -27,6 +28,11 @@ export function App() {
   const handleGoToPetDetail = (petId) => {
     setPetId(petId);
     setView("pet-detail");
+  };
+
+  const handleGoToUpdatePet = (petId) => {
+    setPetId(petId);
+    setView("update-pet");
   };
 
   console.log("App -> render");
@@ -55,6 +61,7 @@ export function App() {
           onGoToLogin={handleGoToLogin}
           onGoToProfile={handleGoToProfile}
           onGoToPetDetail={handleGoToPetDetail}
+          onGoToUpdatePet={handleGoToUpdatePet}
         />
       )}
 
@@ -64,6 +71,10 @@ export function App() {
 
       {view === "pet-detail" && (
         <PetDetail petId={petId} onGoToHome={handleGoToHome} />
+      )}
+
+      {view === "update-pet" && (
+        <PetUpdate petId={petId} onGoToHome={handleGoToHome} />
       )}
     </>
   );

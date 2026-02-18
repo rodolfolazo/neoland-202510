@@ -15,9 +15,9 @@ api.get("/", (req, res) => res.json({ message: "Hello! from API ;)" }));
 
 api.post("/users", jsonBodyParser, (req, res) => {
   try {
-    const { name, email, username, password, passwordRepeat } = req.body;
+    const { name, email, username, password, passwordRepeat, image } = req.body;
 
-    logic.registerUser(name, email, username, password, passwordRepeat);
+    logic.registerUser(name, email, username, password, passwordRepeat, image);
 
     res.status(201).send();
   } catch (error) {
