@@ -70,7 +70,11 @@ export function App() {
       {view === "profile" && <Profile onGoToHome={handleGoToHome} />}
 
       {view === "pet-detail" && (
-        <PetDetail petId={petId} onGoToHome={handleGoToHome} />
+        <PetDetail
+          petId={petId}
+          onGoToHome={handleGoToHome}
+          onGoToUpdatePet={handleGoToUpdatePet}
+        />
       )}
 
       {view === "update-pet" && (
