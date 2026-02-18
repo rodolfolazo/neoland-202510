@@ -55,17 +55,21 @@ export function PetUpdate({ onGoToHome, petId }) {
 
     const { name, birthdate, weight, image } = formData;
 
-    logic
-      .updatePet(petId, name, birthdate, Number(weight), image)
-      .then(() => {
-        setFeedback({
-          message: "pet successfully updated",
-          level: "success",
-        });
-      })
-      .catch((error) =>
-        setFeedback({ message: error.message, level: "error" }),
-      );
+    try {
+      logic
+        .updatePet(petId, name, birthdate, Number(weight), image)
+        .then(() => {
+          setFeedback({
+            message: "pet successfully updated",
+            level: "success",
+          });
+        })
+        .catch((error) =>
+          setFeedback({ message: error.message, level: "error" }),
+        );
+    } catch (error) {
+      setFeedback({ message: error.message, level: "error" });
+    }
   };
 
   const handleBackClick = (event) => {
