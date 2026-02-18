@@ -54,3 +54,22 @@ cloudflared tunnel --url http://localhost:8080
 
 Debug en Node
 node --inspect-brk index.js
+
+
+GIT
+========================================================================================
+TAGS
+git tag v0.17
+git tag --list
+git push --tags
+
+RAMAS
+git checkout product
+git checkout -b product-2
+git push -u origin product-2
+
+
+Debug
+========================================================================================
+cTRL + Shift + p
+Debug attach node process

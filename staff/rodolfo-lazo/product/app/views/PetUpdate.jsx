@@ -49,7 +49,7 @@ export function PetUpdate({ onGoToHome, petId }) {
         .updatePet(petId, name, birthdate, weight, image)
         .then(() => {
           debugger;
-          clearForm();
+          //clearForm();
           setFeedback({
             message: "pet successfully updated",
             level: "success",
