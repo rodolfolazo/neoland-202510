@@ -77,3 +77,21 @@ Debug
 ========================================================================================
 cTRL + Shift + p
 Debug attach node process
+
+
+Imagenes
+========================================================================================
+Original Simba
+https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExOXM3YjY4aDF6bHhtN29lZDlxYzBvZDRuOGFtN3ZoYmt6MHVzMXYzeCZlcD12MV9naWZzX3NlYXJjaCZjdD1n/vyBYO8ENb4eDFpYmDI/giphy.gif
+
+Boxer
+https://media.istockphoto.com/id/2167637826/photo/a-young-boxer-puppy-listening-with-a-head-tilt.jpg?s=1024x1024&w=is&k=20&c=2Jp54pkcUe8YMnOlWhimRGy66eboTkCBfK02doGm67s=
+
+Gato 01
+https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?q=80&w=2643&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D
+
+Tofirulo
+https://www.prodograw.com/wp-content/uploads/2025/09/English-Cocker-Spaniel-2-1.jpg
+
+Cloe
+https://scontent-dub4-1.xx.fbcdn.net/v/t39.30808-6/485150084_1045939204234439_7600454393528770201_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=13d280&_nc_ohc=KcOsTItW7GkQ7kNvwErXEpw&_nc_oc=AdnearKakNtuR-ZXxBKeee1zZIr7WzWx7-Re5O9SVRuEZPnqhI3lxsfpTg63Ve7KuXo&_nc_zt=23&_nc_ht=scontent-dub4-1.xx&_nc_gid=v7uql_B-yyYChwLJ7aYaBQ&oh=00_AftcWdLqKrH5L3y7iTLrXqAfpCz_HiAq0p7c1jGhthbyxA&oe=699BC49F
