@@ -167,7 +167,6 @@ api.get("/pets/:petId", (req, res) => {
 
 api.put("/pets/:petId", jsonBodyParser, (req, res) => {
   try {
-    debugger;
     const userId = req.headers.authorization.slice(6);
 
     const { petId } = req.params;

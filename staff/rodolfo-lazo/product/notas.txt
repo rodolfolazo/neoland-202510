@@ -73,12 +73,6 @@ git checkout -b product-2
 git push -u origin product-2
 
 
-Debug
-========================================================================================
-cTRL + Shift + p
-Debug attach node process
-
-
 Imagenes
 ========================================================================================
 Original Simba
@@ -95,3 +89,9 @@ https://www.prodograw.com/wp-content/uploads/2025/09/English-Cocker-Spaniel-2-1.
 
 Cloe
 https://scontent-dub4-1.xx.fbcdn.net/v/t39.30808-6/485150084_1045939204234439_7600454393528770201_n.jpg?_nc_cat=106&ccb=1-7&_nc_sid=13d280&_nc_ohc=KcOsTItW7GkQ7kNvwErXEpw&_nc_oc=AdnearKakNtuR-ZXxBKeee1zZIr7WzWx7-Re5O9SVRuEZPnqhI3lxsfpTg63Ve7KuXo&_nc_zt=23&_nc_ht=scontent-dub4-1.xx&_nc_gid=v7uql_B-yyYChwLJ7aYaBQ&oh=00_AftcWdLqKrH5L3y7iTLrXqAfpCz_HiAq0p7c1jGhthbyxA&oe=699BC49F
+
+
+Debug
+========================================================================================
+cTRL + Shift + p
+Debug attach node process
