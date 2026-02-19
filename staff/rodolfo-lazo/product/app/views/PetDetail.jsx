@@ -5,7 +5,7 @@ import { Feedback } from "./components/commons/Feedback";
 
 import { logic } from "../logic";
 
-export function PetDetail({ onGoToHome, petId, onGoToUpdatePet }) {
+export function PetDetail({ onGoToHome, petId }) {
   console.log("PetDetail -> call");
 
   const [feedback, setFeedback] = useState(null); // { message, level }
@@ -30,26 +30,15 @@ export function PetDetail({ onGoToHome, petId, onGoToUpdatePet }) {
     onGoToHome();
   };
 
-  const handleEditPetClick = (petId) => {
-    onGoToUpdatePet(petId);
-  };
-
   console.log("PetDetail -> render");
 
   return (
     <div className="p-4">
       <h1 className="font-bold text-xl">MyPet</h1>
 
-      <div className="flex justify-between mb-8">
+      <div className="flex justify-between">
         <h2 className="font-bold">Pet</h2>
-        <Anchor
-          onClick={(event) => {
-            event.preventDefault();
-            handleEditPetClick(petId);
-          }}
-        >
-          Edit
-        </Anchor>
+
         <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
       </div>
 

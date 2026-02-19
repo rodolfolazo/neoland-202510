@@ -13,7 +13,6 @@ export function Home({
   onGoToLogin,
   onGoToProfile,
   onGoToPetDetail,
-  onGoToUpdatePet,
 }) {
   console.log("Home -> call");
 
@@ -70,8 +69,6 @@ export function Home({
 
   const handleGoToPetDetail = (petId) => onGoToPetDetail(petId);
 
-  const handleGoToUpdatePet = (petId) => onGoToUpdatePet(petId);
-
   console.log("Home -> render");
 
   return (
@@ -83,7 +80,7 @@ export function Home({
         <img className="rounded-full w-10 h-10 object-cover" src={image} />
       </h2>
 
-      <div className="flex justify-between mb-10 mt-5">
+      <div className="flex justify-between">
         <Anchor onClick={handleAddPetClick}>+ Pet</Anchor>
 
         <Anchor onClick={handleProfileClick}>Profile</Anchor>
@@ -93,10 +90,7 @@ export function Home({
         </Button>
       </div>
 
-      <PetList
-        onGoToUpdatePet={handleGoToUpdatePet}
-        onGoToPetDetail={handleGoToPetDetail}
-      />
+      <PetList onGoToPetDetail={handleGoToPetDetail} />
 
       {feedback && <Feedback feedback={feedback} />}
     </div>
