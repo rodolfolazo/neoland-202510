@@ -6,6 +6,7 @@ import { PasswordField } from "./components/commons/PasswordField";
 import { Button } from "./components/commons/Button";
 import { Anchor } from "./components/commons/Anchor";
 import { Feedback } from "./components/commons/Feedback";
+import { Loader } from "./components/loader/Loader";
 
 import { logic } from "../logic";
 
@@ -51,9 +52,7 @@ export function Login({ onGoToHome, onGoToRegister }) {
   return (
     <div className="p-4">
       <h1 className="font-bold text-xl">MyPet</h1>
-
       <h2 className="font-bold">Login</h2>
-
       <Form onSubmit={handleLoginSubmit}>
         <Field alias="username" type="text">
           Username
@@ -65,8 +64,8 @@ export function Login({ onGoToHome, onGoToRegister }) {
           Login
         </Button>
       </Form>
-
       <Anchor onClick={handleRegisterClick}>Register</Anchor>
+      <Loader />
 
       {feedback && <Feedback feedback={feedback} />}
     </div>

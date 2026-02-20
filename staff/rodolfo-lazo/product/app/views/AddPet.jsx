@@ -1,85 +1,70 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-import { Form } from "./components/commons/Form";
-import { Field } from "./components/commons/Field";
-import { Button } from "./components/commons/Button";
-import { Anchor } from "./components/commons/Anchor";
-import { Feedback } from "./components/commons/Feedback";
+import { Form } from './components/commons/Form'
+import { Field } from './components/commons/Field'
+import { Button } from './components/commons/Button'
+import { Anchor } from './components/commons/Anchor'
+import { Feedback } from './components/commons/Feedback'
 
-import { logic } from "../logic";
+import { logic } from '../logic'
 
 export function AddPet({ onGoToHome }) {
-  console.log("AddPet -> call");
+    console.log('AddPet -> call')
 
-  const [feedback, setFeedback] = useState(null); // { message, level }
+    const [feedback, setFeedback] = useState(null) // { message, level }
 
-  const handleBackClick = (event) => {
-    event.preventDefault();
+    const handleBackClick = event => {
+        event.preventDefault()
 
-    onGoToHome();
-  };
-
-  const handleAddPetSubmit = (event) => {
-    event.preventDefault();
-
-    const form = event.target;
-
-    const name = form.name.value;
-    const birthdate = form.birthdate.value;
-    const weight = Number(form.weight.value);
-    const image = form.image.value;
-
-    try {
-      logic
-        .addPet(name, birthdate, weight, image)
-        .then(() => {
-          form.reset();
-
-          onGoToHome();
-        })
-        .catch((error) =>
-          setFeedback({ message: error.message, level: "error" }),
-        );
-    } catch (error) {
-      setFeedback({ message: error.message, level: "error" });
+        onGoToHome()
     }
-  };
 
-  console.log("AddPet -> render");
+    const handleAddPetSubmit = event => {
+        event.preventDefault()
 
-  return (
-    <div className="p-4">
-      <h1 className="font-bold text-xl">MyPet</h1>
+        const form = event.target
 
-      <div className="flex justify-between">
-        <h2 className="font-bold">Add Pet</h2>
+        const name = form.name.value
+        const birthdate = form.birthdate.value
+        const weight = Number(form.weight.value)
+        const image = form.image.value
 
-        <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
-      </div>
+        try {
+            logic.addPet(name, birthdate, weight, image)
+                .then(() => {
+                    form.reset()
 
-      <Form onSubmit={handleAddPetSubmit}>
-        <Field alias="name" type="text">
-          Name
-        </Field>
+                    onGoToHome()
+                })
+                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+        } catch (error) {
+            setFeedback({ message: error.message, level: 'error' })
+        }
+    }
 
-        <Field alias="birthdate" type="date">
-          Birthdate
-        </Field>
+    console.log('AddPet -> render')
 
-        <Field alias="weight" type="number">
-          Weight (kg)
-        </Field>
+    return <div className="p-4">
+        <h1 className="font-bold text-xl">MyPet</h1>
 
-        <Field alias="image" type="url">
-          Image
-        </Field>
+        <div className="flex justify-between">
+            <h2 className="font-bold">Add Pet</h2>
 
-        <Button className="self-center mt-4" type="submit">
-          Add Pet
-        </Button>
-      </Form>
+            <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
+        </div>
 
-      {feedback && <Feedback feedback={feedback} />}
+        <Form onSubmit={handleAddPetSubmit}>
+            <Field alias="name" type="text">Name</Field>
+
+            <Field alias="birthdate" type="date">Birthdate</Field>
+
+            <Field alias="weight" type="number" step="0.1">Weight (kg)</Field>
+
+            <Field alias="image" type="url">Image</Field>
+
+            <Button className="self-center mt-4" type="submit">Add Pet</Button>
+        </Form>
+
+        {feedback && <Feedback feedback={feedback} />}
     </div>
-  );
 }

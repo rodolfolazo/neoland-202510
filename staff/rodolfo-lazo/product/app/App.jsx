@@ -1,70 +1,57 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-import { Landing } from "./views/Landing";
-import { Login } from "./views/Login";
-import { Register } from "./views/Register";
-import { Home } from "./views/Home";
-import { AddPet } from "./views/AddPet";
-import { Profile } from "./views/Profile";
-import { PetDetail } from "./views/PetDetail";
+import { Landing } from './views/Landing'
+import { Login } from './views/Login'
+import { Register } from './views/Register'
+import { Home } from './views/Home'
+import { AddPet } from './views/AddPet'
+import { Profile } from './views/Profile'
+import { PetDetail } from './views/PetDetail'
+import { ModifyPet } from './views/ModifyPet'
 
 export function App() {
-  console.log("App -> call");
+    console.log('App -> call')
 
-  const [view, setView] = useState("landing");
-  const [petId, setPetId] = useState(null);
+    const [view, setView] = useState('landing')
+    const [petId, setPetId] = useState(null)
 
-  const handleGoToLogin = () => setView("login");
+    const handleGoToLogin = () => setView('login')
 
-  const handleGoToRegister = () => setView("register");
+    const handleGoToRegister = () => setView('register')
 
-  const handleGoToHome = () => setView("home");
+    const handleGoToHome = () => setView('home')
 
-  const handleGoToAddPet = () => setView("add-pet");
+    const handleGoToAddPet = () => setView('add-pet')
 
-  const handleGoToProfile = () => setView("profile");
+    const handleGoToProfile = () => setView('profile')
 
-  const handleGoToPetDetail = (petId) => {
-    setPetId(petId);
-    setView("pet-detail");
-  };
+    const handleGoToPetDetailById = petId => {
+        setPetId(petId)
+        
+        handleGoToPetDetail()
+    }
 
-  console.log("App -> render");
+    const handleGoToPetDetail = () => setView('pet-detail')
 
-  return (
-    <>
-      {view === "landing" && (
-        <Landing
-          onGoToLogin={handleGoToLogin}
-          onGoToRegister={handleGoToRegister}
-        />
-      )}
+    const handleGoToModifyPet = () => setView('modify-pet')
 
-      {view === "login" && (
-        <Login
-          onGoToHome={handleGoToHome}
-          onGoToRegister={handleGoToRegister}
-        />
-      )}
+    console.log('App -> render')
 
-      {view === "register" && <Register onGoToLogin={handleGoToLogin} />}
+    return <>
+        {view === 'landing' && <Landing onGoToLogin={handleGoToLogin} onGoToRegister={handleGoToRegister} />}
 
-      {view === "home" && (
-        <Home
-          onGoToAddPet={handleGoToAddPet}
-          onGoToLogin={handleGoToLogin}
-          onGoToProfile={handleGoToProfile}
-          onGoToPetDetail={handleGoToPetDetail}
-        />
-      )}
+        {view === 'login' && <Login onGoToHome={handleGoToHome} onGoToRegister={handleGoToRegister} />}
 
-      {view === "add-pet" && <AddPet onGoToHome={handleGoToHome} />}
+        {view === 'register' && <Register onGoToLogin={handleGoToLogin} />}
 
-      {view === "profile" && <Profile onGoToHome={handleGoToHome} />}
+        {view === 'home' && <Home onGoToAddPet={handleGoToAddPet} onGoToLogin={handleGoToLogin} onGoToProfile={handleGoToProfile} onGoToPetDetail={handleGoToPetDetailById} />}
 
-      {view === "pet-detail" && (
-        <PetDetail petId={petId} onGoToHome={handleGoToHome} />
-      )}
+        {view === 'add-pet' && <AddPet onGoToHome={handleGoToHome} />}
+
+        {view === 'profile' && <Profile onGoToHome={handleGoToHome} />}
+
+        {view === 'pet-detail' && <PetDetail petId={petId} onGoToHome={handleGoToHome} onGoToModifyPet={handleGoToModifyPet} />}
+
+        {view === 'modify-pet' && <ModifyPet petId={petId} onGoBack={handleGoToPetDetail} />}
     </>
-  );
 }
