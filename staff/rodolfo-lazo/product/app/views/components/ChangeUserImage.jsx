@@ -10,7 +10,7 @@ import { logic } from '../../logic'
 export function ChangeUserImage() {
     console.log('ChangeUserImage -> call')
 
-    const [feedback, setFeedback] = useState(null) // { message, level }
+    const [feedback, setFeedback] = useState(null)
 
     const handleChangeImageSubmit = event => {
         event.preventDefault()

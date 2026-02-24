@@ -1,19 +1,20 @@
 // manager
 
 class Data {
-  constructor() {
-    this.loggedInUserId = null;
-  }
+    setLoggedInUserId(userId) {
+        sessionStorage.userId = userId
+    }
 
-  setLoggedInUserId(userId) {
-    this.loggedInUserId = userId;
-  }
+    getLoggedInUserId() {
+        return sessionStorage.userId
+    }
 
-  getLoggedInUserId() {
-    return this.loggedInUserId;
-  }
+    removeLoggedInUserId() {
+        delete sessionStorage.userId
+    }
 }
 
 // instance
 
-export const data = new Data();
+export const data = new Data()
+

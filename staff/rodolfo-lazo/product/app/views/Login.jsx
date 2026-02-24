@@ -1,73 +1,59 @@
-import { useState } from "react";
+import { useState } from 'react'
 
-import { Form } from "./components/commons/Form";
-import { Field } from "./components/commons/Field";
-import { PasswordField } from "./components/commons/PasswordField";
-import { Button } from "./components/commons/Button";
-import { Anchor } from "./components/commons/Anchor";
-import { Feedback } from "./components/commons/Feedback";
-import { Loader } from "./components/loader/Loader";
+import { Form } from './components/commons/Form'
+import { Field } from './components/commons/Field'
+import { PasswordField } from './components/commons/PasswordField'
+import { Button } from './components/commons/Button'
+import { Anchor } from './components/commons/Anchor'
+import { Feedback } from './components/commons/Feedback'
 
-import { logic } from "../logic";
+import { logic } from '../logic'
 
-export function Login({ onGoToHome, onGoToRegister }) {
-  console.log("Login -> call");
+export function Login({ onUserLoggedIn, onGoToRegister }) {
+    console.log('Login -> call')
 
-  const [feedback, setFeedback] = useState(null); // { message, level }
+    const [feedback, setFeedback] = useState(null)
 
-  const handleLoginSubmit = (event) => {
-    event.preventDefault();
+    const handleLoginSubmit = event => {
+        event.preventDefault()
 
-    const form = event.target;
+        const form = event.target
 
-    const username = form.username.value;
-    const password = form.password.value;
+        const username = form.username.value
+        const password = form.password.value
 
-    try {
-      logic
-        .loginUser(username, password)
-        .then(() => {
-          form.reset();
-
-          setFeedback(null);
-
-          onGoToHome();
-        })
-        .catch((error) =>
-          setFeedback({ message: error.message, level: "error" }),
-        );
-    } catch (error) {
-      setFeedback({ message: error.message, level: "error" });
+        try {
+            logic.loginUser(username, password)
+                .then(() => onUserLoggedIn())
+                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+        } catch (error) {
+            setFeedback({ message: error.message, level: 'error' })
+        }
     }
-  };
 
-  const handleRegisterClick = (event) => {
-    event.preventDefault();
+    const handleRegisterClick = event => {
+        event.preventDefault()
 
-    onGoToRegister();
-  };
+        onGoToRegister()
+    }
 
-  console.log("Login -> render");
+    console.log('Login -> render')
 
-  return (
-    <div className="p-4">
-      <h1 className="font-bold text-xl">MyPet</h1>
-      <h2 className="font-bold">Login</h2>
-      <Form onSubmit={handleLoginSubmit}>
-        <Field alias="username" type="text">
-          Username
-        </Field>
+    return <div className="p-4">
+        <h1 className="font-bold text-xl">MyPet</h1>
 
-        <PasswordField alias="password">Password</PasswordField>
+        <h2 className="font-bold">Login</h2>
 
-        <Button className="self-center" type="submit">
-          Login
-        </Button>
-      </Form>
-      <Anchor onClick={handleRegisterClick}>Register</Anchor>
-      <Loader />
+        <Form onSubmit={handleLoginSubmit}>
+            <Field alias="username" type="text">Username</Field>
 
-      {feedback && <Feedback feedback={feedback} />}
+            <PasswordField alias="password">Password</PasswordField>
+
+            <Button className="self-center" type="submit">Login</Button>
+        </Form>
+
+        <Anchor onClick={handleRegisterClick}>Register</Anchor>
+
+        {feedback && <Feedback feedback={feedback} />}
     </div>
-  );
 }

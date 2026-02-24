@@ -81,7 +81,11 @@ class Logic {
     }
 
     logoutUser() {
-        data.setLoggedInUserId(null)
+        data.removeLoggedInUserId()
+    }
+
+    isUserLoggedIn() {
+        return !!data.getLoggedInUserId()
     }
 
     changeUserEmail(email, newEmail, newEmailRepeat) {
@@ -175,7 +179,7 @@ class Logic {
 
                 if (status === 200)
                     return res.json()
-                        // .then(user => user)
+                // .then(user => user)
 
                 return res.json()
                     .then(body => {
@@ -268,7 +272,7 @@ class Logic {
 
                 if (status === 200)
                     return res.json()
-                        // .then(pets => pets)
+                // .then(pets => pets)
 
                 return res.json()
                     .then(body => {
@@ -324,7 +328,7 @@ class Logic {
 
                 if (status === 200)
                     return res.json()
-                        // .then(pet => pet)
+                // .then(pet => pet)
 
                 return res.json()
                     .then(body => {

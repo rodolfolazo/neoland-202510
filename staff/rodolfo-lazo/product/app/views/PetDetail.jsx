@@ -1,16 +1,20 @@
 import { useState, useEffect } from 'react'
 
+import { useParams } from 'react-router'
+
 import { Anchor } from './components/commons/Anchor'
 import { Feedback } from './components/commons/Feedback'
 import { Button } from './components/commons/Button'
 
 import { logic } from '../logic'
 
-export function PetDetail({ onGoToHome, petId, onGoToModifyPet }) {
+export function PetDetail({ onGoToHome, onGoToModifyPet }) {
     console.log('PetDetail -> call')
 
-    const [feedback, setFeedback] = useState(null) // { message, level }
+    const [feedback, setFeedback] = useState(null)
     const [pet, setPet] = useState(null)
+
+    const { petId } = useParams()
 
     useEffect(() => {
         try {
@@ -28,7 +32,7 @@ export function PetDetail({ onGoToHome, petId, onGoToModifyPet }) {
         onGoToHome()
     }
 
-    const handleGoToModifyPet = () => onGoToModifyPet()
+    const handleGoToModifyPet = () => onGoToModifyPet(petId)
 
     console.log('PetDetail -> render')
 

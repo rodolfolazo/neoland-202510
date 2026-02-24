@@ -8,7 +8,7 @@ import { logic } from '../../logic'
 export function PetList({ onGoToPetDetail }) {
     console.log('PetList -> call')
 
-    const [feedback, setFeedback] = useState(null) // { message, level }
+    const [feedback, setFeedback] = useState(null)
     const [pets, setPets] = useState([])
     const [petId, setPetId] = useState(null)
 

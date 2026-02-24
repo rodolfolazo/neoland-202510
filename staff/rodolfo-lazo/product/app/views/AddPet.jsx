@@ -11,7 +11,7 @@ import { logic } from '../logic'
 export function AddPet({ onGoToHome }) {
     console.log('AddPet -> call')
 
-    const [feedback, setFeedback] = useState(null) // { message, level }
+    const [feedback, setFeedback] = useState(null)
 
     const handleBackClick = event => {
         event.preventDefault()
