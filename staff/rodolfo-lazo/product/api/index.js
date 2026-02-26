@@ -1,9 +1,17 @@
-// import express from 'express'
-const express = require("express");
-const cors = require("cors");
-require("./populate");
+import express from "express";
+import cors from "cors";
+import "./populate.js";
+import fs from "fs";
 
-const { logic } = require("./logic");
+import { logic } from "./logic.js";
+import {
+  DuplicityError,
+  ExistenceError,
+  OwnershipError,
+  SystemError,
+  ValidationError,
+  CredentialError,
+} from "./errors.js";
 
 const api = express();
 
@@ -13,7 +21,7 @@ api.use(cors());
 
 api.get("/", (req, res) => res.json({ message: "Hello! from API ;)" }));
 
-api.post("/users", jsonBodyParser, (req, res) => {
+api.post("/users", jsonBodyParser, (req, res, next) => {
   try {
     const { name, email, username, password, passwordRepeat } = req.body;
 
@@ -21,13 +29,11 @@ api.post("/users", jsonBodyParser, (req, res) => {
 
     res.status(201).send();
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.constructor.name, message: error.message });
+    next(error);
   }
 });
 
-api.post("/users/auth", jsonBodyParser, (req, res) => {
+api.post("/users/auth", jsonBodyParser, (req, res, next) => {
   try {
     const { username, password } = req.body;
 
@@ -35,13 +41,11 @@ api.post("/users/auth", jsonBodyParser, (req, res) => {
 
     res.json(userId);
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.constructor.name, message: error.message });
+    next(error);
   }
 });
 
-api.patch("/users/me/email", jsonBodyParser, (req, res) => {
+api.patch("/users/me/email", jsonBodyParser, (req, res, next) => {
   try {
     const userId = req.headers.authorization.slice(6);
 
@@ -51,9 +55,7 @@ api.patch("/users/me/email", jsonBodyParser, (req, res) => {
 
     res.status(204).send();
   } catch (error) {
-    res
-      .status(400)
-      .json({ error: error.constructor.name, message: error.message });
+    next(error);
   }
 });
 
@@ -181,6 +183,22 @@ api.put("/pets/:petId", jsonBodyParser, (req, res) => {
       .status(400)
       .json({ error: error.constructor.name, message: error.message });
   }
+});
+
+api.use((error, req, res, next) => {
+  let status = 500;
+  let errorName = error.constructor.name;
+
+  const { message } = error;
+
+  if (error instanceof ValidationError) status = 400;
+  else if (error instanceof DuplicityError) status = 409;
+  else if (error instanceof ExistenceError) status = 404;
+  else if (error instanceof CredentialError) status = 401;
+  else if (error instanceof OwnershipError) status = 403;
+  else errorName = SystemError.name;
+
+  res.status(status).json({ error: errorName, message });
 });
 
 api.listen(8080, () => console.log("API listening on port 8080"));
