@@ -1,113 +1,95 @@
-// TODO re-write person-constructor-functions with classes
-class Person{
-    constructor(name, age, gender){
+class Person {
+    constructor(name, age, gender) {
         this.name = name
         this.age = age
         this.gender = gender
     }
-
-    fart(){
-        return '💨' 
+    fart() {
+        return '💨'
     }
 }
 
-class Woman extends Person{
-    constructor(name, age){
+class Trans extends Person {
+    constructor(name, age, gender, operated) {
+        super(name, age, gender)
+        this.operated = operated
+        if (gender === 'female' && !operated)
+            this.provideOvulus = Woman.prototype.provideOvulus
+        else if (gender === 'male' && !operated)
+            this.provideSperm = Man.prototype.provideSperm
+    }
+}
+
+class Woman extends Person {
+    constructor(name, age) {
         super(name, age, 'female')
     }
-
-    giveBirth(){
+    giveBirth() {
         return '👶'
     }
-    
-    provideOvulus(){
+    provideOvulus() {
         return '🥚'
     }
 }
 
-class StraightWoman extends Woman{
-    constructor(name, age){
+class StraightWoman extends Woman {
+    constructor(name, age) {
         super(name, age)
     }
 }
 
-class Lesbian extends Woman{
-    constructor(name, age){
+class Lesbian extends Woman {
+    constructor(name, age) {
         super(name, age)
     }
 }
 
-class Man extends Person{
-    constructor(name, age){
+class Man extends Person {
+    constructor(name, age) {
         super(name, age, 'male')
     }
-
-    provideSperm(){
+    provideSperm() {
         return '💦'
     }
 }
 
-class StraightMan extends Man{
-    constructor(name, age){
+class StraightMan extends Man {
+    constructor(name, age) {
         super(name, age)
     }
 }
 
-class Gay extends Man{
-    constructor(name, age){
+class Gay extends Man {
+    constructor(name, age) {
         super(name, age)
     }
 }
 
-//Heredará los métodos a través de inner 
-class Trans {
-    constructor(name, age, gender, operado){
-        this.name = name
-        this.age = age
-        this.gender = gender
-        this.operado = operado
+var wendy = new StraightWoman('Wendy', 22)
+var peter = new Man('Peter', 23)
+var petra = new Trans('Petra', 23, 'male', true)
+var wendu = new Trans('Wendy', 22, 'female', false)
+var campa = new Lesbian('Campa', 19)
+var pepito = new Gay('Pepito', 40)
 
-        if (operado === 'male') {
-            this.inner = new Man(name, age)
-        } else if (operado === 'female') {
-            this.inner = new Woman(name, age)
-        } else {
-            throw new Error('Operado debe ser male o female')
-        }
-    }
-}
+console.log('wendy')
+console.log('is woman', wendy instanceof Woman) // true
+console.log('is man', wendy instanceof Man) // false
+console.log('is person', wendy instanceof Person) // true
 
-const pablito = new Trans("pablito", 35, "male", "female")
-//console.log(pablito)
-//console.log(pablito instanceof Trans)
-//console.log(pablito instanceof Woman)
+console.log('peter')
+console.log('is woman', peter instanceof Woman) // false
+console.log('is man', peter instanceof Man) // true
+console.log('is person', peter instanceof Person) // true
 
-//Pierdo métodos de Trans pero obtengo métodos de Woman
-class Trans2 {
-    constructor(name, age, gender, operado){
-        this.name = name
-        this.age = age
-        this.gender = gender
-        this.operado = operado
+console.log('petra')
+console.log('is woman', petra instanceof Woman) // false
+console.log('is man', petra instanceof Man) // false
+console.log('is person', petra instanceof Person) // true
+console.log('is trans', petra instanceof Trans) // true
 
-        if (operado === 'male') {
-            Object.setPrototypeOf(this, Man.prototype)
-        } else if (operado === 'female') {
-            Object.setPrototypeOf(this, Woman.prototype)
-        } else {
-            throw new Error('Operado debe ser male o female')
-        }
-    }
-  	saludar(){
-      return "Hola trans"
-    }
-  
-}
-
-const pablito2 = new Trans2("pablito", 35, "male", "female")
-
-//console.log(pablito2)
-//console.log(pablito2 instanceof Trans2)
-//console.log(pablito2 instanceof Woman)
-//console.log(pablito2.giveBirth())
-console.log(pablito2.operado)
+console.log('wendu')
+console.log('is woman', wendu instanceof Woman) // false
+console.log('is man', wendu instanceof Man) // false
+console.log('is person', wendu instanceof Person) // true
+console.log('is trans', wendu instanceof Trans) // true
