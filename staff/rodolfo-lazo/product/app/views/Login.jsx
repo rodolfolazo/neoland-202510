@@ -8,6 +8,7 @@ import { Anchor } from './components/commons/Anchor'
 import { Feedback } from './components/commons/Feedback'
 
 import { logic } from '../logic'
+import { CredentialError, ExistenceError, ValidationError } from '../errors'
 
 export function Login({ onUserLoggedIn, onGoToRegister }) {
     console.log('Login -> call')
@@ -25,7 +26,14 @@ export function Login({ onUserLoggedIn, onGoToRegister }) {
         try {
             logic.loginUser(username, password)
                 .then(() => onUserLoggedIn())
-                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+                .catch(error => {
+                  if (error instanceof ValidationError)
+                    setFeedback({ message: error.message, level: 'warn'})
+                  else if (error instanceof ExistenceError || error instanceof CredentialError)
+                    setFeedback({message: error.message, level: 'danger'})
+                  else
+                    setFeedback({message: 'sorry, something failed. Try again later', level: 'error'})
+                })
         } catch (error) {
             setFeedback({ message: error.message, level: 'error' })
         }

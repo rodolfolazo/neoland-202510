@@ -8,6 +8,7 @@ import { Anchor } from './components/commons/Anchor'
 import { Feedback } from './components/commons/Feedback'
 
 import { logic } from '../logic'
+import { DuplicityError, ValidationError } from '../errors'
 
 export function Register({ onGoToLogin }) {
     console.log('Register -> call')
@@ -34,7 +35,14 @@ export function Register({ onGoToLogin }) {
 
                     onGoToLogin()
                 })
-                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+                .catch( error => {
+                  if ( error instanceof ValidationError)
+                    setFeedback({ message: error.message, level: 'warn'})
+                  else if (error instanceof DuplicityError)
+                    setFeedback({message: error.message, level: 'danger'})
+                  else
+                    setFeedback({message:'sorry, something failed. try again later', level:'error'})
+                })
         } catch (error) {
             setFeedback({ message: error.message, level: 'error' })
         }
