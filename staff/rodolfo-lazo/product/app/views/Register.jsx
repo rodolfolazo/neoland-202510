@@ -1,82 +1,106 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { Form } from './components/commons/Form'
-import { Field } from './components/commons/Field'
-import { PasswordField } from './components/commons/PasswordField'
-import { Button } from './components/commons/Button'
-import { Anchor } from './components/commons/Anchor'
-import { Feedback } from './components/commons/Feedback'
+import { Form } from "./components/commons/Form";
+import { Field } from "./components/commons/Field";
+import { PasswordField } from "./components/commons/PasswordField";
 
-import { logic } from '../logic'
-import { DuplicityError, ValidationError } from '../errors'
+import { Header } from "./components/commons/Header";
+import { Button } from "./components/commons/Button";
+import { Button2 } from "./components/commons/Button2";
+import { Anchor } from "./components/commons/Anchor";
+import { Feedback } from "./components/commons/Feedback";
 
-export function Register({ onGoToLogin }) {
-    console.log('Register -> call')
+import { logic } from "../logic";
+import { DuplicityError, ValidationError } from "../errors";
 
-    const [feedback, setFeedback] = useState(null)
+export function Register({ onGoToLogin, onUserLoggedIn }) {
+  console.log("Register -> call");
 
-    const handleRegisterSubmit = event => {
-        event.preventDefault()
+  const [feedback, setFeedback] = useState(null);
 
-        const form = event.target
+  const handleRegisterSubmit = (event) => {
+    event.preventDefault();
 
-        const name = form.name.value
-        const email = form.email.value
-        const username = form.username.value
-        const password = form.password.value
-        const passwordRepeat = form.passwordRepeat.value
+    const form = event.target;
 
-        try {
-            logic.registerUser(name, email, username, password, passwordRepeat)
-                .then(() => {
-                    form.reset()
+    const name = form.name.value;
+    const email = form.email.value;
+    const username = form.username.value;
+    const password = form.password.value;
+    const passwordRepeat = form.passwordRepeat.value;
 
-                    setFeedback(null)
+    try {
+      logic
+        .registerUser(name, email, username, password, passwordRepeat)
+        .then(() => {
+          form.reset();
 
-                    onGoToLogin()
-                })
-                .catch( error => {
-                  if ( error instanceof ValidationError)
-                    setFeedback({ message: error.message, level: 'warn'})
-                  else if (error instanceof DuplicityError)
-                    setFeedback({message: error.message, level: 'danger'})
-                  else
-                    setFeedback({message:'sorry, something failed. try again later', level:'error'})
-                })
-        } catch (error) {
-            setFeedback({ message: error.message, level: 'error' })
-        }
+          setFeedback(null);
+
+          onGoToLogin();
+        })
+        .catch((error) => {
+          if (error instanceof ValidationError)
+            setFeedback({ message: error.message, level: "warn" });
+          else if (error instanceof DuplicityError)
+            setFeedback({ message: error.message, level: "danger" });
+          else
+            setFeedback({
+              message: "sorry, something failed. try again later",
+              level: "error",
+            });
+        });
+    } catch (error) {
+      setFeedback({ message: error.message, level: "error" });
     }
+  };
 
-    const handleLoginClick = event => {
-        event.preventDefault()
+  const handleLoginClick = (event) => {
+    event.preventDefault();
 
-        onGoToLogin()
-    }
+    onGoToLogin();
+  };
 
-    console.log('Register -> render')
+  const handleLogoClick = (event) => {
+    event.preventDefault();
 
-    return <div className="p-4">
-        <h1 className="font-bold text-xl">MyPet</h1>
+    onUserLoggedIn();
+  };
 
-        <h2 className="font-bold">Register</h2>
+  console.log("Register -> render");
 
-        <Form onSubmit={handleRegisterSubmit}>
-            <Field alias="name" type="text">Name</Field>
+  return (
+    <div className="p-4">
+      <Header onClick={handleLogoClick} />
 
-            <Field alias="email" type="email">E-mail</Field>
+      <Form onSubmit={handleRegisterSubmit}>
+        <Field alias="name" type="text">
+          Name
+        </Field>
 
-            <Field alias="username" type="text">Username</Field>
+        <Field alias="email" type="email">
+          E-mail
+        </Field>
 
-            <PasswordField alias="password">Password</PasswordField>
+        <Field alias="username" type="text">
+          Username
+        </Field>
 
-            <PasswordField alias="passwordRepeat">Repeat Password</PasswordField>
+        <PasswordField alias="password">Password</PasswordField>
 
-            <Button className="self-center" type="submit">Register</Button>
-        </Form>
+        <PasswordField alias="passwordRepeat">Repeat Password</PasswordField>
 
-        <Anchor onClick={handleLoginClick}>Login</Anchor>
+        <Button2
+          className="self-center w-56 bg-teal-500 text-white hover:bg-teal-600 hover:font-bold mb-8"
+          type="submit"
+        >
+          Register
+        </Button2>
+      </Form>
 
-        {feedback && <Feedback feedback={feedback} />}
+      <Anchor onClick={handleLoginClick}>Login</Anchor>
+
+      {feedback && <Feedback feedback={feedback} />}
     </div>
+  );
 }

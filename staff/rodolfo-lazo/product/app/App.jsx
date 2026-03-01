@@ -84,7 +84,10 @@ export function App() {
           path="/register"
           element={
             !loggedIn ? (
-              <Register onGoToLogin={handleGoToLogin} />
+              <Register
+                onGoToLogin={handleGoToLogin}
+                onUserLoggedIn={handleGoToHome}
+              />
             ) : (
               <Navigate to="/" />
             )

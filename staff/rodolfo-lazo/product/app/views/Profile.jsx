@@ -1,60 +1,77 @@
-import { useState } from 'react'
+import { useState } from "react";
 
-import { Anchor } from './components/commons/Anchor'
-import { ChangeUserEmail } from './components/ChangeUserEmail'
-import { ChangeUserPassword } from './components/ChangeUserPassword'
-import { ChangeUserImage } from './components/ChangeUserImage'
+import { Header } from "./components/commons/Header";
+import { Anchor } from "./components/commons/Anchor";
+import { ChangeUserEmail } from "./components/ChangeUserEmail";
+import { ChangeUserPassword } from "./components/ChangeUserPassword";
+import { ChangeUserImage } from "./components/ChangeUserImage";
 
 export function Profile({ onGoToHome }) {
-    console.log('Profile -> call')
+  console.log("Profile -> call");
 
-    const [view, setView] = useState(null)
+  const [view, setView] = useState(null);
 
-    const handleBackClick = event => {
-        event.preventDefault()
+  const handleBackClick = (event) => {
+    event.preventDefault();
 
-        onGoToHome()
-    }
+    onGoToHome();
+  };
 
-    const handleChangeEmailClick = event => {
-        event.preventDefault()
+  const handleChangeEmailClick = (event) => {
+    event.preventDefault();
 
-        setView('change-email')
-    }
+    setView("change-email");
+  };
 
-    const handlePasswordClick = event => {
-        event.preventDefault()
+  const handlePasswordClick = (event) => {
+    event.preventDefault();
 
-        setView('change-password')
-    }
+    setView("change-password");
+  };
 
-    const handleImageClick = event => {
-        event.preventDefault()
+  const handleImageClick = (event) => {
+    event.preventDefault();
 
-        setView('change-image')
-    }
+    setView("change-image");
+  };
 
-    console.log('Profile -> render')
+  const handleLogoClick = (event) => {
+    event.preventDefault();
 
-    return <div className="p-4">
-        <h1 className="font-bold text-xl">MyPet</h1>
+    onGoToHome();
+  };
 
-        <div className="flex justify-between">
-            <h2 className="font-bold">Profile</h2>
+  console.log("Profile -> render");
 
-            <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
-        </div>
+  return (
+    <div className="p-4">
+      <Header onClick={handleLogoClick} />
 
-        <ul>
-            <li><Anchor onClick={handleChangeEmailClick}>Change e-mail</Anchor></li>
-            <li><Anchor onClick={handlePasswordClick}>Change password</Anchor></li>
-            <li><Anchor onClick={handleImageClick}>Change image</Anchor></li>
-        </ul>
+      <div className="flex justify-between mb-6">
+        <h2 className="font-bold text-teal-700 tracking-widest uppercase">
+          Profile
+        </h2>
 
-        {view === 'change-email' && <ChangeUserEmail />}
+        <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
+      </div>
 
-        {view === 'change-password' && <ChangeUserPassword />}
+      <ul className="mb-6">
+        <li>
+          <Anchor onClick={handleChangeEmailClick}>Change e-mail</Anchor>
+        </li>
+        <li>
+          <Anchor onClick={handlePasswordClick}>Change password</Anchor>
+        </li>
+        <li>
+          <Anchor onClick={handleImageClick}>Change image</Anchor>
+        </li>
+      </ul>
 
-        {view === 'change-image' && <ChangeUserImage />}
+      {view === "change-email" && <ChangeUserEmail />}
+
+      {view === "change-password" && <ChangeUserPassword />}
+
+      {view === "change-image" && <ChangeUserImage />}
     </div>
+  );
 }
