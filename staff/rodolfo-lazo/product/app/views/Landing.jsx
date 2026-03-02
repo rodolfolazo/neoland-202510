@@ -23,18 +23,18 @@ export function Landing({ onGoToLogin, onGoToRegister }) {
       <Header />
       <section className="flex flex-col items-center gap-8 text-center">
         <div
-          class="w-80 h-100 rounded-xl shadow-lg
+          className="w-80 h-100 rounded-xl shadow-lg
                       bg-[#cbd9e6]
                       bg-[url('../images/landingimage.png')]
                       bg-cover bg-center
                       bg-blend-multiply hover:scale-105"
         ></div>
-        <h2 class="text-3xl font-bold tracking-widest font-serif mb-16">
+        <h2 className="text-3xl font-bold tracking-widest font-serif mb-16">
           Tu veterinara de <span className="text-emerald-500">confianza</span>
         </h2>
       </section>
 
-      <section class="flex flex-col items-center gap-4 lg:mt-auto mb-12">
+      <section className="flex flex-col items-center gap-4 lg:mt-auto mb-12">
         <Button2
           onClick={handleLoginClick}
           className="w-56 font-bold hover:border-2 hover:border-teal-500"
