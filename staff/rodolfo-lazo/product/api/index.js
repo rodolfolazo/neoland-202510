@@ -425,7 +425,6 @@ api.use((error, req, res, next) => {
   else if (error instanceof JsonWebTokenError) {
     status = 401;
     errorName = JsonWebTokenError.name;
-    message = "Token inválido, expirado o error de validación";
   } else errorName = SystemError.name;
 
   res.status(status).json({ error: errorName, message });
