@@ -11,5 +11,5 @@ export const errorMap = {
   DuplicityError,
   CredentialError,
   OwnershipError,
-  SystemError
-}
+  SystemError,
+};

@@ -1,253 +1,353 @@
-import { data, User, Pet } from './data.js'
+import { data, User, Pet } from "./data.js";
 
-import { ValidationError, DuplicityError, ExistenceError, CredentialError, OwnershipError } from './errors.js'
+import {
+  ValidationError,
+  DuplicityError,
+  ExistenceError,
+  CredentialError,
+  OwnershipError,
+} from "./errors.js";
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
-const URL_REGEX = /(www|http:|https:)+[^\s]+[\w]/
-const ISODATE_REGEX = /^\d{4}-\d{2}-\d{2}$/
-const USER_ID_REGEX = /^\user-[0-9]+$/
-const PET_ID_REGEX = /^\pet-[0-9]+$/
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+const URL_REGEX = /(www|http:|https:)+[^\s]+[\w]/;
+const ISODATE_REGEX = /^\d{4}-\d{2}-\d{2}$/;
+const USER_ID_REGEX = /^\user-[0-9]+$/;
+const PET_ID_REGEX = /^\pet-[0-9]+$/;
 
 class Logic {
-    constructor() {
-    }
+  constructor() {}
+
+  registerUser(name, email, username, password, passwordRepeat) {
+    if (typeof name !== "string")
+      throw new ValidationError("invalid name type");
+    if (name.length < 1) throw new ValidationError("invalid name length");
+
+    if (typeof email !== "string")
+      throw new ValidationError("invalid email type");
+    if (email.length < 6) throw new ValidationError("invalid email length");
+    if (!EMAIL_REGEX.test(email))
+      throw new ValidationError("invalid email format");
 
-    registerUser(name, email, username, password, passwordRepeat) {
-        if (typeof name !== 'string') throw new ValidationError('invalid name type')
-        if (name.length < 1) throw new ValidationError('invalid name length')
+    if (typeof username !== "string")
+      throw new ValidationError("invalid username type");
+    if (username.length < 3)
+      throw new ValidationError("invalid username length");
+
+    if (typeof password !== "string")
+      throw new ValidationError("invalid password type");
+    if (password.length < 8)
+      throw new ValidationError("invalid password length");
+
+    if (typeof passwordRepeat !== "string")
+      throw new ValidationError("invalid passwordRepeat type");
+    if (passwordRepeat.length < 8)
+      throw new ValidationError("invalid passwordRepeat length");
+
+    if (password !== passwordRepeat)
+      throw new ValidationError("passwords do not match");
+
+    let user = data.findUserByEmail(email);
+
+    if (user !== null) throw new DuplicityError("user email already exists");
+
+    user = data.findUserByUsername(username);
+
+    if (user !== null) throw new DuplicityError("user username already exists");
+
+    user = new User(
+      "user-" + data.usersCount,
+      name,
+      email,
+      username,
+      password,
+      null,
+      "regular",
+    );
+
+    data.insertUser(user);
+  }
+
+  authenticateUser(username, password) {
+    if (typeof username !== "string")
+      throw new ValidationError("invalid username type");
+    if (username.length < 3)
+      throw new ValidationError("invalid username length");
+
+    if (typeof password !== "string")
+      throw new ValidationError("invalid password type");
+    if (password.length < 8)
+      throw new ValidationError("invalid password length");
+
+    const user = data.findUserByUsername(username);
+
+    if (user === null) throw new ExistenceError("user not found");
+
+    if (user.password !== password)
+      throw new CredentialError("incorrect password");
+
+    return user.id;
+  }
 
-        if (typeof email !== 'string') throw new ValidationError('invalid email type')
-        if (email.length < 6) throw new ValidationError('invalid email length')
-        if (!EMAIL_REGEX.test(email)) throw new ValidationError('invalid email format')
+  changeUserEmail(userId, email, newEmail, newEmailRepeat) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
+
+    if (typeof email !== "string")
+      throw new ValidationError("invalid email type");
+    if (email.length < 6) throw new ValidationError("invalid email length");
+    if (!EMAIL_REGEX.test(email))
+      throw new ValidationError("invalid email format");
 
-        if (typeof username !== 'string') throw new ValidationError('invalid username type')
-        if (username.length < 3) throw new ValidationError('invalid username length')
+    if (typeof newEmail !== "string")
+      throw new ValidationError("invalid newEmail type");
+    if (newEmail.length < 6)
+      throw new ValidationError("invalid newEmail length");
+    if (!EMAIL_REGEX.test(newEmail))
+      throw new ValidationError("invalid newEmail format");
 
-        if (typeof password !== 'string') throw new ValidationError('invalid password type')
-        if (password.length < 8) throw new ValidationError('invalid password length')
+    if (typeof newEmailRepeat !== "string")
+      throw new ValidationError("invalid newEmailRepeat type");
+    if (newEmailRepeat.length < 6)
+      throw new ValidationError("invalid newEmailRepeat length");
+    if (!EMAIL_REGEX.test(newEmailRepeat))
+      throw new ValidationError("invalid newEmailRepeat format");
 
-        if (typeof passwordRepeat !== 'string') throw new ValidationError('invalid passwordRepeat type')
-        if (passwordRepeat.length < 8) throw new ValidationError('invalid passwordRepeat length')
+    if (newEmail !== newEmailRepeat)
+      throw new ValidationError("newEmail and newEmailRepeat do not match");
 
-        if (password !== passwordRepeat) throw new ValidationError('passwords do not match')
+    const user = data.findUserById(userId);
+    if (!user) throw new ExistenceError("user not found");
 
-        let user = data.findUserByEmail(email)
+    if (user.email !== email)
+      throw new OwnershipError("email do not belong to user");
 
-        if (user !== null) throw new DuplicityError('user email already exists')
+    const otherUser = data.findUserByEmail(newEmail);
 
-        user = data.findUserByUsername(username)
+    if (otherUser) throw new OwnershipError("newEmail belongs to another user");
 
-        if (user !== null) throw new DuplicityError('user username already exists')
+    const { name, username, password, image } = user;
 
-        user = new User('user-' + data.usersCount, name, email, username, password, null, 'regular')
+    data.updateUser(
+      new User(userId, name, newEmail, username, password, image),
+    );
+  }
 
-        data.insertUser(user)
-    }
+  changeUserPassword(userId, password, newPassword, newPasswordRepeat) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-    authenticateUser(username, password) {
-        if (typeof username !== 'string') throw new ValidationError('invalid username type')
-        if (username.length < 3) throw new ValidationError('invalid username length')
+    if (typeof password !== "string")
+      throw new ValidationError("invalid password type");
+    if (password.length < 8)
+      throw new ValidationError("invalid password length");
 
-        if (typeof password !== 'string') throw new ValidationError('invalid password type')
-        if (password.length < 8) throw new ValidationError('invalid password length')
+    if (typeof newPassword !== "string")
+      throw new ValidationError("invalid newPassword type");
+    if (newPassword.length < 8)
+      throw new ValidationError("invalid newPassword length");
 
-        const user = data.findUserByUsername(username)
+    if (typeof newPasswordRepeat !== "string")
+      throw new ValidationError("invalid newPasswordRepeat type");
+    if (newPasswordRepeat.length < 8)
+      throw new ValidationError("invalid newPasswordRepeat length");
 
-        if (user === null) throw new ExistenceError('user not found')
+    if (newPassword !== newPasswordRepeat)
+      throw new ValidationError(
+        "newPassword and newPasswordRepeat do not match",
+      );
 
-        if (user.password !== password) throw new CredentialError('incorrect password')
+    const user = data.findUserById(userId);
 
-        return user.id
-    }
+    if (!user) throw new ExistenceError("user not found");
 
-    changeUserEmail(userId, email, newEmail, newEmailRepeat) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
+    if (user.password !== password)
+      throw new CredentialError("incorrect password");
 
-        if (typeof email !== 'string') throw new ValidationError('invalid email type')
-        if (email.length < 6) throw new ValidationError('invalid email length')
-        if (!EMAIL_REGEX.test(email)) throw new ValidationError('invalid email format')
+    const { name, email, username, image } = user;
 
-        if (typeof newEmail !== 'string') throw new ValidationError('invalid newEmail type')
-        if (newEmail.length < 6) throw new ValidationError('invalid newEmail length')
-        if (!EMAIL_REGEX.test(newEmail)) throw new ValidationError('invalid newEmail format')
+    data.updateUser(
+      new User(userId, name, email, username, newPassword, image),
+    );
+  }
 
-        if (typeof newEmailRepeat !== 'string') throw new ValidationError('invalid newEmailRepeat type')
-        if (newEmailRepeat.length < 6) throw new ValidationError('invalid newEmailRepeat length')
-        if (!EMAIL_REGEX.test(newEmailRepeat)) throw new ValidationError('invalid newEmailRepeat format')
+  getUser(userId) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-        if (newEmail !== newEmailRepeat) throw new ValidationError('newEmail and newEmailRepeat do not match')
+    const user = data.findUserById(userId);
+    if (!user) throw new ExistenceError("user not found");
 
-        const user = data.findUserById(userId)
-        if (!user) throw new ExistenceError('user not found')
+    const { name, email, username, image } = user;
 
-        if (user.email !== email) throw new OwnershipError('email do not belong to user')
+    return { name, email, username, image };
+  }
 
-        const otherUser = data.findUserByEmail(newEmail)
+  changeUserImage(userId, image) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-        if (otherUser) throw new OwnershipError('newEmail belongs to another user')
+    if (typeof image !== "string")
+      throw new ValidationError("invalid image type");
+    if (!URL_REGEX.test(image))
+      throw new ValidationError("invalid image format");
 
-        const { name, username, password, image } = user
+    const user = data.findUserById(userId);
 
-        data.updateUser(new User(userId, name, newEmail, username, password, image))
-    }
+    if (!user) throw new ExistenceError("user not found");
 
-    changeUserPassword(userId, password, newPassword, newPasswordRepeat) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
+    const { name, email, username, password } = user;
 
-        if (typeof password !== 'string') throw new ValidationError('invalid password type')
-        if (password.length < 8) throw new ValidationError('invalid password length')
+    data.updateUser(new User(userId, name, email, username, password, image));
+  }
 
-        if (typeof newPassword !== 'string') throw new ValidationError('invalid newPassword type')
-        if (newPassword.length < 8) throw new ValidationError('invalid newPassword length')
+  addPet(userId, name, birthdate, weight, image) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-        if (typeof newPasswordRepeat !== 'string') throw new ValidationError('invalid newPasswordRepeat type')
-        if (newPasswordRepeat.length < 8) throw new ValidationError('invalid newPasswordRepeat length')
+    if (typeof name !== "string")
+      throw new ValidationError("invalid name type");
+    if (name.length < 1) throw new ValidationError("invalid name length");
 
-        if (newPassword !== newPasswordRepeat) throw new ValidationError('newPassword and newPasswordRepeat do not match')
+    if (typeof birthdate !== "string")
+      throw new ValidationError("invalid birthdate type");
+    if (!ISODATE_REGEX.test(birthdate))
+      throw new ValidationError("invalid birthdate format");
 
-        const user = data.findUserById(userId)
+    if (typeof weight !== "number" || isNaN(weight))
+      throw new ValidationError("invalid weight type");
 
-        if (!user) throw new ExistenceError('user not found')
+    if (typeof image !== "string")
+      throw new ValidationError("invalid image type");
+    if (!URL_REGEX.test(image))
+      throw new ValidationError("invalid image format");
 
-        if (user.password !== password) throw new CredentialError('incorrect password')
+    const user = data.findUserById(userId);
+    if (!user) throw new ExistenceError("user not found");
 
-        const { name, email, username, image } = user
+    const pet = new Pet(
+      "pet-" + data.petsCount,
+      userId,
+      name,
+      birthdate,
+      weight,
+      image,
+    );
 
-        data.updateUser(new User(userId, name, email, username, newPassword, image))
-    }
+    data.insertPet(pet);
+  }
 
-    getUser(userId) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
+  getPets(userId) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-        const user = data.findUserById(userId)
-        if (!user) throw new ExistenceError('user not found')
+    const user = data.findUserById(userId);
+    if (!user) throw new ExistenceError("user not found");
 
-        const { name, email, username, image } = user
+    const pets = data.findPetsByUserId(userId);
 
-        return { name, email, username, image }
-    }
+    return pets;
+  }
 
-    changeUserImage(userId, image) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
+  removePet(userId, petId) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-        if (typeof image !== 'string') throw new ValidationError('invalid image type')
-        if (!URL_REGEX.test(image)) throw new ValidationError('invalid image format')
+    if (typeof petId !== "string")
+      throw new ValidationError("invalid pet-id type");
+    if (!PET_ID_REGEX.test(petId))
+      throw new ValidationError("invalid pet-id format");
 
-        const user = data.findUserById(userId)
+    const user = data.findUserById(userId);
+    if (!user) throw new ExistenceError("user not found");
 
-        if (!user) throw new ExistenceError('user not found')
+    const pet = data.findPetById(petId);
 
-        const { name, email, username, password } = user
+    if (!pet) throw new ExistenceError("pet not found");
 
-        data.updateUser(new User(userId, name, email, username, password, image))
-    }
+    if (pet.userId !== userId)
+      throw new OwnershipError("user not owner of pet");
 
-    addPet(userId, name, birthdate, weight, image) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
+    data.deletePet(petId);
+  }
 
-        if (typeof name !== 'string') throw new ValidationError('invalid name type')
-        if (name.length < 1) throw new ValidationError('invalid name length')
+  getPet(userId, petId) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-        if (typeof birthdate !== 'string') throw new ValidationError('invalid birthdate type')
-        if (!ISODATE_REGEX.test(birthdate)) throw new ValidationError('invalid birthdate format')
+    if (typeof petId !== "string")
+      throw new ValidationError("invalid pet-id type");
+    if (!PET_ID_REGEX.test(petId))
+      throw new ValidationError("invalid pet-id format");
 
-        if (typeof weight !== 'number' || isNaN(weight)) throw new ValidationError('invalid weight type')
+    const user = data.findUserById(userId);
+    if (!user) throw new ExistenceError("user not found");
 
-        if (typeof image !== 'string') throw new ValidationError('invalid image type')
-        if (!URL_REGEX.test(image)) throw new ValidationError('invalid image format')
+    const pet = data.findPetById(petId);
+    if (!pet) throw new ExistenceError("pet not found");
 
-        const user = data.findUserById(userId)
-        if (!user) throw new ExistenceError('user not found')
+    if (pet.userId !== userId)
+      throw new OwnershipError("user not owner of pet");
 
-        const pet = new Pet('pet-' + data.petsCount, userId, name, birthdate, weight, image)
+    return pet;
+  }
 
-        data.insertPet(pet)
-    }
+  modifyPet(userId, petId, name, birthdate, weight, image) {
+    if (typeof userId !== "string")
+      throw new ValidationError("invalid userId type");
+    if (!USER_ID_REGEX.test(userId))
+      throw new ValidationError("invalid userId format");
 
-    getPets(userId) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
+    if (typeof petId !== "string")
+      throw new ValidationError("invalid pet-id type");
+    if (!PET_ID_REGEX.test(petId))
+      throw new ValidationError("invalid pet-id format");
 
-        const user = data.findUserById(userId)
-        if (!user) throw new Error('user not found')
+    if (typeof name !== "string")
+      throw new ValidationError("invalid name type");
+    if (name.length < 1) throw new ValidationError("invalid name length");
 
-        const pets = data.findPetsByUserId(userId)
+    if (typeof birthdate !== "string")
+      throw new ValidationError("invalid birthdate type");
+    if (!ISODATE_REGEX.test(birthdate))
+      throw new ValidationError("invalid birthdate format");
 
-        return pets
-    }
+    if (typeof weight !== "number" || isNaN(weight))
+      throw new ValidationError("invalid weight type");
 
-    removePet(userId, petId) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
+    if (typeof image !== "string")
+      throw new ValidationError("invalid image type");
+    if (!URL_REGEX.test(image))
+      throw new ValidationError("invalid image format");
 
-        if (typeof petId !== 'string') throw new ValidationError('invalid pet-id type')
-        if (!PET_ID_REGEX.test(petId)) throw new ValidationError('invalid pet-id format')
+    const user = data.findUserById(userId);
+    if (!user) throw new ExistenceError("user not found");
 
-        const user = data.findUserById(userId)
-        if (!user) throw new ExistenceError('user not found')
+    const pet = data.findPetById(petId);
+    if (!pet) throw new ExistenceError("pet not found");
 
-        const pet = data.findPetById(petId)
+    if (pet.userId !== userId)
+      throw new OwnershipError("user not owner of pet");
 
-        if (!pet) throw new ExistenceError('pet not found')
-
-        if (pet.userId !== userId) throw new OwnershipError('user not owner of pet')
-
-        data.deletePet(petId)
-    }
-
-    getPet(userId, petId) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
-
-        if (typeof petId !== 'string') throw new ValidationError('invalid pet-id type')
-        if (!PET_ID_REGEX.test(petId)) throw new ValidationError('invalid pet-id format')
-
-        const user = data.findUserById(userId)
-        if (!user) throw new ExistenceError('user not found')
-
-        const pet = data.findPetById(petId)
-        if (!pet) throw new ExistenceError('pet not found')
-
-        if (pet.userId !== userId) throw new OwnershipError('user not owner of pet')
-
-        return pet
-    }
-
-    modifyPet(userId, petId, name, birthdate, weight, image) {
-        if (typeof userId !== 'string') throw new ValidationError('invalid userId type')
-        if (!USER_ID_REGEX.test(userId)) throw new ValidationError('invalid userId format')
-
-        if (typeof petId !== 'string') throw new ValidationError('invalid pet-id type')
-        if (!PET_ID_REGEX.test(petId)) throw new ValidationError('invalid pet-id format')
-
-        if (typeof name !== 'string') throw new ValidationError('invalid name type')
-        if (name.length < 1) throw new ValidationError('invalid name length')
-
-        if (typeof birthdate !== 'string') throw new ValidationError('invalid birthdate type')
-        if (!ISODATE_REGEX.test(birthdate)) throw new ValidationError('invalid birthdate format')
-
-        if (typeof weight !== 'number' || isNaN(weight)) throw new ValidationError('invalid weight type')
-
-        if (typeof image !== 'string') throw new ValidationError('invalid image type')
-        if (!URL_REGEX.test(image)) throw new ValidationError('invalid image format')
-
-        const user = data.findUserById(userId)
-        if (!user) throw new ExistenceError('user not found')
-
-        const pet = data.findPetById(petId)
-        if (!pet) throw new ExistenceError('pet not found')
-
-        if (pet.userId !== userId) throw new OwnershipError('user not owner of pet')
-
-        data.updatePet(new Pet(petId, userId, name, birthdate, weight, image))
-    }
+    data.updatePet(new Pet(petId, userId, name, birthdate, weight, image));
+  }
 }
 
 // instance
 
-export const logic = new Logic()
+export const logic = new Logic();
