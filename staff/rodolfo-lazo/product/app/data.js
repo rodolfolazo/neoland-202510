@@ -1,19 +1,20 @@
 // manager
 
 class Data {
-  setToken(token) {
-    sessionStorage.token = token;
-  }
+    setLoggedInUserId(userId) {
+        sessionStorage.userId = userId
+    }
 
-  getToken() {
-    return sessionStorage.token;
-  }
+    getLoggedInUserId() {
+        return sessionStorage.userId
+    }
 
-  removeToken() {
-    delete sessionStorage.token;
-  }
+    removeLoggedInUserId() {
+        delete sessionStorage.userId
+    }
 }
 
 // instance
 
-export const data = new Data();
+export const data = new Data()
+

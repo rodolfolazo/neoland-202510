@@ -6,10 +6,10 @@ export class OwnershipError extends Error {}
 export class SystemError extends Error {}
 
 export const errorMap = {
-  ValidationError,
-  ExistenceError,
-  DuplicityError,
-  CredentialError,
-  OwnershipError,
-  SystemError,
-};
+    ValidationError,
+    ExistenceError,
+    DuplicityError,
+    CredentialError,
+    OwnershipError,
+    SystemError
+}

@@ -1,112 +1,90 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect } from 'react'
 
-import { Button } from "./commons/Button";
-import { Feedback } from "./commons/Feedback";
+import { Button } from './commons/Button'
+import { Feedback } from './commons/Feedback'
 
-import { logic } from "../../logic";
+import { logic } from '../../logic'
 
 export function PetList({ onGoToPetDetail }) {
-  console.log("PetList -> call");
+    console.log('PetList -> call')
 
-  const [feedback, setFeedback] = useState(null);
-  const [pets, setPets] = useState([]);
-  const [petId, setPetId] = useState(null);
+    const [feedback, setFeedback] = useState(null)
+    const [pets, setPets] = useState([])
+    const [petId, setPetId] = useState(null)
 
-  useEffect(() => {
-    console.log("PetList -> useEffect");
+    useEffect(() => {
+        console.log('PetList -> useEffect')
 
-    try {
-      logic
-        .getPets()
-        .then((pets) => {
-          setPets(pets);
-        })
-        .catch((error) =>
-          setFeedback({ message: error.message, level: "error" }),
-        );
-    } catch (error) {
-      setFeedback({ message: error.message, level: "error" });
+        try {
+            logic.getPets()
+                .then(pets => {
+                    setPets(pets)
+                })
+                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+        } catch (error) {
+            setFeedback({ message: error.message, level: 'error' })
+        }
+    }, [])
+
+    const handleRemovePetClick = petId => setPetId(petId)
+
+    const handleCancelRemovePetClick = event => {
+        event.preventDefault()
+
+        setPetId(null)
     }
-  }, []);
 
-  const handleRemovePetClick = (petId) => setPetId(petId);
+    const handleConfirmRemovePetClick = event => {
+        event.preventDefault()
 
-  const handleCancelRemovePetClick = (event) => {
-    event.preventDefault();
-
-    setPetId(null);
-  };
-
-  const handleConfirmRemovePetClick = (event) => {
-    event.preventDefault();
-
-    try {
-      logic
-        .removePet(petId)
-        .then(() => {
-          return logic.getPets();
-        })
-        .then((pets) => {
-          setPetId(null);
-          setPets(pets);
-        })
-        .catch((error) =>
-          setFeedback({ message: error.message, level: "error" }),
-        );
-    } catch (error) {
-      setFeedback({ message: error.message, level: "error" });
+        try {
+            logic.removePet(petId)
+                .then(() => {
+                    return logic.getPets()
+                })
+                .then(pets => {
+                    setPetId(null)
+                    setPets(pets)
+                })
+                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+        } catch (error) {
+            setFeedback({ message: error.message, level: 'error' })
+        }
     }
-  };
 
-  const handleGoToPetDetailClick = (petId) => onGoToPetDetail(petId);
+    const handleGoToPetDetailClick = petId => onGoToPetDetail(petId)
 
-  console.log("PetList -> render");
+    console.log('PetList -> render')
 
-  return (
-    <div>
-      <ul className="flex flex-col gap-2 mt-2 lg:w-6/12 mx-auto mt-12">
-        {pets.map((pet) => (
-          <li
-            className="flex items-center border-2 border-teal-500 bg-teal-50 rounded-lg hover:bg-teal-200 hover:text-teal-800 p-2 justify-between"
-            onClick={() => handleGoToPetDetailClick(pet.id)}
-          >
-            <div className="flex items-center gap-4">
-              <img
-                src={pet.image}
-                className="rounded-full w-10 h-10 object-cover"
-              />
+    return <div>
+        <ul className="flex flex-col gap-2 mt-2">
+            {pets.map(pet =>
+                <li className="flex items-center border-2 border-black p-2 justify-between" onClick={() => handleGoToPetDetailClick(pet.id)}>
+                    <div className="flex items-center gap-4">
+                        <img src={pet.image} className="rounded-full w-10 h-10 object-cover" />
 
-              <p>{pet.name}</p>
+                        <p>{pet.name}</p>
+                    </div>
+
+                    <Button className="justify-self-end" onClick={event => {
+                        event.stopPropagation()
+
+                        handleRemovePetClick(pet.id)
+                    }}>🗑️</Button>
+                </li>)}
+        </ul>
+
+        {petId && <div className="w-full h-full fixed top-0 left-0 bg-black/75 flex justify-center items-center">
+            <div className="bg-white border-black border-2 p-2">
+                <p className="text-center">Delete Pet?</p>
+
+                <div className="flex justify-center gap-2">
+                    <Button onClick={handleCancelRemovePetClick}>❌</Button>
+                    <Button onClick={handleConfirmRemovePetClick}>✅</Button>
+                </div>
             </div>
+        </div>}
 
-            <Button
-              className="justify-self-end hover:bg-teal-700 bg-teal-100 hover:rounded-lg"
-              onClick={(event) => {
-                event.stopPropagation();
-
-                handleRemovePetClick(pet.id);
-              }}
-            >
-              🗑️
-            </Button>
-          </li>
-        ))}
-      </ul>
-
-      {petId && (
-        <div className="w-full h-full fixed top-0 left-0 bg-black/75 flex justify-center items-center">
-          <div className="bg-white border-black border-2 p-2">
-            <p className="text-center">Delete Pet?</p>
-
-            <div className="flex justify-center gap-2">
-              <Button onClick={handleCancelRemovePetClick}>❌</Button>
-              <Button onClick={handleConfirmRemovePetClick}>✅</Button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {feedback && <Feedback feedback={feedback} />}
+        {feedback && <Feedback feedback={feedback} />}
     </div>
-  );
 }

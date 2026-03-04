@@ -101,3 +101,4 @@ class Data {
 // instance
 
 export const data = new Data()
+
