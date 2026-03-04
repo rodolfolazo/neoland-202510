@@ -1,19 +1,14 @@
-import { useState } from 'react'
 
 import { Form } from './components/commons/Form'
 import { Field } from './components/commons/Field'
 import { PasswordField } from './components/commons/PasswordField'
 import { Button } from './components/commons/Button'
 import { Anchor } from './components/commons/Anchor'
-import { Feedback } from './components/commons/Feedback'
 
 import { logic } from '../logic'
-import { DuplicityError, ValidationError } from '../errors'
 
-export function Register({ onGoToLogin }) {
+export function Register({ onGoToLogin, onError }) {
     console.log('Register -> call')
-
-    const [feedback, setFeedback] = useState(null)
 
     const handleRegisterSubmit = event => {
         event.preventDefault()
@@ -35,19 +30,9 @@ export function Register({ onGoToLogin }) {
 
                     onGoToLogin()
                 })
-                .catch(error => {
-                    if (error instanceof ValidationError)
-                        setFeedback({ message: error.message, level: 'warn' })
-                    else if (error instanceof DuplicityError)
-                        setFeedback({ message: error.message, level: 'danger' })
-                    else
-                        setFeedback({ message: 'sorry, something failed. try again later', level: 'error' })
-                })
+                .catch(error => onError(error))
         } catch (error) {
-            if (error instanceof ValidationError)
-                setFeedback({ message: error.message, level: 'warn' })
-            else
-                setFeedback({ message: 'sorry, something failed. try again later', level: 'error' })
+            onError(error)
         }
     }
 
@@ -79,7 +64,5 @@ export function Register({ onGoToLogin }) {
         </Form>
 
         <Anchor onClick={handleLoginClick}>Login</Anchor>
-
-        {feedback && <Feedback feedback={feedback} />}
     </div>
 }

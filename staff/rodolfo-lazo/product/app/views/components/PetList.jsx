@@ -1,14 +1,12 @@
 import { useState, useEffect } from 'react'
 
 import { Button } from './commons/Button'
-import { Feedback } from './commons/Feedback'
 
 import { logic } from '../../logic'
 
-export function PetList({ onGoToPetDetail }) {
+export function PetList({ onGoToPetDetail, onError }) {
     console.log('PetList -> call')
 
-    const [feedback, setFeedback] = useState(null)
     const [pets, setPets] = useState([])
     const [petId, setPetId] = useState(null)
 
@@ -20,9 +18,9 @@ export function PetList({ onGoToPetDetail }) {
                 .then(pets => {
                     setPets(pets)
                 })
-                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+                .catch(error => onError(error))
         } catch (error) {
-            setFeedback({ message: error.message, level: 'error' })
+            onError(error)
         }
     }, [])
 
@@ -46,9 +44,9 @@ export function PetList({ onGoToPetDetail }) {
                     setPetId(null)
                     setPets(pets)
                 })
-                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+                .catch(error => onError(error))
         } catch (error) {
-            setFeedback({ message: error.message, level: 'error' })
+            onError(error)
         }
     }
 
@@ -84,7 +82,5 @@ export function PetList({ onGoToPetDetail }) {
                 </div>
             </div>
         </div>}
-
-        {feedback && <Feedback feedback={feedback} />}
     </div>
 }

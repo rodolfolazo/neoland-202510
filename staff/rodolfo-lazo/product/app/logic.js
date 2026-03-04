@@ -76,7 +76,7 @@ class Logic {
 
                 if (status === 200)
                     return res.json()
-                        .then(userId => data.setLoggedInUserId(userId))
+                        .then(token => data.setToken(token))
 
                 return res.json()
                     .catch(error => { throw new SystemError('json error') })
@@ -91,15 +91,15 @@ class Logic {
     }
 
     logoutUser() {
-        data.removeLoggedInUserId()
+        data.removeToken()
     }
 
     isUserLoggedIn() {
-        return !!data.getLoggedInUserId()
+        return !!data.getToken()
     }
 
     changeUserEmail(email, newEmail, newEmailRepeat) {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         if (typeof email !== 'string') throw new ValidationError('invalid email type')
         if (email.length < 6) throw new ValidationError('invalid email length')
@@ -118,7 +118,7 @@ class Logic {
         return fetch('http://localhost:8080/users/me/email', {
             method: 'PATCH',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId(),
+                Authorization: `Bearer ${data.getToken()}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ email, newEmail, newEmailRepeat })
@@ -143,7 +143,7 @@ class Logic {
     }
 
     changeUserPassword(password, newPassword, newPasswordRepeat) {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         if (typeof password !== 'string') throw new ValidationError('invalid password type')
         if (password.length < 8) throw new ValidationError('invalid password length')
@@ -159,7 +159,7 @@ class Logic {
         return fetch('http://localhost:8080/users/me/password', {
             method: 'PATCH',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId(),
+                Authorization: `Bearer ${data.getToken()}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ password, newPassword, newPasswordRepeat })
@@ -184,12 +184,12 @@ class Logic {
     }
 
     getLoggedInUser() {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         return fetch('http://localhost:8080/users/me', {
             method: 'GET',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId()
+                Authorization: `Bearer ${data.getToken()}`
             }
         })
             .catch(error => { throw new SystemError('connection error') })
@@ -213,7 +213,7 @@ class Logic {
     }
 
     changeUserImage(image) {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         if (typeof image !== 'string') throw new ValidationError('invalid image type')
         if (!URL_REGEX.test(image)) throw new ValidationError('invalid image format')
@@ -221,7 +221,7 @@ class Logic {
         return fetch('http://localhost:8080/users/me/image', {
             method: 'PATCH',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId(),
+                Authorization: `Bearer ${data.getToken()}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ image })
@@ -246,7 +246,7 @@ class Logic {
     }
 
     addPet(name, birthdate, weight, image) {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         if (typeof name !== 'string') throw new ValidationError('invalid name type')
         if (name.length < 1) throw new ValidationError('invalid name length')
@@ -264,7 +264,7 @@ class Logic {
         return fetch('http://localhost:8080/pets', {
             method: 'POST',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId(),
+                Authorization: `Bearer ${data.getToken()}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ name, birthdate, weight, image })
@@ -289,12 +289,12 @@ class Logic {
     }
 
     getPets() {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         return fetch('http://localhost:8080/pets', {
             method: 'GET',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId()
+                Authorization: `Bearer ${data.getToken()}`
             }
         })
             .catch(error => { throw new SystemError('connection error') })
@@ -318,7 +318,7 @@ class Logic {
     }
 
     removePet(petId) {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         if (typeof petId !== 'string') throw new ValidationError('invalid pet-id type')
 
@@ -327,7 +327,7 @@ class Logic {
         return fetch('http://localhost:8080/pets/' + petId, {
             method: 'DELETE',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId()
+                Authorization: `Bearer ${data.getToken()}`
             }
         })
             .catch(error => { throw new SystemError('connection error') })
@@ -350,15 +350,14 @@ class Logic {
     }
 
     getPet(petId) {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         if (typeof petId !== 'string') throw new ValidationError('invalid pet-id type')
         if (!PET_ID_REGEX.test(petId)) throw new ValidationError('invalid pet-id format')
 
-        return fetch('http://localhost:8080/pets/' + petId, {
-            // method: 'GET',
+        return fetch(`http://localhost:8080/pets/${petId}`, {
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId()
+                Authorization: `Bearer ${data.getToken()}`
             }
         })
             .catch(error => { throw new SystemError('connection error') })
@@ -367,7 +366,6 @@ class Logic {
 
                 if (status === 200)
                     return res.json()
-                // .then(pet => pet)
 
                 return res.json()
                     .catch(error => { throw new SystemError('json error') })
@@ -382,7 +380,7 @@ class Logic {
     }
 
     modifyPet(petId, name, birthdate, weight, image) {
-        if (data.getLoggedInUserId() === null) throw new ValidationError('user not logged in')
+        if (data.getToken() === null) throw new ValidationError('user not logged in')
 
         if (typeof petId !== 'string') throw new ValidationError('invalid pet-id type')
         if (!PET_ID_REGEX.test(petId)) throw new ValidationError('invalid pet-id format')
@@ -400,10 +398,10 @@ class Logic {
 
         if (!URL_REGEX.test(image)) throw new ValidationError('invalid image format')
 
-        return fetch('http://localhost:8080/pets/' + petId, {
+        return fetch(`http://localhost:8080/pets/${petId}`, {
             method: 'PUT',
             headers: {
-                Authorization: 'Basic ' + data.getLoggedInUserId(),
+                Authorization: `Bearer ${data.getToken()}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({ name, birthdate, weight, image })

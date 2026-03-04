@@ -6,15 +6,13 @@ import { Form } from './components/commons/Form'
 import { Field } from './components/commons/Field'
 import { Button } from './components/commons/Button'
 import { Anchor } from './components/commons/Anchor'
-import { Feedback } from './components/commons/Feedback'
 import { Spinner } from './components/Spinner'
 
 import { logic } from '../logic'
 
-export function ModifyPet({ onGoBack }) {
+export function ModifyPet({ onGoBack, onError, onSuccess }) {
     console.log('ModifyPet -> call')
 
-    const [feedback, setFeedback] = useState(null)
     const [pet, setPet] = useState(null)
 
     const { petId } = useParams()
@@ -24,9 +22,9 @@ export function ModifyPet({ onGoBack }) {
             try {
                 logic.getPet(petId)
                     .then(pet => setPet(pet))
-                    .catch(error => setFeedback({ message: error.message, level: 'error' }))
+                    .catch(error => onError(error))
             } catch (error) {
-                setFeedback({ message: error.message, level: 'error' })
+                onError(error)
             }
         }, 1000)
     }, [])
@@ -49,10 +47,10 @@ export function ModifyPet({ onGoBack }) {
 
         try {
             logic.modifyPet(petId, name, birthdate, weight, image)
-                .then(() => setFeedback({ message: 'pet successfully modified', level: 'success' }))
-                .catch(error => setFeedback({ message: error.message, level: 'error' }))
+                .then(() => onSuccess('pet successfully modified'))
+                .catch(error => onError(error))
         } catch (error) {
-            setFeedback({ message: error.message, level: 'error' })
+            onError(error)
         }
     }
 
@@ -78,7 +76,5 @@ export function ModifyPet({ onGoBack }) {
 
             <Button className="self-center mt-4" type="submit">Modify Pet</Button>
         </Form> : <Spinner />}
-
-        {feedback && <Feedback feedback={feedback} />}
     </div>
 }
