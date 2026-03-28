@@ -102,5 +102,17 @@ React Router
 npm install react-router
 
 EXtensio VSCode
-===================
+========================================================================================
 image preview
+
+
+MONGO
+========================================================================================
+show databases
+use product
+show collections
+db.users.insertOne({})
+db.users.find()
+db.users.getIndexes()
+db.dropDatabase()
+

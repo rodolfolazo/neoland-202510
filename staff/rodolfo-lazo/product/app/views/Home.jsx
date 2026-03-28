@@ -5,16 +5,22 @@ import { Button } from './components/commons/Button'
 
 import { PetList } from './components/PetList'
 
+import { useContext } from '../context'
+
 import { logic } from '../logic'
 
-export function Home({ onGoToAddPet, onUserLoggedOut, onGoToProfile, onGoToPetDetail, onError }) {
-    console.log('Home -> call')
+import { logger } from '../logger'
+
+export function Home({ onGoToAddPet, onUserLoggedOut, onGoToProfile, onGoToPetDetail }) {
+    logger.debug('Home -> call')
+
+    const { onError } = useContext()
 
     const [name, setName] = useState(null)
     const [image, setImage] = useState('https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dWF6c2VwcTFwaWdtNXRoZm9mZXltaWVnaGZmNnI3NTU5M3hndGNsMSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/4X0i61SrJIyPe/giphy.gif')
 
     useEffect(() => {
-        console.log('Home -> useEffect')
+        logger.debug('Home -> useEffect')
 
         try {
             logic.getLoggedInUser()
@@ -54,7 +60,7 @@ export function Home({ onGoToAddPet, onUserLoggedOut, onGoToProfile, onGoToPetDe
 
     const handleGoToPetDetail = petId => onGoToPetDetail(petId)
 
-    console.log('Home -> render')
+    logger.debug('Home -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>
@@ -69,6 +75,6 @@ export function Home({ onGoToAddPet, onUserLoggedOut, onGoToProfile, onGoToPetDe
             <Button type="button" onClick={handleLogoutClick}>Logout</Button>
         </div>
 
-        <PetList onGoToPetDetail={handleGoToPetDetail} onError={onError} />
+        <PetList onGoToPetDetail={handleGoToPetDetail} />
     </div>
 } 

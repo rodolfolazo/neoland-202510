@@ -8,25 +8,29 @@ import { Button } from './components/commons/Button'
 import { Anchor } from './components/commons/Anchor'
 import { Spinner } from './components/Spinner'
 
+import { useContext } from '../context'
+
 import { logic } from '../logic'
 
-export function ModifyPet({ onGoBack, onError, onSuccess }) {
-    console.log('ModifyPet -> call')
+import { logger } from '../logger'
+
+export function ModifyPet({ onGoBack }) {
+    logger.debug('ModifyPet -> call')
+
+    const { onSuccess, onError } = useContext()
 
     const [pet, setPet] = useState(null)
 
     const { petId } = useParams()
 
     useEffect(() => {
-        setTimeout(() => {
-            try {
-                logic.getPet(petId)
-                    .then(pet => setPet(pet))
-                    .catch(error => onError(error))
-            } catch (error) {
-                onError(error)
-            }
-        }, 1000)
+        try {
+            logic.getPet(petId)
+                .then(pet => setPet(pet))
+                .catch(error => onError(error))
+        } catch (error) {
+            onError(error)
+        }
     }, [])
 
     const handleBackClick = event => {
@@ -54,7 +58,7 @@ export function ModifyPet({ onGoBack, onError, onSuccess }) {
         }
     }
 
-    console.log('ModifyPet -> render')
+    logger.debug('ModifyPet -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>
@@ -65,16 +69,23 @@ export function ModifyPet({ onGoBack, onError, onSuccess }) {
             <Anchor onClick={handleBackClick}>&lt; Back</Anchor>
         </div>
 
-        {pet ? <Form onSubmit={handleModifyPetSubmit}>
-            <Field alias="name" type="text" defaultValue={pet.name}>Name</Field>
+        {pet ? (() => {
+            const zuluDate = new Date(pet.birthdate)
+            const offsetMillis = zuluDate.getTimezoneOffset() * 60 * 1000
+            const localDate = new Date(zuluDate.getTime() - offsetMillis)
+            const locaDateString = localDate.toISOString().split('T')[0]
 
-            <Field alias="birthdate" type="date" defaultValue={pet.birthdate}>Birthdate</Field>
+            return <Form onSubmit={handleModifyPetSubmit}>
+                <Field alias="name" type="text" defaultValue={pet.name}>Name</Field>
 
-            <Field alias="weight" type="number" defaultValue={pet.weight} step="0.1">Weight (kg)</Field>
+                <Field alias="birthdate" type="date" defaultValue={locaDateString}>Birthdate</Field>
 
-            <Field alias="image" type="url" defaultValue={pet.image}>Image</Field>
+                <Field alias="weight" type="number" defaultValue={pet.weight} step="0.1">Weight (kg)</Field>
 
-            <Button className="self-center mt-4" type="submit">Modify Pet</Button>
-        </Form> : <Spinner />}
+                <Field alias="image" type="url" defaultValue={pet.image}>Image</Field>
+
+                <Button className="self-center mt-4" type="submit">Modify Pet</Button>
+            </Form>
+        })() : <Spinner />}
     </div>
 }

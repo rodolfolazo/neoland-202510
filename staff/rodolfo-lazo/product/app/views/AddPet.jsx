@@ -3,10 +3,16 @@ import { Field } from './components/commons/Field'
 import { Button } from './components/commons/Button'
 import { Anchor } from './components/commons/Anchor'
 
+import { useContext } from '../context'
+
 import { logic } from '../logic'
 
-export function AddPet({ onGoToHome, onError }) {
-    console.log('AddPet -> call')
+import { logger } from '../logger'
+
+export function AddPet({ onGoToHome }) {
+    logger.debug('AddPet -> call')
+
+    const { onError } = useContext()
 
     const handleBackClick = event => {
         event.preventDefault()
@@ -37,7 +43,7 @@ export function AddPet({ onGoToHome, onError }) {
         }
     }
 
-    console.log('AddPet -> render')
+    logger.debug('AddPet -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>
