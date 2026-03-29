@@ -2,16 +2,10 @@ import { Form } from './commons/Form'
 import { Field } from './commons/Field'
 import { Button } from './commons/Button'
 
-import { useContext } from '../../context'
-
 import { logic } from '../../logic'
 
-import { logger } from '../../logger'
-
-export function ChangeUserEmail() {
-    logger.debug('ChangeUserEmail -> call')
-
-    const { onSuccess, onError } = useContext()
+export function ChangeUserEmail({ onError, onSuccess }) {
+    console.log('ChangeUserEmail -> call')
 
     const handleChangeEmailSubmit = event => {
         event.preventDefault()
@@ -35,7 +29,7 @@ export function ChangeUserEmail() {
         }
     }
 
-    logger.debug('ChangeUserEmail -> render')
+    console.log('ChangeUserEmail -> render')
 
     return <div>
         <Form onSubmit={handleChangeEmailSubmit}>

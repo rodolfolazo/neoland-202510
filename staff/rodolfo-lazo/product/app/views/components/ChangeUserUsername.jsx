@@ -4,16 +4,10 @@ import { Form } from './commons/Form'
 import { Field } from './commons/Field'
 import { Button } from './commons/Button'
 
-import { useContext } from '../../context'
-
 import { logic } from '../../logic'
 
-import { logger } from '../../logger'
-
-export function ChangeUserUsername() {
-    logger.debug('ChangeUserUsername -> call')
-
-    const { onSuccess, onError } = useContext()
+export function ChangeUserUsername({ onError, onSuccess }) {
+    console.log('ChangeUserUsername -> call')
 
     const [username, setUsername] = useState('')
 
@@ -43,7 +37,7 @@ export function ChangeUserUsername() {
         }
     }
 
-    logger.debug('ChangeUserUsername -> render')
+    console.log('ChangeUserUsername -> render')
 
     return <div>
         <Form onSubmit={handleChangeNameSubmit}>

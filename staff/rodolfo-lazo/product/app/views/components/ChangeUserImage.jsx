@@ -4,16 +4,10 @@ import { Form } from './commons/Form'
 import { Field } from './commons/Field'
 import { Button } from './commons/Button'
 
-import { useContext } from '../../context'
-
 import { logic } from '../../logic'
 
-import { logger } from '../../logger'
-
-export function ChangeUserImage() {
-    logger.debug('ChangeUserImage -> call')
-
-    const { onSuccess, onError } = useContext()
+export function ChangeUserImage({ onError, onSuccess }) {
+    console.log('ChangeUserImage -> call')
 
     const [image, setImage] = useState('')
 
@@ -43,7 +37,7 @@ export function ChangeUserImage() {
         }
     }
 
-    logger.debug('ChangeUserImage -> render')
+    console.log('ChangeUserImage -> render')
 
     return <div>
         <Form onSubmit={handleChangeImageSubmit}>

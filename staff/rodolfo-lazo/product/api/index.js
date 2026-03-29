@@ -3,16 +3,18 @@ import cors from 'cors'
 import morganBody from 'morgan-body'
 import jwt from 'jsonwebtoken'
 
-import { logic } from './logic/index.js'
-import { DuplicityError, ExistenceError, OwnershipError, SystemError, ValidationError, CredentialError, AuthError } from 'com'
+import { logic } from './logic.js'
+import { DuplicityError, ExistenceError, OwnershipError, SystemError, ValidationError, CredentialError, AuthError } from './errors.js'
 
-import { connect } from './mongoose/index.js'
+import { database } from './models.js'
 
-connect(process.env.DB_URL)
+database.connect('mongodb://localhost:27017/product')
     .then(() => {
         console.log('DB connected')
 
         const { JsonWebTokenError } = jwt
+
+        const JWT_SECRET = 'a superman le puede la criptonita'
 
         const api = express()
 
@@ -48,7 +50,7 @@ connect(process.env.DB_URL)
 
                 logic.authenticateUser(username, password)
                     .then(userId => {
-                        const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET, { expiresIn: '1h' })
+                        const token = jwt.sign({ sub: userId }, JWT_SECRET, { expiresIn: '1h' })
 
                         res.json(token)
                     })
@@ -62,7 +64,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { email, newEmail, newEmailRepeat } = req.body
 
@@ -78,7 +80,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { password, newPassword, newPasswordRepeat } = req.body
 
@@ -94,7 +96,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 logic.getUser(userId)
                     .then(user => res.json(user))
@@ -108,7 +110,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { image } = req.body
 
@@ -124,7 +126,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { name } = req.body
 
@@ -140,7 +142,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { username } = req.body
 
@@ -156,7 +158,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { name, birthdate, weight, image } = req.body
 
@@ -172,7 +174,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 logic.getPets(userId)
                     .then(pets => res.json(pets))
@@ -186,7 +188,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { petId } = req.params
 
@@ -202,7 +204,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { petId } = req.params
 
@@ -218,7 +220,7 @@ connect(process.env.DB_URL)
             try {
                 const token = req.headers.authorization.slice(7)
 
-                const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
+                const { sub: userId } = jwt.verify(token, JWT_SECRET)
 
                 const { petId } = req.params
 
@@ -261,6 +263,6 @@ connect(process.env.DB_URL)
             res.status(status).json({ error: errorName, message })
         })
 
-        api.listen(process.env.PORT, () => console.log(`API listening on port ${process.env.PORT}`))
+        api.listen(8080, () => console.log('API listening on port 8080'))
     })
     .catch(error => console.error(error))

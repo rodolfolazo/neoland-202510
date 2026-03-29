@@ -8,16 +8,10 @@ import { Button } from './components/commons/Button'
 import { Anchor } from './components/commons/Anchor'
 import { Spinner } from './components/Spinner'
 
-import { useContext } from '../context'
-
 import { logic } from '../logic'
 
-import { logger } from '../logger'
-
-export function ModifyPet({ onGoBack }) {
-    logger.debug('ModifyPet -> call')
-
-    const { onSuccess, onError } = useContext()
+export function ModifyPet({ onGoBack, onError, onSuccess }) {
+    console.log('ModifyPet -> call')
 
     const [pet, setPet] = useState(null)
 
@@ -58,7 +52,7 @@ export function ModifyPet({ onGoBack }) {
         }
     }
 
-    logger.debug('ModifyPet -> render')
+    console.log('ModifyPet -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>

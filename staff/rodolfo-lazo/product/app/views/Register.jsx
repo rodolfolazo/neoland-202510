@@ -5,16 +5,10 @@ import { PasswordField } from './components/commons/PasswordField'
 import { Button } from './components/commons/Button'
 import { Anchor } from './components/commons/Anchor'
 
-import { useContext } from '../context'
-
 import { logic } from '../logic'
 
-import { logger } from '../logger'
-
-export function Register({ onGoToLogin }) {
-    logger.debug('Register -> call')
-
-    const { onError } = useContext()
+export function Register({ onGoToLogin, onError }) {
+    console.log('Register -> call')
 
     const handleRegisterSubmit = event => {
         event.preventDefault()
@@ -46,7 +40,7 @@ export function Register({ onGoToLogin }) {
         onGoToLogin()
     }
 
-    logger.debug('Register -> render')
+    console.log('Register -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>

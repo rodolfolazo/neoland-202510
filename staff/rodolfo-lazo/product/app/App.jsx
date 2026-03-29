@@ -11,15 +11,12 @@ import { Profile } from './views/Profile'
 import { PetDetail } from './views/PetDetail'
 import { ModifyPet } from './views/ModifyPet'
 import { Feedback } from './views/components/commons/Feedback'
-import { Context } from './context'
 
-import { AuthError, ValidationError, ExistenceError, DuplicityError, CredentialError } from 'com'
+import { AuthError, ValidationError, ExistenceError, DuplicityError, CredentialError } from './errors'
 import { logic } from './logic'
 
-import { logger } from './logger'
-
 export function App() {
-    logger.debug('App -> call')
+    console.log('App -> call')
 
     const [feedback, setFeedback] = useState(null)
     let loggedIn = false
@@ -52,8 +49,6 @@ export function App() {
     const handleGoToModifyPet = petId => clearFeedbackAndNavigate(`/pets/${petId}/edit`)
 
     const handleError = error => {
-        logger.error(error.toString())
-
         if (error instanceof AuthError) {
             try {
                 logic.logoutUser()
@@ -75,35 +70,29 @@ export function App() {
 
     const handleClear = () => setFeedback(null)
 
-    logger.debug('App -> render')
+    console.log('App -> render')
 
-    const contextValue = {
-        onSuccess: handleSuccess,
-        onError: handleError,
-        onClear: handleClear
-    }
-
-    return <Context.Provider value={contextValue}>
+    return <>
         {feedback && <Feedback feedback={feedback} />}
 
         <Routes>
             <Route path="/" element={!loggedIn ?
                 <Landing onGoToLogin={handleGoToLogin} onGoToRegister={handleGoToRegister} />
                 :
-                <Home onGoToAddPet={handleGoToAddPet} onUserLoggedOut={handleGoToLogin} onGoToProfile={handleGoToProfile} onGoToPetDetail={handleGoToPetDetail} />
+                <Home onGoToAddPet={handleGoToAddPet} onUserLoggedOut={handleGoToLogin} onGoToProfile={handleGoToProfile} onGoToPetDetail={handleGoToPetDetail} onError={handleError} />
             } />
 
-            <Route path="/login" element={!loggedIn ? <Login onUserLoggedIn={handleGoToHome} onGoToRegister={handleGoToRegister} /> : <Navigate to="/" />} />
+            <Route path="/login" element={!loggedIn ? <Login onUserLoggedIn={handleGoToHome} onGoToRegister={handleGoToRegister} onError={handleError} /> : <Navigate to="/" />} />
 
-            <Route path="/register" element={!loggedIn ? <Register onGoToLogin={handleGoToLogin} /> : <Navigate to="/" />} />
+            <Route path="/register" element={!loggedIn ? <Register onGoToLogin={handleGoToLogin} onError={handleError} /> : <Navigate to="/" />} />
 
-            <Route path="/add-pet" element={loggedIn ? <AddPet onGoToHome={handleGoToHome} /> : <Navigate to="/login" />} />
+            <Route path="/add-pet" element={loggedIn ? <AddPet onGoToHome={handleGoToHome} onError={handleError} /> : <Navigate to="/login" />} />
 
-            <Route path="/profile" element={loggedIn ? <Profile onGoToHome={handleGoToHome} /> : <Navigate to="/login" />} />
+            <Route path="/profile" element={loggedIn ? <Profile onGoToHome={handleGoToHome} onError={handleError} onSuccess={handleSuccess} onClear={handleClear} /> : <Navigate to="/login" />} />
 
             <Route path="/pets/:petId/detail" element={loggedIn ? <PetDetail onGoToHome={handleGoToHome} onGoToModifyPet={handleGoToModifyPet} /> : <Navigate to="/login" />} />
 
-            <Route path="/pets/:petId/edit" element={loggedIn ? <ModifyPet onGoBack={handleGoToPetDetail} /> : <Navigate to="/login" />} />
+            <Route path="/pets/:petId/edit" element={loggedIn ? <ModifyPet onGoBack={handleGoToPetDetail} onError={handleError} onSuccess={handleSuccess} /> : <Navigate to="/login" />} />
         </Routes>
-    </Context.Provider>
+    </>
 }
