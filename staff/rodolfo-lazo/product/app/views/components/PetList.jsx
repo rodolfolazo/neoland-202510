@@ -2,10 +2,16 @@ import { useState, useEffect } from 'react'
 
 import { Button } from './commons/Button'
 
+import { PetItem } from './PetItem'
+
+import { useContext } from '../../context'
+
 import { logic } from '../../logic'
 
-export function PetList({ onGoToPetDetail, onError }) {
+export function PetList({ onGoToPetDetail }) {
     console.log('PetList -> call')
+
+    const { onError } = useContext()
 
     const [pets, setPets] = useState([])
     const [petId, setPetId] = useState(null)
@@ -50,26 +56,11 @@ export function PetList({ onGoToPetDetail, onError }) {
         }
     }
 
-    const handleGoToPetDetailClick = petId => onGoToPetDetail(petId)
-
     console.log('PetList -> render')
 
     return <div>
         <ul className="flex flex-col gap-2 mt-2">
-            {pets.map(pet =>
-                <li className="flex items-center border-2 border-black p-2 justify-between" onClick={() => handleGoToPetDetailClick(pet.id)}>
-                    <div className="flex items-center gap-4">
-                        <img src={pet.image} className="rounded-full w-10 h-10 object-cover" />
-
-                        <p>{pet.name}</p>
-                    </div>
-
-                    <Button className="justify-self-end" onClick={event => {
-                        event.stopPropagation()
-
-                        handleRemovePetClick(pet.id)
-                    }}>🗑️</Button>
-                </li>)}
+            {pets.map(pet => <PetItem key={pet.id} pet={pet} onGoToPetDetail={onGoToPetDetail} onRemovePetClick={handleRemovePetClick} />)}
         </ul>
 
         {petId && <div className="w-full h-full fixed top-0 left-0 bg-black/75 flex justify-center items-center">

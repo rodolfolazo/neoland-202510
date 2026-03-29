@@ -5,10 +5,14 @@ import { Button } from './components/commons/Button'
 
 import { PetList } from './components/PetList'
 
+import { useContext } from '../context'
+
 import { logic } from '../logic'
 
-export function Home({ onGoToAddPet, onUserLoggedOut, onGoToProfile, onGoToPetDetail, onError }) {
+export function Home({ onGoToAddPet, onUserLoggedOut, onGoToProfile, onGoToPetDetail }) {
     console.log('Home -> call')
+
+    const { onError } = useContext()
 
     const [name, setName] = useState(null)
     const [image, setImage] = useState('https://media.giphy.com/media/v1.Y2lkPWVjZjA1ZTQ3dWF6c2VwcTFwaWdtNXRoZm9mZXltaWVnaGZmNnI3NTU5M3hndGNsMSZlcD12MV9naWZzX3NlYXJjaCZjdD1n/4X0i61SrJIyPe/giphy.gif')
@@ -69,6 +73,6 @@ export function Home({ onGoToAddPet, onUserLoggedOut, onGoToProfile, onGoToPetDe
             <Button type="button" onClick={handleLogoutClick}>Logout</Button>
         </div>
 
-        <PetList onGoToPetDetail={handleGoToPetDetail} onError={onError} />
+        <PetList onGoToPetDetail={handleGoToPetDetail} />
     </div>
 } 

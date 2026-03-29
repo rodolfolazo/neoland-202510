@@ -4,10 +4,14 @@ import { Form } from './commons/Form'
 import { Field } from './commons/Field'
 import { Button } from './commons/Button'
 
+import { useContext } from '../../context'
+
 import { logic } from '../../logic'
 
-export function ChangeUserImage({ onError, onSuccess }) {
+export function ChangeUserImage() {
     console.log('ChangeUserImage -> call')
+
+    const { onSuccess, onError } = useContext()
 
     const [image, setImage] = useState('')
 

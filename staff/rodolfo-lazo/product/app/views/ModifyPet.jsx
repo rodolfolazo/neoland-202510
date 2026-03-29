@@ -8,10 +8,14 @@ import { Button } from './components/commons/Button'
 import { Anchor } from './components/commons/Anchor'
 import { Spinner } from './components/Spinner'
 
+import { useContext } from '../context'
+
 import { logic } from '../logic'
 
-export function ModifyPet({ onGoBack, onError, onSuccess }) {
+export function ModifyPet({ onGoBack }) {
     console.log('ModifyPet -> call')
+
+    const { onSuccess, onError } = useContext()
 
     const [pet, setPet] = useState(null)
 

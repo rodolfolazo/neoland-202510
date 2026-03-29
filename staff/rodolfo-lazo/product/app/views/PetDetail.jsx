@@ -4,12 +4,16 @@ import { useParams } from 'react-router'
 
 import { Anchor } from './components/commons/Anchor'
 import { Button } from './components/commons/Button'
-
-import { logic } from '../logic'
 import { Spinner } from './components/Spinner'
 
-export function PetDetail({ onGoToHome, onGoToModifyPet, onError }) {
+import { useContext } from '../context'
+
+import { logic } from '../logic'
+
+export function PetDetail({ onGoToHome, onGoToModifyPet }) {
     console.log('PetDetail -> call')
+
+    const { onError } = useContext()
 
     const [pet, setPet] = useState(null)
 

@@ -4,10 +4,14 @@ import { Form } from './commons/Form'
 import { Field } from './commons/Field'
 import { Button } from './commons/Button'
 
+import { useContext } from '../../context'
+
 import { logic } from '../../logic'
 
-export function ChangeUserName({ onError, onSuccess }) {
+export function ChangeUserName() {
     console.log('ChangeUserName -> call')
+
+    const { onSuccess, onError } = useContext()
 
     const [name, setName] = useState('')
 

@@ -7,8 +7,12 @@ import { ChangeUserImage } from './components/ChangeUserImage'
 import { ChangeUserName } from './components/ChangeUserName'
 import { ChangeUserUsername } from './components/ChangeUserUsername'
 
-export function Profile({ onGoToHome, onError, onSuccess, onClear }) {
+import { useContext } from '../context'
+
+export function Profile({ onGoToHome }) {
     console.log('Profile -> call')
+
+    const { onClear } = useContext()
 
     const [view, setView] = useState(null)
 
@@ -72,14 +76,14 @@ export function Profile({ onGoToHome, onError, onSuccess, onClear }) {
             <li><Anchor onClick={handleImageClick}>Change image</Anchor></li>
         </ul>
 
-        {view === 'change-name' && <ChangeUserName onError={onError} onSuccess={onSuccess} />}
+        {view === 'change-name' && <ChangeUserName />}
 
-        {view === 'change-email' && <ChangeUserEmail onError={onError} onSuccess={onSuccess} />}
+        {view === 'change-email' && <ChangeUserEmail />}
 
-        {view === 'change-username' && <ChangeUserUsername onError={onError} onSuccess={onSuccess} />}
+        {view === 'change-username' && <ChangeUserUsername />}
 
-        {view === 'change-password' && <ChangeUserPassword onError={onError} onSuccess={onSuccess} />}
+        {view === 'change-password' && <ChangeUserPassword />}
 
-        {view === 'change-image' && <ChangeUserImage onError={onError} onSuccess={onSuccess} />}
+        {view === 'change-image' && <ChangeUserImage />}
     </div>
 }

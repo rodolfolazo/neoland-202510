@@ -1,7 +1,9 @@
+import bcrypt from 'bcryptjs'
+
 import { data, UserData, PetData } from './data.js'
 import { validate } from './validate.js'
 
-import { DuplicityError, ExistenceError, CredentialError, OwnershipError } from './errors.js'
+import { DuplicityError, ExistenceError, CredentialError, OwnershipError, SystemError } from './errors.js'
 
 class User {
     constructor(id, name, email, username, image, role) {
@@ -43,7 +45,11 @@ class Logic {
             .then(userData => {
                 if (userData !== null) throw new DuplicityError('user username already exists')
 
-                userData = new UserData(null, name, email, username, password, null, 'regular')
+                return bcrypt.hash(password, 10)
+                    .catch(error => { throw new SystemError(error.message) })
+            })
+            .then(hash => {
+                const userData = new UserData(null, name, email, username, hash, null, 'regular')
 
                 return data.insertUser(userData)
             })
@@ -57,9 +63,13 @@ class Logic {
             .then(userData => {
                 if (userData === null) throw new ExistenceError('user not found')
 
-                if (userData.password !== password) throw new CredentialError('incorrect password')
+                return bcrypt.compare(password, userData.password)
+                    .catch(error => { throw new SystemError(error.message) })
+                    .then(match => {
+                        if (!match) throw new CredentialError('incorrect password')
 
-                return userData.id
+                        return userData.id
+                    })
             })
     }
 
