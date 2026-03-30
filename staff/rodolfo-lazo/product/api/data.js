@@ -79,6 +79,12 @@ class Data {
             .then(userModel => { })
     }
 
+    deleteAllUsers() {
+        return UserModel.deleteMany()
+            .catch(error => { throw new SystemError(error.message) })
+            .then(result => { })
+    }
+
     insertPet(petData) {
         const { ownerId, name, birthdate, weight, image } = petData
 
@@ -121,6 +127,12 @@ class Data {
 
     deletePet(petId) {
         return PetModel.deleteOne({ _id: petId })
+            .catch(error => { throw new SystemError(error.message) })
+            .then(result => { })
+    }
+
+    deleteAllPets() {
+        return PetModel.deleteMany()
             .catch(error => { throw new SystemError(error.message) })
             .then(result => { })
     }
