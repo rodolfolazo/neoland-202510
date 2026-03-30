@@ -9,8 +9,10 @@ import { ChangeUserUsername } from './components/ChangeUserUsername'
 
 import { useContext } from '../context'
 
+import { logger } from '../logger'
+
 export function Profile({ onGoToHome }) {
-    console.log('Profile -> call')
+    logger.debug('Profile -> call')
 
     const { onClear } = useContext()
 
@@ -57,7 +59,7 @@ export function Profile({ onGoToHome }) {
         setView('change-image')
     }
 
-    console.log('Profile -> render')
+    logger.debug('Profile -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>

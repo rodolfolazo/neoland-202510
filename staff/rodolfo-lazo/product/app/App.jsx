@@ -16,8 +16,10 @@ import { Context } from './context'
 import { AuthError, ValidationError, ExistenceError, DuplicityError, CredentialError } from './errors'
 import { logic } from './logic'
 
+import { logger } from './logger'
+
 export function App() {
-    console.log('App -> call')
+    logger.debug('App -> call')
 
     const [feedback, setFeedback] = useState(null)
     let loggedIn = false
@@ -50,6 +52,8 @@ export function App() {
     const handleGoToModifyPet = petId => clearFeedbackAndNavigate(`/pets/${petId}/edit`)
 
     const handleError = error => {
+        logger.error(error.toString())
+
         if (error instanceof AuthError) {
             try {
                 logic.logoutUser()
@@ -71,7 +75,7 @@ export function App() {
 
     const handleClear = () => setFeedback(null)
 
-    console.log('App -> render')
+    logger.debug('App -> render')
 
     const contextValue = {
         onSuccess: handleSuccess,

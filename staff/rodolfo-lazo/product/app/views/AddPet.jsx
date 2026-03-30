@@ -7,8 +7,10 @@ import { useContext } from '../context'
 
 import { logic } from '../logic'
 
+import { logger } from '../logger'
+
 export function AddPet({ onGoToHome }) {
-    console.log('AddPet -> call')
+    logger.debug('AddPet -> call')
 
     const { onError } = useContext()
 
@@ -41,7 +43,7 @@ export function AddPet({ onGoToHome }) {
         }
     }
 
-    console.log('AddPet -> render')
+    logger.debug('AddPet -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>

@@ -1,13 +1,15 @@
 import { Button } from './commons/Button'
 
+import { logger } from '../../logger'
+
 export function PetItem({ pet, onGoToPetDetail, onRemovePetClick }) {
-    console.log('PetItem -> call')
+    logger.debug('PetItem -> call')
 
     const handleGoToPetDetailClick = petId => onGoToPetDetail(petId)
 
     const handleRemovePetClick = petId => onRemovePetClick(petId)
 
-    console.log('PetItem -> render')
+    logger.debug('PetItem -> render')
 
     return <li className="flex items-center border-2 border-black p-2 justify-between" onClick={() => handleGoToPetDetailClick(pet.id)}>
         <div className="flex items-center gap-4">

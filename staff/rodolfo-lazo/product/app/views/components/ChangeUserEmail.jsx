@@ -6,8 +6,10 @@ import { useContext } from '../../context'
 
 import { logic } from '../../logic'
 
+import { logger } from '../../logger'
+
 export function ChangeUserEmail() {
-    console.log('ChangeUserEmail -> call')
+    logger.debug('ChangeUserEmail -> call')
 
     const { onSuccess, onError } = useContext()
 
@@ -33,7 +35,7 @@ export function ChangeUserEmail() {
         }
     }
 
-    console.log('ChangeUserEmail -> render')
+    logger.debug('ChangeUserEmail -> render')
 
     return <div>
         <Form onSubmit={handleChangeEmailSubmit}>

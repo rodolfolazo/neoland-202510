@@ -6,8 +6,10 @@ import { useContext } from '../../context'
 
 import { logic } from '../../logic'
 
+import { logger } from '../../logger'
+
 export function ChangeUserPassword() {
-    console.log('ChangeUserPassword -> call')
+    logger.debug('ChangeUserPassword -> call')
 
     const { onSuccess, onError } = useContext()
 
@@ -33,7 +35,7 @@ export function ChangeUserPassword() {
         }
     }
 
-    console.log('ChangeUserPassword -> render')
+    logger.debug('ChangeUserPassword -> render')
 
     return <div>
         <Form onSubmit={handleChangePasswordSubmit}>

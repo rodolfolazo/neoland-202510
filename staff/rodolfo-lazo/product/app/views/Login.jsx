@@ -9,8 +9,10 @@ import { useContext } from '../context'
 
 import { logic } from '../logic'
 
+import { logger } from '../logger'
+
 export function Login({ onUserLoggedIn, onGoToRegister }) {
-    console.log('Login -> call')
+    logger.debug('Login -> call')
 
     const { onError } = useContext()
 
@@ -37,7 +39,7 @@ export function Login({ onUserLoggedIn, onGoToRegister }) {
         onGoToRegister()
     }
 
-    console.log('Login -> render')
+    logger.debug('Login -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>

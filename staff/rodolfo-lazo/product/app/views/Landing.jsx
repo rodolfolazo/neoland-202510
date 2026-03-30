@@ -1,7 +1,9 @@
 import { Anchor } from './components/commons/Anchor'
 
+import { logger } from '../logger'
+
 export function Landing({ onGoToLogin, onGoToRegister }) {
-    console.log('Landing -> call')
+    logger.debug('Landing -> call')
 
     const handleLoginClick = event => {
         event.preventDefault()
@@ -15,7 +17,7 @@ export function Landing({ onGoToLogin, onGoToRegister }) {
         onGoToRegister()
     }
 
-    console.log('Landing -> render')
+    logger.debug('Landing -> render')
 
     return <div className="p-4">
         <h1 className="font-bold text-xl">MyPet</h1>

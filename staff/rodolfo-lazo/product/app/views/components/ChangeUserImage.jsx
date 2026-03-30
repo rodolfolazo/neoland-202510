@@ -8,8 +8,10 @@ import { useContext } from '../../context'
 
 import { logic } from '../../logic'
 
+import { logger } from '../../logger'
+
 export function ChangeUserImage() {
-    console.log('ChangeUserImage -> call')
+    logger.debug('ChangeUserImage -> call')
 
     const { onSuccess, onError } = useContext()
 
@@ -41,7 +43,7 @@ export function ChangeUserImage() {
         }
     }
 
-    console.log('ChangeUserImage -> render')
+    logger.debug('ChangeUserImage -> render')
 
     return <div>
         <Form onSubmit={handleChangeImageSubmit}>

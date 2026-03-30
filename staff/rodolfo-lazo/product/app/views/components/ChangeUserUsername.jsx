@@ -8,8 +8,10 @@ import { useContext } from '../../context'
 
 import { logic } from '../../logic'
 
+import { logger } from '../../logger'
+
 export function ChangeUserUsername() {
-    console.log('ChangeUserUsername -> call')
+    logger.debug('ChangeUserUsername -> call')
 
     const { onSuccess, onError } = useContext()
 
@@ -41,7 +43,7 @@ export function ChangeUserUsername() {
         }
     }
 
-    console.log('ChangeUserUsername -> render')
+    logger.debug('ChangeUserUsername -> render')
 
     return <div>
         <Form onSubmit={handleChangeNameSubmit}>
