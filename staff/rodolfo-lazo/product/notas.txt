@@ -116,3 +116,7 @@ db.users.find()
 db.users.getIndexes()
 db.dropDatabase()
 
+COM
+========================================================================================
+npm install ../com
+npm i ../com
