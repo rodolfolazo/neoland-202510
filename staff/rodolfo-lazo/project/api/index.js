@@ -1,0 +1,197 @@
+import express from "express";
+import cors from "cors";
+import morganBody from "morgan-body";
+import jwt from "jsonwebtoken";
+
+import { logic } from "./logic.js";
+
+import {
+  DuplicityError,
+  ExistenceError,
+  OwnershipError,
+  SystemError,
+  ValidationError,
+  CredentialError,
+  AuthError,
+} from "com";
+
+import { database } from "./models.js";
+
+database
+  .connect(process.env.DB_URL)
+  .then(() => {
+    console.log("DB connected");
+
+    const { JsonWebTokenError } = jwt;
+
+    const api = express();
+
+    const jsonBodyParser = express.json();
+
+    api.use(cors());
+    api.use(jsonBodyParser);
+
+    morganBody(api, {
+      logAllReqHeader: true,
+      logAllResHeader: true,
+    });
+
+    api.get("/", (req, res) => res.json({ message: "Crypto API running 👌" }));
+
+    api.post("/users", (req, res, next) => {
+      try {
+        const { name, email, username, password, passwordRepeat, image } =
+          req.body;
+
+        logic
+          .registerUser(name, email, username, password, passwordRepeat, image)
+          .then(() => res.status(201).send())
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.post("/users/auth", (req, res, next) => {
+      try {
+        const { username, password } = req.body;
+
+        logic
+          .authenticateUser(username, password)
+          .then((userId) => {
+            const token = jwt.sign({ sub: userId }, process.env.JWT_SECRET);
+
+            res.json(token);
+          })
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.get("/users/me", (req, res, next) => {
+      try {
+        const token = req.headers.authorization.slice(7);
+        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
+
+        logic
+          .getUser(userId)
+          .then((user) => res.json(user))
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.get("/portfolio", (req, res, next) => {
+      try {
+        const token = req.headers.authorization.slice(7);
+        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
+
+        logic
+          .getPortfolio(userId)
+          .then((portfolio) => res.json(portfolio))
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.post("/transactions", (req, res, next) => {
+      try {
+        const token = req.headers.authorization.slice(7);
+        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
+
+        const { symbol, type, quantity, price } = req.body;
+
+        logic
+          .addTransaction(userId, symbol, type, quantity, price)
+          .then(() => res.status(201).send())
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.get("/transactions", (req, res, next) => {
+      try {
+        const token = req.headers.authorization.slice(7);
+        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
+
+        logic
+          .getTransactions(userId)
+          .then((transactions) => res.json(transactions))
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.put("/transactions/:id", (req, res, next) => {
+      try {
+        const auth = req.headers.authorization;
+        if (!auth || !auth.startsWith("Bearer ")) throw new AuthError();
+
+        const { sub: userId } = jwt.verify(
+          auth.slice(7),
+          process.env.JWT_SECRET,
+        );
+
+        logic
+          .updateTransaction(userId, req.params.id, req.body)
+          .then(() => res.status(204).send())
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.delete("/transactions/:id", (req, res, next) => {
+      try {
+        const auth = req.headers.authorization;
+        if (!auth || !auth.startsWith("Bearer ")) throw new AuthError();
+
+        const { sub: userId } = jwt.verify(
+          auth.slice(7),
+          process.env.JWT_SECRET,
+        );
+
+        logic
+          .deleteTransaction(userId, req.params.id)
+          .then(() => res.status(204).send())
+          .catch(next);
+      } catch (error) {
+        next(error);
+      }
+    });
+
+    api.use((error, req, res, next) => {
+      let status = 500;
+      let errorName = error.constructor.name;
+      let { message } = error;
+
+      if (error instanceof ValidationError) status = 400;
+      else if (error instanceof DuplicityError) status = 409;
+      else if (error instanceof ExistenceError) status = 404;
+      else if (error instanceof CredentialError) status = 401;
+      else if (error instanceof OwnershipError) status = 403;
+      else if (error instanceof JsonWebTokenError) {
+        status = 401;
+        errorName = AuthError.name;
+      } else if (
+        error instanceof SyntaxError &&
+        error.message.includes("token")
+      ) {
+        status = 401;
+        errorName = AuthError.name;
+        message = "invalid json payload in token";
+      } else errorName = SystemError.name;
+
+      res.status(status).json({ error: errorName, message });
+    });
+
+    api.listen(process.env.PORT, () =>
+      console.log(`API listening on port ${process.env.PORT}`),
+    );
+  })
+  .catch((error) => console.error(error));
