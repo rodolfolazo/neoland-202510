@@ -1,3 +1,4 @@
+
 import { SystemError } from "com";
 import { UserModel, PortfolioModel, TransactionModel } from "./models.js";
 
@@ -97,57 +98,6 @@ class Data {
       .then(() => {});
   }
 
-  findPortfolioByUserId(userId) {
-    return PortfolioModel.find({ userId })
-      .catch((error) => {
-        throw new SystemError(error.message);
-      })
-      .then((models) =>
-        models.map(
-          ({ id, userId, symbol, quantity }) =>
-            new PortfolioData(id, userId.toString(), symbol, quantity),
-        ),
-      );
-  }
-
-  findPortfolioItem(userId, symbol) {
-    return PortfolioModel.findOne({ userId, symbol })
-      .catch((error) => {
-        throw new SystemError(error.message);
-      })
-      .then((model) => {
-        if (!model) return null;
-
-        const { id, userId, symbol, quantity } = model;
-
-        return new PortfolioData(id, userId.toString(), symbol, quantity);
-      });
-  }
-
-  updatePortfolio(userId, symbol, quantityChange) {
-    return PortfolioModel.updateOne(
-      { userId, symbol },
-      { $inc: { quantity: quantityChange } },
-      { upsert: true },
-    )
-      .catch((error) => {
-        throw new SystemError(error.message);
-      })
-      .then(() => {});
-  }
-
-  deletePortfolioIfZero(userId, symbol) {
-    return PortfolioModel.deleteOne({
-      userId,
-      symbol,
-      quantity: { $lte: 0 },
-    })
-      .catch((error) => {
-        throw new SystemError(error.message);
-      })
-      .then(() => {});
-  }
-
   insertTransaction(transactionData) {
     const { userId, symbol, type, quantity, price, value, executedAt } =
       transactionData;
@@ -170,14 +120,36 @@ class Data {
       .then(() => {});
   }
 
+  findTransactionById(transactionId) {
+    return TransactionModel.findById(transactionId)
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then((transactionModel) => {
+        if (!transactionModel) return null;
+        const { id, userId, symbol, type, quantity, price, value, executedAt } =
+          transactionModel;
+        return new TransactionData(
+          id,
+          userId.toString(),
+          symbol,
+          type,
+          quantity,
+          price,
+          value,
+          executedAt,
+        );
+      });
+  }
+
   findTransactionsByUserId(userId) {
     return TransactionModel.find({ userId })
       .sort({ createdAt: -1 })
       .catch((error) => {
         throw new SystemError(error.message);
       })
-      .then((models) =>
-        models.map(
+      .then((transactionDatas) =>
+        transactionDatas.map(
           ({ id, userId, symbol, type, quantity, price, value, executedAt }) =>
             new TransactionData(
               id,
@@ -193,36 +165,104 @@ class Data {
       );
   }
 
-  deletePortfolioByUserId(userId) {
-    return PortfolioModel.deleteMany({ userId }).catch((error) => {
-      throw new SystemError(error.message);
-    });
+  findTransactionsBySymbol(userId, symbol) {
+    return TransactionModel.find({ userId, symbol })
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then((transactionDatas) =>
+        transactionDatas.map(
+          ({ id, userId, symbol, type, quantity, price, value, executedAt }) =>
+            new TransactionData(
+              id,
+              userId.toString(),
+              symbol,
+              type,
+              quantity,
+              price,
+              value,
+              executedAt,
+            ),
+        ),
+      );
   }
 
-  upsertPortfolio(userId, symbol, quantity) {
-    return PortfolioModel.updateOne(
-      { userId, symbol },
-      { $inc: { quantity } },
-      { upsert: true },
-    ).catch((error) => {
-      throw new SystemError(error.message);
-    });
-  }
-
-  updateTransaction(transactionId, updates) {
-    return TransactionModel.findByIdAndUpdate(
-      transactionId,
-      { $set: updates },
-      { new: true },
-    ).catch((error) => {
-      throw new SystemError(error.message);
-    });
+  updateTransaction(transactionData) {
+    return TransactionModel.updateOne(
+      { _id: transactionData.id },
+      { $set: transactionData },
+    )
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
   }
 
   deleteTransaction(transactionId) {
-    return TransactionModel.findByIdAndDelete(transactionId).catch((error) => {
-      throw new SystemError(error.message);
-    });
+    return TransactionModel.deleteOne({ _id: transactionId })
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
+  }
+
+  findPortfoliosByUserId(userId) {
+    return PortfolioModel.find({ userId })
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then((portfolioModel) =>
+        portfolioModel.map(
+          ({ id, userId, symbol, quantity }) =>
+            new PortfolioData(id, userId.toString(), symbol, quantity),
+        ),
+      );
+  }
+
+  findPortfolio(userId, symbol) {
+    return PortfolioModel.findOne({ userId, symbol })
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then((portfolioModel) => {
+        if (!portfolioModel) return null;
+
+        const { id, userId, symbol, quantity } = portfolioModel;
+
+        return new PortfolioData(id, userId.toString(), symbol, quantity);
+      });
+  }
+
+  updatePortfolio(userId, symbol, quantityChange) {
+    return PortfolioModel.updateOne(
+      { userId, symbol },
+      { $inc: { quantity: quantityChange } },
+      { upsert: true },
+    )
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
+  }
+
+  deletePortfolioByUserId(userId) {
+    return PortfolioModel.deleteMany({ userId })
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
+  }
+
+  deletePortfolioIfZero(userId, symbol) {
+    return PortfolioModel.deleteOne({
+      userId,
+      symbol,
+      quantity: { $lte: 0 },
+    })
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
   }
 }
 
