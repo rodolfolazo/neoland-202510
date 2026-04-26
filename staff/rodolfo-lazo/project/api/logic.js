@@ -1,6 +1,6 @@
 import bcrypt from "bcryptjs";
 
-import { data, UserData, PortfolioData, TransactionData } from "./data.js";
+import { data, UserData, TransactionData } from "./data.js";
 
 import {
   validate,
@@ -120,12 +120,13 @@ class Logic {
     });
   }
 
-  addTransaction(userId, symbol, type, quantity, price) {
+  addTransaction(userId, symbol, type, quantity, price, date) {
     validate.id(userId, "userId");
     validate.ticker(symbol, "symbol");
     validate.type(type, "type");
     validate.number(quantity, "quantity");
     validate.number(price, "price");
+    validate.date(date, "date");
 
     if (!["BUY", "SELL"].includes(type))
       throw new ValidationError("invalid transaction type");
@@ -155,7 +156,7 @@ class Logic {
           quantity,
           price,
           value,
-          new Date(),
+          date,
         );
 
         return data

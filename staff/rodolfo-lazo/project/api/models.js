@@ -125,7 +125,7 @@ const transactionSchema = new Schema(
 );
 
 transactionSchema.index({ userId: 1, createdAt: -1 });
-transactionSchema.index({ symbol: 1 });
+transactionSchema.index({ symbol: 1, createdAt: -1 });
 
 export const UserModel = model("User", userSchema);
 export const PortfolioModel = model("Portfolio", portfolioSchema);

@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import morganBody from "morgan-body";
 import jwt from "jsonwebtoken";
-import { startMarketWS, addSubscriber } from "./services/market.service.js";
-import { notifyUserRegistered } from "./services/notification.service.js";
+//import { notifyUserRegistered } from "./services/notification.service.js";
+import { startPriceUpdater, getPrices } from "./services/priceService.js";
 
 import { logic } from "./logic.js";
 
@@ -24,7 +24,7 @@ database
   .then(() => {
     console.log("DB connected");
 
-    //startMarketWS();
+    startPriceUpdater();
 
     const { JsonWebTokenError } = jwt;
 
@@ -94,10 +94,10 @@ database
         const token = req.headers.authorization.slice(7);
         const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
 
-        const { symbol, type, quantity, price } = req.body;
+        const { symbol, type, quantity, price, date } = req.body;
 
         logic
-          .addTransaction(userId, symbol, type, quantity, price)
+          .addTransaction(userId, symbol, type, quantity, price, date)
           .then(() => res.status(201).send())
           .catch(next);
       } catch (error) {
@@ -210,33 +210,16 @@ database
       }
     });
 
-    api.get("/market/stream", (req, res) => {
+    api.get("/prices", (req, res, next) => {
       try {
-        res.setHeader("Content-Type", "text/event-stream");
-        res.setHeader("Cache-Control", "no-cache");
-        res.setHeader("Connection", "keep-alive");
+        const token = req.headers.authorization.slice(7);
+        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
 
-        res.flushHeaders();
-
-        const symbolsQuery = req.query.symbols;
-        const symbols = symbolsQuery
-          ? symbolsQuery.split(",").map((s) => s.trim().toUpperCase())
-          : null;
-
-        addSubscriber(res, symbols);
-
-        res.write(`data: ${JSON.stringify({ connected: true })}\n\n`);
-
-        const interval = setInterval(() => {
-          res.write(`: ping\n\n`);
-        }, 15000);
-
-        res.on("close", () => {
-          clearInterval(interval);
-          res.end();
-        });
+        getPrices(userId)
+          .then(({ data, lastUpdate }) => res.json({ data, lastUpdate }))
+          .catch(next);
       } catch (error) {
-        res.end();
+        next(error);
       }
     });
 

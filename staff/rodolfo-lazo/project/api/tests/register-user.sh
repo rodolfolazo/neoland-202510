@@ -1,0 +1,1 @@
+curl -H 'Content-Type: application/json' -d '{"name":"An Drew","email":"an@drew.com","username":"andrew","password":"123123123","passwordRepeat":"123123123", "image":"https://www.colombiainforma.info/wp-content/uploads/2018/03/Mafalda_portada.jpg"}' http://localhost:8080/users -v

@@ -1,4 +1,3 @@
-
 import { SystemError } from "com";
 import { UserModel, PortfolioModel, TransactionModel } from "./models.js";
 
@@ -167,6 +166,7 @@ class Data {
 
   findTransactionsBySymbol(userId, symbol) {
     return TransactionModel.find({ userId, symbol })
+      .sort({ createdAt: -1 })
       .catch((error) => {
         throw new SystemError(error.message);
       })
