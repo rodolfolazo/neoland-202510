@@ -259,7 +259,15 @@ class Logic {
       });
   }
 
-  updateTransaction(userId, transactionId, symbol, type, quantity, price) {
+  updateTransaction(
+    userId,
+    transactionId,
+    symbol,
+    type,
+    quantity,
+    price,
+    date,
+  ) {
     validate.id(userId);
     validate.id(transactionId);
 
@@ -286,7 +294,7 @@ class Logic {
             quantity,
             price,
             value,
-            new Date(),
+            date,
           ),
         );
       })

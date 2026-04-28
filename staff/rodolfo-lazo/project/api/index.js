@@ -159,7 +159,7 @@ database
 
         const { transactionId } = req.params;
 
-        const { symbol, type, quantity, price } = req.body;
+        const { symbol, type, quantity, price, date } = req.body;
 
         logic
           .updateTransaction(
