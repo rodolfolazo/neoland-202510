@@ -33,7 +33,17 @@ export class Portfolio {
 }
 
 export class Transaction {
-  constructor(id, userId, symbol, type, quantity, price, value, executedAt) {
+  constructor(
+    id,
+    userId,
+    symbol,
+    type,
+    quantity,
+    price,
+    value,
+    executedAt,
+    balanceAfter,
+  ) {
     this.id = id;
     this.userId = userId;
     this.symbol = symbol;
@@ -42,18 +52,12 @@ export class Transaction {
     this.price = price;
     this.value = value;
     this.executedAt = executedAt;
+    this.balanceAfter = balanceAfter;
   }
 }
 
 class Logic {
-  registerUser(
-    name,
-    email,
-    username,
-    password,
-    passwordRepeat,
-    image = "https://cdn-icons-png.flaticon.com/512/9187/9187604.png",
-  ) {
+  registerUser(name, email, username, password, passwordRepeat, image) {
     validate.name(name);
     validate.email(email, "email");
     validate.username(username);
@@ -115,7 +119,6 @@ class Logic {
       if (!userData) throw new ExistenceError("user not found");
 
       const { name, email, username, image, role } = userData;
-
       return new User(userId, name, email, username, image, role);
     });
   }
@@ -131,45 +134,27 @@ class Logic {
     if (!["BUY", "SELL"].includes(type))
       throw new ValidationError("invalid transaction type");
 
-    return data
-      .findUserById(userId)
-      .then((userData) => {
-        if (!userData) throw new ExistenceError("user not found");
+    return data.findUserById(userId).then((userData) => {
+      if (!userData) throw new ExistenceError("user not found");
 
-        return data.findPortfolio(userId, symbol);
-      })
-      .then((portfolioData) => {
-        if (type === "SELL") {
-          const currentQuantity = portfolioData ? portfolioData.quantity : 0;
+      const value = quantity * price;
 
-          if (quantity > currentQuantity)
-            throw new ValidationError("not enough balance");
-        }
+      const tx = new TransactionData(
+        null,
+        userId,
+        symbol,
+        type,
+        quantity,
+        price,
+        value,
+        date,
+        null,
+      );
 
-        const value = quantity * price;
-
-        const transactionData = new TransactionData(
-          null,
-          userId,
-          symbol,
-          type,
-          quantity,
-          price,
-          value,
-          date,
-        );
-
-        return data
-          .insertTransaction(transactionData)
-          .then(() => {
-            const change = type === "BUY" ? quantity : -quantity;
-
-            return data.updatePortfolio(userId, symbol, change);
-          })
-          .then(() => {
-            return data.deletePortfolioIfZero(userId, symbol);
-          });
-      });
+      return data
+        .insertTransaction(tx)
+        .then(() => data.rebuildPortfolio(userId));
+    });
   }
 
   getTransactions(userId) {
@@ -179,12 +164,21 @@ class Logic {
       .findUserById(userId)
       .then((user) => {
         if (!user) throw new ExistenceError("user not found");
-
         return data.findTransactionsByUserId(userId);
       })
       .then((items) =>
         items.map(
-          ({ id, userId, symbol, type, quantity, price, value, executedAt }) =>
+          ({
+            id,
+            userId,
+            symbol,
+            type,
+            quantity,
+            price,
+            value,
+            executedAt,
+            balanceAfter,
+          }) =>
             new Transaction(
               id,
               userId,
@@ -194,6 +188,7 @@ class Logic {
               price,
               value,
               executedAt,
+              balanceAfter,
             ),
         ),
       );
@@ -207,12 +202,21 @@ class Logic {
       .findUserById(userId)
       .then((userData) => {
         if (!userData) throw new ExistenceError("user not found");
-
         return data.findTransactionsBySymbol(userId, symbol);
       })
-      .then((transactionDatas) => {
-        return transactionDatas.map(
-          ({ id, symbol, type, quantity, price, value, executedAt }) =>
+      .then((items) =>
+        items.map(
+          ({
+            id,
+            userId,
+            symbol,
+            type,
+            quantity,
+            price,
+            value,
+            executedAt,
+            balanceAfter,
+          }) =>
             new Transaction(
               id,
               userId,
@@ -222,9 +226,10 @@ class Logic {
               price,
               value,
               executedAt,
+              balanceAfter,
             ),
-        );
-      });
+        ),
+      );
   }
 
   getTransaction(userId, transactionId) {
@@ -235,16 +240,23 @@ class Logic {
       .findUserById(userId)
       .then((userData) => {
         if (!userData) throw new ExistenceError("user not found");
-
         return data.findTransactionById(transactionId);
       })
-      .then((transactionData) => {
-        if (!transactionData) throw new ExistenceError("transaction not found");
-        if (transactionData.userId !== userId)
+      .then((tx) => {
+        if (!tx) throw new ExistenceError("transaction not found");
+        if (tx.userId !== userId)
           throw new OwnershipError("user not owner of transaction");
 
-        const { id, symbol, type, quantity, price, value, executedAt } =
-          transactionData;
+        const {
+          id,
+          symbol,
+          type,
+          quantity,
+          price,
+          value,
+          executedAt,
+          balanceAfter,
+        } = tx;
 
         return new Transaction(
           id,
@@ -255,6 +267,7 @@ class Logic {
           price,
           value,
           executedAt,
+          balanceAfter,
         );
       });
   }
@@ -275,30 +288,31 @@ class Logic {
       .findUserById(userId)
       .then((userData) => {
         if (!userData) throw new ExistenceError("user not found");
-
         return data.findTransactionById(transactionId);
       })
-      .then((transactionData) => {
-        if (!transactionData) throw new ExistenceError("transaction not found");
-        if (transactionData.userId !== userId)
+      .then((tx) => {
+        if (!tx) throw new ExistenceError("transaction not found");
+        if (tx.userId !== userId)
           throw new OwnershipError("user not owner of transaction");
 
         const value = quantity * price;
 
-        return data.updateTransaction(
-          new TransactionData(
-            transactionId,
-            userId,
-            symbol,
-            type,
-            quantity,
-            price,
-            value,
-            date,
-          ),
+        const updated = new TransactionData(
+          transactionId,
+          userId,
+          symbol,
+          type,
+          quantity,
+          price,
+          value,
+          date,
+          null,
         );
-      })
-      .then(() => this.rebuildPortfolio(userId));
+
+        return data
+          .updateTransaction(updated)
+          .then(() => data.rebuildPortfolio(userId));
+      });
   }
 
   deleteTransaction(userId, transactionId) {
@@ -311,13 +325,15 @@ class Logic {
         if (!userData) throw new ExistenceError("user not found");
         return data.findTransactionById(transactionId);
       })
-      .then((transactionData) => {
-        if (!transactionData) throw new ExistenceError("transaction not found");
-        if (transactionData.userId !== userId)
+      .then((tx) => {
+        if (!tx) throw new ExistenceError("transaction not found");
+        if (tx.userId !== userId)
           throw new OwnershipError("user not owner of transaction");
-        return data.deleteTransaction(transactionId);
-      })
-      .then(() => this.rebuildPortfolio(userId));
+
+        return data
+          .deleteTransaction(transactionId)
+          .then(() => data.rebuildPortfolio(userId));
+      });
   }
 
   getPortfolios(userId) {
@@ -327,11 +343,10 @@ class Logic {
       .findUserById(userId)
       .then((user) => {
         if (!user) throw new ExistenceError("user not found");
-
         return data.findPortfoliosByUserId(userId);
       })
-      .then((portfolioDatas) =>
-        portfolioDatas.map(
+      .then((items) =>
+        items.map(
           ({ id, userId, symbol, quantity }) =>
             new Portfolio(id, userId, symbol, quantity),
         ),
@@ -339,26 +354,7 @@ class Logic {
   }
 
   rebuildPortfolio(userId) {
-    return data
-      .findTransactionsByUserId(userId)
-      .then((transactionDatas) => {
-        return data
-          .deletePortfolioByUserId(userId)
-          .then(() => transactionDatas);
-      })
-      .then((transactionDatas) => {
-        const ops = [];
-        for (const transactionData of transactionDatas) {
-          const change =
-            transactionData.type === "BUY"
-              ? transactionData.quantity
-              : -transactionData.quantity;
-          ops.push(
-            data.updatePortfolio(userId, transactionData.symbol, change),
-          );
-        }
-        return Promise.all(ops);
-      });
+    return data.rebuildPortfolio(userId);
   }
 }
 

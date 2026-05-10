@@ -1,4 +1,4 @@
-import { SystemError } from "com";
+import { SystemError, ValidationError } from "com";
 import { UserModel, PortfolioModel, TransactionModel } from "./models.js";
 
 export class UserData {
@@ -23,7 +23,17 @@ export class PortfolioData {
 }
 
 export class TransactionData {
-  constructor(id, userId, symbol, type, quantity, price, value, executedAt) {
+  constructor(
+    id,
+    userId,
+    symbol,
+    type,
+    quantity,
+    price,
+    value,
+    executedAt,
+    balanceAfter,
+  ) {
     this.id = id;
     this.userId = userId;
     this.symbol = symbol;
@@ -32,6 +42,7 @@ export class TransactionData {
     this.price = price;
     this.value = value;
     this.executedAt = executedAt;
+    this.balanceAfter = balanceAfter;
   }
 }
 
@@ -97,26 +108,64 @@ class Data {
       .then(() => {});
   }
 
-  insertTransaction(transactionData) {
-    const { userId, symbol, type, quantity, price, value, executedAt } =
-      transactionData;
-
-    const transactionModel = new TransactionModel({
+  getPreviousTransaction(userId, symbol, executedAt) {
+    return TransactionModel.findOne({
       userId,
       symbol,
-      type,
-      quantity,
-      price,
-      value,
-      executedAt,
-    });
-
-    return transactionModel
-      .save()
+      executedAt: { $lt: executedAt },
+    })
+      .sort({ executedAt: -1 })
       .catch((error) => {
         throw new SystemError(error.message);
+      });
+  }
+
+  getNextTransactions(userId, symbol, executedAt) {
+    return TransactionModel.find({
+      userId,
+      symbol,
+      executedAt: { $gte: executedAt },
+    })
+      .sort({ executedAt: 1 })
+      .catch((error) => {
+        throw new SystemError(error.message);
+      });
+  }
+
+  updateBalanceChain(userId, symbol, startExecutedAt) {
+    let previousBalance = 0;
+
+    return this.getPreviousTransaction(userId, symbol, startExecutedAt)
+      .then((prev) => {
+        if (prev) previousBalance = prev.balanceAfter;
+        return this.getNextTransactions(userId, symbol, startExecutedAt);
       })
-      .then(() => {});
+      .then((txs) => {
+        let chain = Promise.resolve();
+        let balance = previousBalance;
+
+        txs.forEach((tx) => {
+          chain = chain.then(() => {
+            const delta = tx.type === "BUY" ? tx.quantity : -tx.quantity;
+
+            if (tx.type === "SELL" && -delta > balance)
+              throw new ValidationError(
+                "not enough balance at this point in history",
+              );
+
+            balance += delta;
+
+            return TransactionModel.updateOne(
+              { _id: tx.id },
+              { $set: { balanceAfter: balance } },
+            ).catch((error) => {
+              throw new SystemError(error.message);
+            });
+          });
+        });
+
+        return chain;
+      });
   }
 
   findTransactionById(transactionId) {
@@ -187,21 +236,86 @@ class Data {
       );
   }
 
+  insertTransaction(transactionData) {
+    const { userId, symbol, type, quantity, executedAt } = transactionData;
+
+    let balanceBefore = 0;
+
+    return this.getPreviousTransaction(userId, symbol, executedAt)
+      .then((prev) => {
+        if (prev) balanceBefore = prev.balanceAfter;
+
+        if (type === "SELL" && quantity > balanceBefore)
+          throw new ValidationError(
+            "not enough balance at this point in history",
+          );
+
+        const delta = type === "BUY" ? quantity : -quantity;
+        const balanceAfter = balanceBefore + delta;
+
+        const txModel = new TransactionModel({
+          ...transactionData,
+          balanceAfter,
+        });
+
+        return txModel.save().catch((error) => {
+          throw new SystemError(error.message);
+        });
+      })
+      .then(() => this.updateBalanceChain(userId, symbol, executedAt))
+      .then(() => {});
+  }
+
   updateTransaction(transactionData) {
-    return TransactionModel.updateOne(
-      { _id: transactionData.id },
-      { $set: transactionData },
-    )
+    return TransactionModel.findById(transactionData.id)
       .catch((error) => {
         throw new SystemError(error.message);
+      })
+      .then((original) => {
+        if (!original) return;
+
+        return TransactionModel.updateOne(
+          { _id: transactionData.id },
+          { $set: transactionData },
+        )
+          .catch((error) => {
+            throw new SystemError(error.message);
+          })
+          .then(() =>
+            this.updateBalanceChain(
+              transactionData.userId,
+              transactionData.symbol,
+              transactionData.executedAt,
+            ),
+          );
       })
       .then(() => {});
   }
 
   deleteTransaction(transactionId) {
-    return TransactionModel.deleteOne({ _id: transactionId })
+    let deletedTx = null;
+
+    return TransactionModel.findById(transactionId)
       .catch((error) => {
         throw new SystemError(error.message);
+      })
+      .then((tx) => {
+        if (!tx) return null;
+        deletedTx = tx;
+
+        return TransactionModel.deleteOne({ _id: transactionId }).catch(
+          (error) => {
+            throw new SystemError(error.message);
+          },
+        );
+      })
+      .then(() => {
+        if (!deletedTx) return;
+        return this.updateBalanceChain(
+          deletedTx.userId,
+          deletedTx.symbol,
+          deletedTx.executedAt,
+        );
       })
       .then(() => {});
   }
@@ -233,35 +347,45 @@ class Data {
       });
   }
 
-  updatePortfolio(userId, symbol, quantityChange) {
-    return PortfolioModel.updateOne(
-      { userId, symbol },
-      { $inc: { quantity: quantityChange } },
-      { upsert: true },
-    )
+  rebuildPortfolio(userId) {
+    return TransactionModel.find({ userId })
+      .sort({ executedAt: 1 })
       .catch((error) => {
         throw new SystemError(error.message);
       })
-      .then(() => {});
-  }
+      .then((txs) =>
+        PortfolioModel.deleteMany({ userId })
+          .catch((error) => {
+            throw new SystemError(error.message);
+          })
+          .then(() => txs),
+      )
+      .then((txs) => {
+        let chain = Promise.resolve();
 
-  deletePortfolioByUserId(userId) {
-    return PortfolioModel.deleteMany({ userId })
-      .catch((error) => {
-        throw new SystemError(error.message);
-      })
-      .then(() => {});
-  }
+        txs.forEach((tx) => {
+          const delta = tx.type === "BUY" ? tx.quantity : -tx.quantity;
 
-  deletePortfolioIfZero(userId, symbol) {
-    return PortfolioModel.deleteOne({
-      userId,
-      symbol,
-      quantity: { $lte: 0 },
-    })
-      .catch((error) => {
-        throw new SystemError(error.message);
+          chain = chain.then(() =>
+            PortfolioModel.updateOne(
+              { userId, symbol: tx.symbol },
+              { $inc: { quantity: delta } },
+              { upsert: true },
+            ).catch((error) => {
+              throw new SystemError(error.message);
+            }),
+          );
+        });
+
+        return chain;
       })
+      .then(() =>
+        PortfolioModel.deleteMany({ userId, quantity: { $lte: 0 } }).catch(
+          (error) => {
+            throw new SystemError(error.message);
+          },
+        ),
+      )
       .then(() => {});
   }
 }

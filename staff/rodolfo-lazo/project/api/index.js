@@ -169,6 +169,7 @@ database
             type,
             quantity,
             price,
+            date,
           )
           .then(() => res.status(204).send())
           .catch(next);
