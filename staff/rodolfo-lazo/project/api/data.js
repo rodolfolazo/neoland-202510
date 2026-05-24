@@ -108,6 +108,14 @@ class Data {
       .then(() => {});
   }
 
+  deleteAllUsers() {
+    return UserModel.deleteMany({})
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
+  }
+
   getPreviousTransaction(userId, symbol, executedAt) {
     return TransactionModel.findOne({
       userId,
@@ -320,6 +328,22 @@ class Data {
       .then(() => {});
   }
 
+  deleteAllTransactions() {
+    return TransactionModel.deleteMany()
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
+  }
+
+  deleteAllPortfolios() {
+    return PortfolioModel.deleteMany()
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
+      .then(() => {});
+  }
+
   findPortfoliosByUserId(userId) {
     return PortfolioModel.find({ userId })
       .catch((error) => {
@@ -386,6 +410,14 @@ class Data {
           },
         ),
       )
+      .then(() => {});
+  }
+
+  deleteAllPortfolios() {
+    return PortfolioModel.deleteMany()
+      .catch((error) => {
+        throw new SystemError(error.message);
+      })
       .then(() => {});
   }
 }

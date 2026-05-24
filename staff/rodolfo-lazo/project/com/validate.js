@@ -50,8 +50,10 @@ class Validate {
       if (typeof ticker !== 'string') throw new ValidationError(`invalid ${explain} type`)
     }
 
-    type(type, explain = 'type') {
+    type(type, explain = 'transaction') {
       if (typeof type !== 'string') throw new ValidationError(`invalid ${explain} type`)
+      if (!["BUY", "SELL"].includes(type))
+      throw new ValidationError("invalid transaction option");
     }
 }
 

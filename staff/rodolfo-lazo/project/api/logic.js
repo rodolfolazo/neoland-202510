@@ -57,7 +57,15 @@ export class Transaction {
 }
 
 class Logic {
-  registerUser(name, email, username, password, passwordRepeat, image) {
+  registerUser(
+    name,
+    email,
+    username,
+    password,
+    passwordRepeat,
+    image = "https://media.giphy.com/media/v1.Y2lkPTc5MGI3NjExM3lyMXl0YWRqcWNtcGx2aG5oYzc2NDB5ajhiYjliY3d2Z212ZDhwNyZlcD12MV9naWZzX3NlYXJjaCZjdD1n/tRnwzleS2SsVi/giphy.gif",
+    role = "regular",
+  ) {
     validate.name(name);
     validate.email(email, "email");
     validate.username(username);
@@ -87,7 +95,7 @@ class Logic {
           username,
           hash,
           image,
-          "regular",
+          role,
         );
         return data.insertUser(userData);
       });
@@ -130,9 +138,7 @@ class Logic {
     validate.number(quantity, "quantity");
     validate.number(price, "price");
     validate.date(date, "date");
-
-    if (!["BUY", "SELL"].includes(type))
-      throw new ValidationError("invalid transaction type");
+    validate.type(type, "type")
 
     return data.findUserById(userId).then((userData) => {
       if (!userData) throw new ExistenceError("user not found");
