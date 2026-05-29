@@ -120,21 +120,12 @@ const transactionSchema = new Schema(
       type: Date,
       default: Date.now,
     },
-
-    balanceAfter: {
-      type: Number,
-      required: true,
-      min: 0,
-    },
   },
   { timestamps: true },
 );
 
 transactionSchema.index({ userId: 1, createdAt: -1 });
-transactionSchema.index({ symbol: 1, createdAt: -1 });
-transactionSchema.index({ userId: 1, executedAt: 1 });
-transactionSchema.index({ userId: 1, symbol: 1, executedAt: 1 });
-transactionSchema.index({ userId: 1, symbol: 1, executedAt: 1, _id: 1 });
+transactionSchema.index({ symbol: 1 });
 
 export const UserModel = model("User", userSchema);
 export const PortfolioModel = model("Portfolio", portfolioSchema);

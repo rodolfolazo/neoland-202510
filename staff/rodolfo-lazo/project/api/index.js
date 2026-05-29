@@ -2,8 +2,8 @@ import express from "express";
 import cors from "cors";
 import morganBody from "morgan-body";
 import jwt from "jsonwebtoken";
-//import { notifyUserRegistered } from "./services/notification.service.js";
-import { startPriceUpdater, getPrices } from "./services/priceService.js";
+import { startMarketWS, addSubscriber } from "./services/market.service.js";
+import { notifyUserRegistered } from "./services/notification.service.js";
 
 import { logic } from "./logic.js";
 
@@ -24,7 +24,7 @@ database
   .then(() => {
     console.log("DB connected");
 
-    startPriceUpdater();
+    startMarketWS();
 
     const { JsonWebTokenError } = jwt;
 
@@ -94,10 +94,10 @@ database
         const token = req.headers.authorization.slice(7);
         const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
 
-        const { symbol, type, quantity, price, date } = req.body;
+        const { symbol, type, quantity, price } = req.body;
 
         logic
-          .addTransaction(userId, symbol, type, quantity, price, date)
+          .addTransaction(userId, symbol, type, quantity, price)
           .then(() => res.status(201).send())
           .catch(next);
       } catch (error) {
@@ -159,7 +159,7 @@ database
 
         const { transactionId } = req.params;
 
-        const { symbol, type, quantity, price, date } = req.body;
+        const { symbol, type, quantity, price } = req.body;
 
         logic
           .updateTransaction(
@@ -169,7 +169,6 @@ database
             type,
             quantity,
             price,
-            date,
           )
           .then(() => res.status(204).send())
           .catch(next);
@@ -211,16 +210,33 @@ database
       }
     });
 
-    api.get("/prices", (req, res, next) => {
+    api.get("/market/stream", (req, res) => {
       try {
-        const token = req.headers.authorization.slice(7);
-        const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
+        res.setHeader("Content-Type", "text/event-stream");
+        res.setHeader("Cache-Control", "no-cache");
+        res.setHeader("Connection", "keep-alive");
 
-        getPrices(userId)
-          .then(({ data, lastUpdate }) => res.json({ data, lastUpdate }))
-          .catch(next);
+        res.flushHeaders();
+
+        const symbolsQuery = req.query.symbols;
+        const symbols = symbolsQuery
+          ? symbolsQuery.split(",").map((s) => s.trim().toUpperCase())
+          : null;
+
+        addSubscriber(res, symbols);
+
+        res.write(`data: ${JSON.stringify({ connected: true })}\n\n`);
+
+        const interval = setInterval(() => {
+          res.write(`: ping\n\n`);
+        }, 15000);
+
+        res.on("close", () => {
+          clearInterval(interval);
+          res.end();
+        });
       } catch (error) {
-        next(error);
+        res.end();
       }
     });
 
