@@ -7,9 +7,9 @@
     "start": "node --env-file=.env index.js",
     "watch": "node --env-file=.env --watch index.js",
     "inspect": "node --env-file=.env --inspect-brk index.js",
-    "test": "mocha --node-option env-file=.env logic.spec.js",
-    "test-inspect": "mocha --node-option env-file=.env --node-option inspect-brk logic.spec.js",
-    "test-coverage": "c8 --experimental-monocart --reporter=v8 --reporter=console-details --include logic.js mocha --node-option env-file=.env logic.spec.js",
+    "test": "mocha --node-option env-file=.env logic/*.spec.js",
+    "test-inspect": "mocha --node-option env-file=.env --node-option inspect-brk logic/*.spec.js",
+    "test-coverage": "c8 --experimental-monocart --reporter=v8 --reporter=console-details --all --src ./logic --exclude 'logic/*.spec.js' --exclude mongoose --exclude data mocha --node-option env-file=.env logic/*.spec.js",
     "populate": "node populate.js"
   },
   "keywords": [],

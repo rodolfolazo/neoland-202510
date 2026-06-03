@@ -1,65 +1,66 @@
 export class ValidationError extends Error {
-    constructor(message) {
-        super(message)
-
-        this.name = this.constructor.name
-    }
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
 }
 
 export class ExistenceError extends Error {
-    constructor(message) {
-        super(message)
-
-        this.name = this.constructor.name
-    }
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
 }
 
 export class DuplicityError extends Error {
-    constructor(message) {
-        super(message)
-
-        this.name = this.constructor.name
-    }
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
 }
 
 export class CredentialError extends Error {
-    constructor(message) {
-        super(message)
-
-        this.name = this.constructor.name
-    }
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
 }
 
 export class OwnershipError extends Error {
-    constructor(message) {
-        super(message)
-
-        this.name = this.constructor.name
-    }
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
 }
 
 export class AuthError extends Error {
-    constructor(message) {
-        super(message)
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
+}
 
-        this.name = this.constructor.name
-    }
+export class BalanceError extends Error {
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
 }
 
 export class SystemError extends Error {
-    constructor(message) {
-        super(message)
-
-        this.name = this.constructor.name
-    }
+  constructor(message) {
+    super(message);
+    this.name = this.constructor.name;
+  }
 }
 
 export const errorMap = {
-    ValidationError,
-    ExistenceError,
-    DuplicityError,
-    CredentialError,
-    OwnershipError,
-    AuthError,
-    SystemError
-}
+  ValidationError,
+  ExistenceError,
+  DuplicityError,
+  CredentialError,
+  OwnershipError,
+  AuthError,
+  BalanceError,
+  SystemError,
+};
