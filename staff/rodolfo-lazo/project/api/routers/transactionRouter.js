@@ -1,6 +1,6 @@
-import { Router } from "express";
+import { Router } from 'express'
 
-import { authMiddleware } from "../middlewares/index.js";
+import { authMiddleware } from '../middlewares/index.js'
 
 import {
   addTransactionHandler,
@@ -10,26 +10,26 @@ import {
   updateTransactionHandler,
   deleteTransactionHandler,
   exportTransactionsHandler,
-} from "./handlers/index.js";
+} from './handlers/index.js'
 
-export const transactionRouter = new Router();
+export const transactionRouter = new Router()
 
-transactionRouter.post("", authMiddleware, addTransactionHandler);
-transactionRouter.get("", authMiddleware, getTransactionsHandler);
-transactionRouter.get("/export", authMiddleware, exportTransactionsHandler);
-transactionRouter.get("/:transactionId", authMiddleware, getTransactionHandler);
+transactionRouter.post('', authMiddleware, addTransactionHandler)
+transactionRouter.get('', authMiddleware, getTransactionsHandler)
+transactionRouter.get('/export', authMiddleware, exportTransactionsHandler)
+transactionRouter.get('/:transactionId', authMiddleware, getTransactionHandler)
 transactionRouter.get(
-  "/symbol/:symbol",
+  '/symbol/:symbol',
   authMiddleware,
   getTransactionsBySymbolHandler,
-);
+)
 transactionRouter.put(
-  "/:transactionId",
+  '/:transactionId',
   authMiddleware,
   updateTransactionHandler,
-);
+)
 transactionRouter.delete(
-  "/:transactionId",
+  '/:transactionId',
   authMiddleware,
   deleteTransactionHandler,
-);
+)

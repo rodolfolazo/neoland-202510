@@ -1,11 +1,11 @@
-import { Router } from "express";
+import { Router } from 'express'
 
-import { authMiddleware } from "../middlewares/index.js";
+import { authMiddleware } from '../middlewares/index.js'
 
 //import { getPricesHandler } from "./handlers/getPricesHandler.js";
-import { getMarketPriceHandler } from "./handlers/index.js";
+import { getMarketPriceHandler } from './handlers/index.js'
 
-export const priceRouter = new Router();
+export const priceRouter = new Router()
 
 //priceRouter.get("", authMiddleware, getPricesHandler);
-priceRouter.get("", getMarketPriceHandler);
+priceRouter.get('', getMarketPriceHandler)

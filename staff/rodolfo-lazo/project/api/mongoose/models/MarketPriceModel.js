@@ -1,5 +1,5 @@
-import { model } from "mongoose";
+import { model } from 'mongoose'
 
-import { marketPriceSchema } from "../schemas/index.js";
+import { marketPriceSchema } from '../schemas/index.js'
 
-export const MarketPriceModel = model("MarketPrice", marketPriceSchema);
+export const MarketPriceModel = model('MarketPrice', marketPriceSchema)

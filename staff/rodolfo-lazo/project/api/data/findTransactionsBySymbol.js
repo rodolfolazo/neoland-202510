@@ -1,12 +1,12 @@
-import { TransactionModel } from "../mongoose/index.js";
-import { SystemError } from "com";
-import { TransactionData } from "./models/index.js";
+import { TransactionModel } from '../mongoose/index.js'
+import { SystemError } from 'com'
+import { TransactionData } from './models/index.js'
 
 export function findTransactionsBySymbol(userId, symbol) {
   return TransactionModel.find({ userId, symbol })
     .sort({ executedAt: -1, createdAt: -1 })
     .catch((error) => {
-      throw new SystemError(error.message);
+      throw new SystemError(error.message)
     })
     .then((transactionModels) =>
       transactionModels.map(
@@ -33,5 +33,5 @@ export function findTransactionsBySymbol(userId, symbol) {
             balanceAfter,
           ),
       ),
-    );
+    )
 }

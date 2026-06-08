@@ -1,23 +1,23 @@
-import { ExistenceError, OwnershipError, validate } from "com";
-import { data } from "../data/index.js";
-import { Transaction } from "./models/Transaction.js";
+import { ExistenceError, OwnershipError, validate } from 'com'
+import { data } from '../data/index.js'
+import { Transaction } from './models/Transaction.js'
 
 export function getTransaction(userId, transactionId) {
-  validate.id(userId, "userId");
-  validate.id(transactionId, "transactionId");
+  validate.id(userId, 'userId')
+  validate.id(transactionId, 'transactionId')
 
   return data
     .findUserById(userId)
     .then((userData) => {
-      if (!userData) throw new ExistenceError("user not found");
+      if (!userData) throw new ExistenceError('user not found')
 
-      return data.findTransactionById(transactionId);
+      return data.findTransactionById(transactionId)
     })
     .then((transactionData) => {
-      if (!transactionData) throw new ExistenceError("transaction not found");
+      if (!transactionData) throw new ExistenceError('transaction not found')
 
       if (transactionData.userId !== userId)
-        throw new OwnershipError("user not owner of transaction");
+        throw new OwnershipError('user not owner of transaction')
 
       const {
         id,
@@ -28,7 +28,7 @@ export function getTransaction(userId, transactionId) {
         value,
         executedAt,
         balanceAfter,
-      } = transactionData;
+      } = transactionData
 
       return new Transaction(
         id,
@@ -40,6 +40,6 @@ export function getTransaction(userId, transactionId) {
         value,
         executedAt,
         balanceAfter,
-      );
-    });
+      )
+    })
 }

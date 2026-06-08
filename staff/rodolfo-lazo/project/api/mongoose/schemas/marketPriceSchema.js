@@ -1,6 +1,6 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const { Schema } = mongoose;
+const { Schema } = mongoose
 
 export const marketPriceSchema = new Schema({
   provider: {
@@ -16,4 +16,4 @@ export const marketPriceSchema = new Schema({
     of: Number,
     required: true,
   },
-});
+})

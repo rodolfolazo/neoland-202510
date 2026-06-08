@@ -1,29 +1,29 @@
-import { SystemError } from "com";
+import { SystemError } from 'com'
 
 import {
   UserModel,
   PortfolioModel,
   TransactionModel,
-} from "./mongoose/index.js";
+} from './mongoose/index.js'
 
 export class UserData {
   constructor(id, name, email, username, password, image, role) {
-    this.id = id;
-    this.name = name;
-    this.email = email;
-    this.username = username;
-    this.password = password;
-    this.image = image;
-    this.role = role;
+    this.id = id
+    this.name = name
+    this.email = email
+    this.username = username
+    this.password = password
+    this.image = image
+    this.role = role
   }
 }
 
 export class PortfolioData {
   constructor(id, userId, symbol, quantity) {
-    this.id = id;
-    this.userId = userId;
-    this.symbol = symbol;
-    this.quantity = quantity;
+    this.id = id
+    this.userId = userId
+    this.symbol = symbol
+    this.quantity = quantity
   }
 }
 
@@ -39,95 +39,95 @@ export class TransactionData {
     executedAt,
     balanceAfter,
   ) {
-    this.id = id;
-    this.userId = userId;
-    this.symbol = symbol;
-    this.type = type;
-    this.quantity = quantity;
-    this.price = price;
-    this.value = value;
-    this.executedAt = executedAt;
-    this.balanceAfter = balanceAfter;
+    this.id = id
+    this.userId = userId
+    this.symbol = symbol
+    this.type = type
+    this.quantity = quantity
+    this.price = price
+    this.value = value
+    this.executedAt = executedAt
+    this.balanceAfter = balanceAfter
   }
 }
 
 class Data {
   insertUser(userData) {
-    const userModel = new UserModel(userData);
+    const userModel = new UserModel(userData)
 
     return userModel
       .save()
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   findUserByEmail(email) {
     return UserModel.findOne({ email })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((userModel) => {
-        if (!userModel) return null;
+        if (!userModel) return null
 
-        const { id, name, email, username, password, image, role } = userModel;
+        const { id, name, email, username, password, image, role } = userModel
 
-        return new UserData(id, name, email, username, password, image, role);
-      });
+        return new UserData(id, name, email, username, password, image, role)
+      })
   }
 
   findUserByUsername(username) {
     return UserModel.findOne({ username })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((userModel) => {
-        if (!userModel) return null;
+        if (!userModel) return null
 
-        const { id, name, email, username, password, image, role } = userModel;
+        const { id, name, email, username, password, image, role } = userModel
 
-        return new UserData(id, name, email, username, password, image, role);
-      });
+        return new UserData(id, name, email, username, password, image, role)
+      })
   }
 
   findUserById(userId) {
     return UserModel.findById(userId)
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((userModel) => {
-        if (!userModel) return null;
+        if (!userModel) return null
 
-        const { id, name, email, username, password, image, role } = userModel;
+        const { id, name, email, username, password, image, role } = userModel
 
-        return new UserData(id, name, email, username, password, image, role);
-      });
+        return new UserData(id, name, email, username, password, image, role)
+      })
   }
 
   updateUser(userData) {
     return UserModel.updateOne({ _id: userData.id }, { $set: userData })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   deleteAllUsers() {
     return UserModel.deleteMany({})
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   findTransactionById(transactionId) {
     return TransactionModel.findById(transactionId)
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((transactionModel) => {
-        if (!transactionModel) return null;
+        if (!transactionModel) return null
 
         const {
           id,
@@ -139,7 +139,7 @@ class Data {
           value,
           executedAt,
           balanceAfter,
-        } = transactionModel;
+        } = transactionModel
 
         return new TransactionData(
           id,
@@ -151,15 +151,15 @@ class Data {
           value,
           executedAt,
           balanceAfter,
-        );
-      });
+        )
+      })
   }
 
   findTransactionsByUserId(userId) {
     return TransactionModel.find({ userId })
       .sort({ executedAt: -1, createdAt: -1 })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((transactionModels) =>
         transactionModels.map(
@@ -186,14 +186,14 @@ class Data {
               balanceAfter,
             ),
         ),
-      );
+      )
   }
 
   findTransactionsBySymbol(userId, symbol) {
     return TransactionModel.find({ userId, symbol })
       .sort({ executedAt: -1, createdAt: -1 })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((transactionModels) =>
         transactionModels.map(
@@ -220,7 +220,7 @@ class Data {
               balanceAfter,
             ),
         ),
-      );
+      )
   }
 
   findPreviousTransaction(userId, symbol, executedAt) {
@@ -231,10 +231,10 @@ class Data {
     })
       .sort({ executedAt: -1 })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((transactionModel) => {
-        if (!transactionModel) return null;
+        if (!transactionModel) return null
 
         const {
           id,
@@ -246,7 +246,7 @@ class Data {
           value,
           executedAt,
           balanceAfter,
-        } = transactionModel;
+        } = transactionModel
 
         return new TransactionData(
           id,
@@ -258,8 +258,8 @@ class Data {
           value,
           executedAt,
           balanceAfter,
-        );
-      });
+        )
+      })
   }
 
   findTransactionsFromDate(userId, symbol, executedAt) {
@@ -270,7 +270,7 @@ class Data {
     })
       .sort({ executedAt: 1, createdAt: 1 })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((transactionModels) =>
         transactionModels.map(
@@ -297,18 +297,18 @@ class Data {
               balanceAfter,
             ),
         ),
-      );
+      )
   }
 
   insertTransaction(transactionData) {
-    const transactionModel = new TransactionModel(transactionData);
+    const transactionModel = new TransactionModel(transactionData)
 
     return transactionModel
       .save()
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   updateTransaction(transactionData) {
@@ -317,63 +317,62 @@ class Data {
       { $set: transactionData },
     )
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   deleteTransaction(transactionId) {
     return TransactionModel.deleteOne({ _id: transactionId })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   deleteAllTransactions() {
     return TransactionModel.deleteMany({})
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   findPortfoliosByUserId(userId) {
     return PortfolioModel.find({ userId })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then((portfolioPositions) =>
         portfolioPositions.map(
           ({ id, userId, symbol, quantity }) =>
             new PortfolioData(id, userId.toString(), symbol, quantity),
         ),
-      );
+      )
   }
 
   replacePortfolio(userId, portfolioPositions) {
     return PortfolioModel.deleteMany({ userId })
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
       .then(() => {
-        if (!portfolioPositions.length) return;
+        if (!portfolioPositions.length) return
 
-        return PortfolioModel.insertMany(portfolioPositions)
-        .catch((error) => {
-          throw new SystemError(error.message);
-        });
+        return PortfolioModel.insertMany(portfolioPositions).catch((error) => {
+          throw new SystemError(error.message)
+        })
       })
-      .then(() => {});
+      .then(() => {})
   }
 
   deleteAllPortfolios() {
     return PortfolioModel.deleteMany({})
       .catch((error) => {
-        throw new SystemError(error.message);
+        throw new SystemError(error.message)
       })
-      .then(() => {});
+      .then(() => {})
   }
 }
 
-export const data = new Data();
+export const data = new Data()

@@ -1,37 +1,37 @@
-import { BalanceError } from "com";
-import { data, TransactionData } from "../../data/index.js";
+import { BalanceError } from 'com'
+import { data, TransactionData } from '../../data/index.js'
 
 export function calculateBalanceChain(userId, symbol, startExecutedAt) {
-  let previousBalance = 0;
+  let previousBalance = 0
 
   return data
     .findPreviousTransaction(userId, symbol, startExecutedAt)
     .then((previousTransactionData) => {
       if (previousTransactionData)
-        previousBalance = previousTransactionData.balanceAfter;
+        previousBalance = previousTransactionData.balanceAfter
 
-      return data.findTransactionsFromDate(userId, symbol, startExecutedAt);
+      return data.findTransactionsFromDate(userId, symbol, startExecutedAt)
     })
     .then((transactionsData) => {
-      let chain = Promise.resolve();
-      let balance = previousBalance;
+      let chain = Promise.resolve()
+      let balance = previousBalance
 
       transactionsData.forEach((transactionData) => {
         chain = chain.then(() => {
           const delta =
-            transactionData.type === "BUY"
+            transactionData.type === 'BUY'
               ? transactionData.quantity
-              : -transactionData.quantity;
+              : -transactionData.quantity
 
           if (
-            transactionData.type === "SELL" &&
+            transactionData.type === 'SELL' &&
             balance < transactionData.quantity
           )
             throw new BalanceError(
-              "not enough balance at this point in history",
-            );
+              'not enough balance at this point in history',
+            )
 
-          balance += delta;
+          balance += delta
 
           const updatedTransactionData = new TransactionData(
             transactionData.id,
@@ -43,12 +43,12 @@ export function calculateBalanceChain(userId, symbol, startExecutedAt) {
             transactionData.value,
             transactionData.executedAt,
             balance,
-          );
+          )
 
-          return data.updateTransaction(updatedTransactionData);
-        });
-      });
+          return data.updateTransaction(updatedTransactionData)
+        })
+      })
 
-      return chain;
-    });
+      return chain
+    })
 }

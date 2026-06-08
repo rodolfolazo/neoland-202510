@@ -1,9 +1,9 @@
-import { Router } from "express";
+import { Router } from 'express'
 
-import { authMiddleware } from "../middlewares/index.js";
+import { authMiddleware } from '../middlewares/index.js'
 
-import { getPortfoliosHandler } from "./handlers/index.js";
+import { getPortfoliosHandler } from './handlers/index.js'
 
-export const portfolioRouter = new Router();
+export const portfolioRouter = new Router()
 
-portfolioRouter.get("", authMiddleware, getPortfoliosHandler);
+portfolioRouter.get('', authMiddleware, getPortfoliosHandler)

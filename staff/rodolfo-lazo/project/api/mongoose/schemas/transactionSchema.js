@@ -1,13 +1,13 @@
-import mongoose from "mongoose";
-import { EMAIL_REGEX, URL_REGEX } from "com";
+import mongoose from 'mongoose'
+import { EMAIL_REGEX, URL_REGEX } from 'com'
 
-const { Schema } = mongoose;
+const { Schema } = mongoose
 
 export const transactionSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
 
@@ -20,7 +20,7 @@ export const transactionSchema = new Schema(
 
     type: {
       type: String,
-      enum: ["BUY", "SELL"],
+      enum: ['BUY', 'SELL'],
       required: true,
     },
 
@@ -54,11 +54,11 @@ export const transactionSchema = new Schema(
     },
   },
   { timestamps: true },
-);
+)
 
 transactionSchema.index({
   userId: 1,
   symbol: 1,
   executedAt: 1,
   _id: 1,
-});
+})

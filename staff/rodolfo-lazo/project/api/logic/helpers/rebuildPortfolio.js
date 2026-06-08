@@ -1,36 +1,36 @@
-import { data, PortfolioData } from "../../data/index.js";
+import { data, PortfolioData } from '../../data/index.js'
 
 export function rebuildPortfolio(userId) {
-  const portfolioMap = new Map();
+  const portfolioMap = new Map()
 
   return data.findTransactionsByUserId(userId).then((transactionsData) => {
     transactionsData
       .sort((a, b) => {
-        const executedAtDiff = new Date(a.executedAt) - new Date(b.executedAt);
+        const executedAtDiff = new Date(a.executedAt) - new Date(b.executedAt)
 
-        if (executedAtDiff !== 0) return executedAtDiff;
+        if (executedAtDiff !== 0) return executedAtDiff
 
-        return a.id.localeCompare(b.id);
+        return a.id.localeCompare(b.id)
       })
       .forEach((transactionData) => {
-        const current = portfolioMap.get(transactionData.symbol) || 0;
+        const current = portfolioMap.get(transactionData.symbol) || 0
 
         const delta =
-          transactionData.type === "BUY"
+          transactionData.type === 'BUY'
             ? transactionData.quantity
-            : -transactionData.quantity;
+            : -transactionData.quantity
 
-        portfolioMap.set(transactionData.symbol, current + delta);
-      });
+        portfolioMap.set(transactionData.symbol, current + delta)
+      })
 
-    const portfolio = [];
+    const portfolio = []
 
     portfolioMap.forEach((quantity, symbol) => {
-      if (quantity <= 0) return;
+      if (quantity <= 0) return
 
-      portfolio.push(new PortfolioData(null, userId, symbol, quantity));
-    });
+      portfolio.push(new PortfolioData(null, userId, symbol, quantity))
+    })
 
-    return data.replacePortfolio(userId, portfolio);
-  });
+    return data.replacePortfolio(userId, portfolio)
+  })
 }

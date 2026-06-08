@@ -1,29 +1,22 @@
-import { SystemError } from "com";
-
-let prices = {};
-let lastUpdate = null;
-let provider = "binance";
+import { SystemError } from 'com'
 
 export function fetchPrices() {
-  return fetch("https://api.binance.com/api/v3/ticker/price")
+  return fetch('https://api.binance.com/api/v3/ticker/price')
     .catch((error) => {
-      throw new SystemError(error.messsage);
+      throw new SystemError(error.messsage)
     })
     .then((res) => res.json())
     .then((data) => {
-      const map = {};
+      const prices = {}
 
       data.forEach((item) => {
-        map[item.symbol] = parseFloat(item.price);
-      });
-
-      prices = map;
-      lastUpdate = new Date();
+        prices[item.symbol] = parseFloat(item.price)
+      })
 
       return {
-        provider,
-        lastUpdate,
-        data: prices,
-      };
-    });
+        provider: 'binance',
+        lastUpdate: new Date(),
+        prices,
+      }
+    })
 }

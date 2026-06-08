@@ -1,43 +1,43 @@
-import { ExistenceError, OwnershipError, validate } from "com";
-import { data } from "../data/index.js";
+import { ExistenceError, OwnershipError, validate } from 'com'
+import { data } from '../data/index.js'
 import {
   validateBalanceChain,
   calculateBalanceChain,
   rebuildPortfolio,
-} from "./helpers/index.js";
+} from './helpers/index.js'
 
 export function deleteTransaction(userId, transactionId) {
-  validate.id(userId, "userId");
-  validate.id(transactionId, "transactionId");
+  validate.id(userId, 'userId')
+  validate.id(transactionId, 'transactionId')
 
-  let deletedTransactionData;
+  let deletedTransactionData
 
   return data
     .findUserById(userId)
     .then((userData) => {
-      if (!userData) throw new ExistenceError("user not found");
+      if (!userData) throw new ExistenceError('user not found')
 
-      return data.findTransactionById(transactionId);
+      return data.findTransactionById(transactionId)
     })
     .then((transactionData) => {
-      if (!transactionData) throw new ExistenceError("transaction not found");
+      if (!transactionData) throw new ExistenceError('transaction not found')
 
       if (transactionData.userId !== userId)
-        throw new OwnershipError("user not owner of transaction");
+        throw new OwnershipError('user not owner of transaction')
 
-      deletedTransactionData = transactionData;
+      deletedTransactionData = transactionData
 
       return data.findTransactionsBySymbol(
         deletedTransactionData.userId,
         deletedTransactionData.symbol,
-      );
+      )
     })
     .then((transactionsData) => {
       const simulatedTransactionsData = transactionsData.filter(
         (tx) => tx.id !== transactionId,
-      );
+      )
 
-      validateBalanceChain(simulatedTransactionsData);
+      validateBalanceChain(simulatedTransactionsData)
     })
     .then(() => data.deleteTransaction(transactionId))
     .then(() =>
@@ -47,5 +47,5 @@ export function deleteTransaction(userId, transactionId) {
         deletedTransactionData.executedAt,
       ),
     )
-    .then(() => rebuildPortfolio(userId));
+    .then(() => rebuildPortfolio(userId))
 }

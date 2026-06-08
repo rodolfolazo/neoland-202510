@@ -1,5 +1,5 @@
-import { TransactionModel } from "../mongoose/index.js";
-import { SystemError } from "com";
+import { TransactionModel } from '../mongoose/index.js'
+import { SystemError } from 'com'
 
 export function updateTransaction(transactionData) {
   return TransactionModel.updateOne(
@@ -7,7 +7,7 @@ export function updateTransaction(transactionData) {
     { $set: transactionData },
   )
     .catch((error) => {
-      throw new SystemError(error.message);
+      throw new SystemError(error.message)
     })
-    .then(() => {});
+    .then(() => {})
 }

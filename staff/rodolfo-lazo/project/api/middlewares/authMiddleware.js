@@ -1,15 +1,15 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken'
 
 export const authMiddleware = (req, res, next) => {
   try {
-    const token = req.headers.authorization.slice(7);
+    const token = req.headers.authorization.slice(7)
 
-    const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET);
+    const { sub: userId } = jwt.verify(token, process.env.JWT_SECRET)
 
-    req.userId = userId;
+    req.userId = userId
 
-    next();
+    next()
   } catch (error) {
-    next(error);
+    next(error)
   }
-};
+}

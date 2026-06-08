@@ -10,14 +10,14 @@ export class Transaction {
     executedAt,
     balanceAfter,
   ) {
-    this.id = id;
-    this.userId = userId;
-    this.symbol = symbol;
-    this.type = type;
-    this.quantity = quantity;
-    this.price = price;
-    this.value = value;
-    this.executedAt = executedAt;
-    this.balanceAfter = balanceAfter;
+    this.id = id
+    this.userId = userId
+    this.symbol = symbol
+    this.type = type
+    this.quantity = quantity
+    this.price = price
+    this.value = value
+    this.executedAt = executedAt
+    this.balanceAfter = balanceAfter
   }
 }

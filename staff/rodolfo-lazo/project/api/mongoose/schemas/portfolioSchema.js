@@ -1,12 +1,12 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const { Schema } = mongoose;
+const { Schema } = mongoose
 
 export const portfolioSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
 
@@ -24,7 +24,7 @@ export const portfolioSchema = new Schema(
     },
   },
   { timestamps: true },
-);
+)
 
-portfolioSchema.index({ userId: 1, symbol: 1 }, { unique: true });
-portfolioSchema.index({ userId: 1 });
+portfolioSchema.index({ userId: 1, symbol: 1 }, { unique: true })
+portfolioSchema.index({ userId: 1 })

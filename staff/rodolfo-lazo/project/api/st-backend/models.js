@@ -1,11 +1,11 @@
-models.js;
+models.js
 
-import mongoose from "mongoose";
+import mongoose from 'mongoose'
 
-const { Schema, model } = mongoose;
+const { Schema, model } = mongoose
 
-const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-const URL_REGEX = /^https?:\/\/.+$/;
+const EMAIL_REGEX = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
+const URL_REGEX = /^https?:\/\/.+$/
 
 const userSchema = new Schema(
   {
@@ -44,19 +44,19 @@ const userSchema = new Schema(
 
     role: {
       type: String,
-      enum: ["regular", "pro"],
-      default: "regular",
+      enum: ['regular', 'pro'],
+      default: 'regular',
       required: true,
     },
   },
   { timestamps: true },
-);
+)
 
 const portfolioSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
 
@@ -74,16 +74,16 @@ const portfolioSchema = new Schema(
     },
   },
   { timestamps: true },
-);
+)
 
-portfolioSchema.index({ userId: 1, symbol: 1 }, { unique: true });
-portfolioSchema.index({ userId: 1 });
+portfolioSchema.index({ userId: 1, symbol: 1 }, { unique: true })
+portfolioSchema.index({ userId: 1 })
 
 const transactionSchema = new Schema(
   {
     userId: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
       required: true,
     },
 
@@ -96,7 +96,7 @@ const transactionSchema = new Schema(
 
     type: {
       type: String,
-      enum: ["BUY", "SELL"],
+      enum: ['BUY', 'SELL'],
       required: true,
     },
 
@@ -130,17 +130,17 @@ const transactionSchema = new Schema(
     },
   },
   { timestamps: true },
-);
+)
 
 transactionSchema.index({
   userId: 1,
   symbol: 1,
   executedAt: 1,
   _id: 1,
-});
+})
 
-export const UserModel = model("User", userSchema);
-export const PortfolioModel = model("Portfolio", portfolioSchema);
-export const TransactionModel = model("Transaction", transactionSchema);
+export const UserModel = model('User', userSchema)
+export const PortfolioModel = model('Portfolio', portfolioSchema)
+export const TransactionModel = model('Transaction', transactionSchema)
 
-export const database = mongoose;
+export const database = mongoose

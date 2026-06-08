@@ -1,6 +1,6 @@
-import { TransactionModel } from "../mongoose/index.js";
-import { SystemError } from "com";
-import { TransactionData } from "./models/index.js";
+import { TransactionModel } from '../mongoose/index.js'
+import { SystemError } from 'com'
+import { TransactionData } from './models/index.js'
 
 export function findPreviousTransaction(userId, symbol, executedAt) {
   return TransactionModel.findOne({
@@ -10,10 +10,10 @@ export function findPreviousTransaction(userId, symbol, executedAt) {
   })
     .sort({ executedAt: -1 })
     .catch((error) => {
-      throw new SystemError(error.message);
+      throw new SystemError(error.message)
     })
     .then((transactionModel) => {
-      if (!transactionModel) return null;
+      if (!transactionModel) return null
 
       const {
         id,
@@ -25,7 +25,7 @@ export function findPreviousTransaction(userId, symbol, executedAt) {
         value,
         executedAt,
         balanceAfter,
-      } = transactionModel;
+      } = transactionModel
 
       return new TransactionData(
         id,
@@ -37,6 +37,6 @@ export function findPreviousTransaction(userId, symbol, executedAt) {
         value,
         executedAt,
         balanceAfter,
-      );
-    });
+      )
+    })
 }

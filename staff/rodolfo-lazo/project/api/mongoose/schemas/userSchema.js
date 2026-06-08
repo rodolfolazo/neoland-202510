@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
-import { EMAIL_REGEX, URL_REGEX } from "com";
+import mongoose from 'mongoose'
+import { EMAIL_REGEX, URL_REGEX } from 'com'
 
-const { Schema } = mongoose;
+const { Schema } = mongoose
 
 export const userSchema = new Schema(
   {
@@ -40,10 +40,10 @@ export const userSchema = new Schema(
 
     role: {
       type: String,
-      enum: ["regular", "pro"],
-      default: "regular",
+      enum: ['regular', 'pro'],
+      default: 'regular',
       required: true,
     },
   },
   { timestamps: true },
-);
+)
