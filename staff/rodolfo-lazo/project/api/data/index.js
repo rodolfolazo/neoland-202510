@@ -18,6 +18,8 @@ import { deleteAllTransactions } from "./deleteAllTransactions.js";
 import { findPortfoliosByUserId } from "./findPortfoliosByUserId.js";
 import { replacePortfolio } from "./replacePortfolio.js";
 import { deleteAllPortfolios } from "./deleteAllPortfolios.js";
+import { insertMarketPrice } from "./insertMarketPrice.js";
+import { findMarketPrice } from "./findMarketPrice.js";
 
 export const data = {
   insertUser,
@@ -38,4 +40,6 @@ export const data = {
   findPortfoliosByUserId,
   replacePortfolio,
   deleteAllPortfolios,
+  insertMarketPrice,
+  findMarketPrice,
 };

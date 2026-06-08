@@ -1,6 +1,5 @@
 import { BalanceError } from "com";
-import { TransactionData } from "../data/index.js";
-import { data } from "../data/index.js";
+import { data, TransactionData } from "../../data/index.js";
 
 export function calculateBalanceChain(userId, symbol, startExecutedAt) {
   let previousBalance = 0;

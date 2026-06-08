@@ -1,5 +1,4 @@
-import { PortfolioData } from "../data/index.js";
-import { data } from "../data/index.js";
+import { data, PortfolioData } from "../../data/index.js";
 
 export function rebuildPortfolio(userId) {
   const portfolioMap = new Map();

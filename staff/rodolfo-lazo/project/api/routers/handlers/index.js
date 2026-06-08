@@ -11,4 +11,6 @@ export * from "./updateTransactionHandler.js";
 
 export * from "./getPortfoliosHandler.js";
 
-export * from "./getPricesHandler.js";
+export * from "./getMarketPriceHandler.js";
+
+export * from "./exportTransactionHandler.js";

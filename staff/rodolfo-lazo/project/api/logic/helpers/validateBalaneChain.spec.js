@@ -1,14 +1,13 @@
-import { expect } from 'chai'
+import { expect } from "chai";
 
-import { TransactionData } from '../data/index.js'
+import { BalanceError } from "com";
 
-import { logic } from './index.js'
+import { TransactionData } from "../../data/index.js";
 
-import { BalanceError } from 'com'
+import { logic } from "../../logic/index.js";
 
-describe('validateBalanceChain', () => {
-
-   it("Passes on valid transaction chain", () => {
+describe("validateBalanceChain", () => {
+  it("Passes on valid transaction chain", () => {
     const transactionsData = [
       new TransactionData(
         null,
@@ -70,7 +69,7 @@ describe('validateBalanceChain', () => {
     ];
 
     expect(() => logic.validateBalanceChain(transactionsData)).to.not.throw();
-  })
+  });
 
   it("Fails when SELL transaction exceeds balance", () => {
     const transactionsData = [
@@ -99,9 +98,9 @@ describe('validateBalanceChain', () => {
       ),
     ];
 
-    expect(() => logic.validateBalanceChain(transactionsData)).to.throw(BalanceError,
-      "not enough balance at this point in history");
+    expect(() => logic.validateBalanceChain(transactionsData)).to.throw(
+      BalanceError,
+      "not enough balance at this point in history",
+    );
   });
-
-})
-
+});

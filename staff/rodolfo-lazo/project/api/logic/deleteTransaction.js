@@ -1,5 +1,10 @@
 import { ExistenceError, OwnershipError, validate } from "com";
 import { data } from "../data/index.js";
+import {
+  validateBalanceChain,
+  calculateBalanceChain,
+  rebuildPortfolio,
+} from "./helpers/index.js";
 
 export function deleteTransaction(userId, transactionId) {
   validate.id(userId, "userId");
@@ -32,15 +37,15 @@ export function deleteTransaction(userId, transactionId) {
         (tx) => tx.id !== transactionId,
       );
 
-      this.validateBalanceChain(simulatedTransactionsData);
+      validateBalanceChain(simulatedTransactionsData);
     })
     .then(() => data.deleteTransaction(transactionId))
     .then(() =>
-      this.calculateBalanceChain(
+      calculateBalanceChain(
         deletedTransactionData.userId,
         deletedTransactionData.symbol,
         deletedTransactionData.executedAt,
       ),
     )
-    .then(() => this.rebuildPortfolio(userId));
+    .then(() => rebuildPortfolio(userId));
 }

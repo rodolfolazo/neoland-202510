@@ -13,13 +13,11 @@ import { errorHandler } from "./middlewares/errorHandler.js";
 
 import { connect } from "./mongoose/index.js";
 
-import { startPriceUpdater } from "./services/priceService.js";
+import { jobs } from "./jobs/index.js";
 
 connect(process.env.DB_URL)
   .then(() => {
     console.log("DB connected");
-
-    startPriceUpdater();
 
     const api = express();
     const jsonBodyParser = express.json();
@@ -31,6 +29,8 @@ connect(process.env.DB_URL)
       logAllReqHeader: true,
       logAllResHeader: true,
     });
+
+    jobs.startPriceUpdater();
 
     api.get("/", (req, res) => res.json({ message: "Hello! from API ;)" }));
 

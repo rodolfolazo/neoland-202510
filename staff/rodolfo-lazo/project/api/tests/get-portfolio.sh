@@ -1,0 +1,1 @@
+curl -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2YTFmNDBlODIyNDcwYTkyODFlNmMyNDciLCJpYXQiOjE3ODA5MzYwODEsImV4cCI6MTc4MDkzOTY4MX0.2g0Z0f6DrmQzCbM99lBi29x6oTeBooEfmwGvUDL0G3E' http://localhost:8081/portfolios -v

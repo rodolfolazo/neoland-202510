@@ -1,5 +1,10 @@
 import { ExistenceError, BalanceError, validate } from "com";
 import { TransactionData, data } from "../data/index.js";
+import {
+  validateBalanceChain,
+  calculateBalanceChain,
+  rebuildPortfolio,
+} from "./helpers/index.js";
 
 export function addTransaction(
   userId,
@@ -27,18 +32,19 @@ export function addTransaction(
     0,
   );
 
-  return data.findUserById(userId)
+  return data
+    .findUserById(userId)
     .then((userData) => {
       if (!userData) throw new ExistenceError("user not found");
 
-      return data.findTransactionsBySymbol(userId, symbol)
+      return data.findTransactionsBySymbol(userId, symbol);
     })
     .then((transactionsData) => {
       transactionsData.push(txData);
-      this.validateBalanceChain(transactionsData);
+      validateBalanceChain(transactionsData);
 
       return data.insertTransaction(txData);
     })
-    .then(() => this.calculateBalanceChain(userId, symbol, executedAt))
-    .then(() => this.rebuildPortfolio(userId));
+    .then(() => calculateBalanceChain(userId, symbol, executedAt))
+    .then(() => rebuildPortfolio(userId));
 }

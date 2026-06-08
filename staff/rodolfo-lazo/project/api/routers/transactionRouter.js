@@ -9,12 +9,14 @@ import {
   getTransactionsBySymbolHandler,
   updateTransactionHandler,
   deleteTransactionHandler,
+  exportTransactionsHandler,
 } from "./handlers/index.js";
 
 export const transactionRouter = new Router();
 
 transactionRouter.post("", authMiddleware, addTransactionHandler);
 transactionRouter.get("", authMiddleware, getTransactionsHandler);
+transactionRouter.get("/export", authMiddleware, exportTransactionsHandler);
 transactionRouter.get("/:transactionId", authMiddleware, getTransactionHandler);
 transactionRouter.get(
   "/symbol/:symbol",
