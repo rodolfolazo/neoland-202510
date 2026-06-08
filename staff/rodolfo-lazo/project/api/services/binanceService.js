@@ -1,9 +1,5 @@
 import { SystemError } from "com";
 
-let prices = {};
-let lastUpdate = null;
-let provider = "binance";
-
 export function fetchPrices() {
   return fetch("https://api.binance.com/api/v3/ticker/price")
     .catch((error) => {
@@ -11,19 +7,16 @@ export function fetchPrices() {
     })
     .then((res) => res.json())
     .then((data) => {
-      const map = {};
+      const prices = {};
 
       data.forEach((item) => {
-        map[item.symbol] = parseFloat(item.price);
+        prices[item.symbol] = parseFloat(item.price);
       });
 
-      prices = map;
-      lastUpdate = new Date();
-
       return {
-        provider,
-        lastUpdate,
-        data: prices,
+        provider: "binance",
+        lastUpdate: new Date(),
+        prices,
       };
     });
 }
