@@ -10,7 +10,13 @@ export function addMarketPrice() {
       provider,
       lastUpdate,
       prices,
+<<<<<<< HEAD
     )
     return data.insertMarketPrice(marketPriceData)
   })
+=======
+    );
+    return data.insertMarketPrice(marketPriceData);
+  });
+>>>>>>> 4cd546b1284d09df5530b4d3f16d40fe9269a350
 }
