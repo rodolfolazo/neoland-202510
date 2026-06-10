@@ -12,7 +12,6 @@
 ### Use Cases
 
 - The app allows you to create an account and, once logged in, your homepage displays all your crypto assets in one place. From there, you can easily start a new operation whenever you need.
-- Pro users also gain access to real‑time price updates for all their assets, allowing them to track market movements instantly.
 
 ### UI/UX design
 
@@ -30,6 +29,17 @@
 - App (Components, Business Logic, Data)
 - Com ( Error, Validate, Regex)
 - Doc (readme, image)
+
+### Arquitectura
+- In my API, I have implemented a layered architecture to separate responsibilities and achieve a more organized, maintainable, and testable codebase.
+
+- The Mongoose layer defines the database schemas and models. Its responsibility is limited to representing how data is stored in MongoDB.
+
+- The Data layer handles access to that data. It centralizes all queries and operations performed through Mongoose, preventing the rest of the application from depending directly on the database.
+
+-Finally, the Logic layer contains the business rules. This layer validates incoming information, coordinates the required operations, and uses the Data layer to read or modify data.
+
+- Thanks to this separation, each layer has a clear and well‑defined purpose. This makes it easier to introduce changes, reuse code, detect errors, and test the business logic without relying directly on MongoDB.
 
 ### Data Model
 UserData
@@ -55,10 +65,20 @@ TransactionData
 - prince(required, number)
 - value(required, number)
 
+MarketPriceData
+- id(unique, string)
+- provider(required, string)
+- lastUpdate(required, date)
+- data (array)
+
 ### Techs
-- HTML | JS | CSS | Tailwind | React | React Router
+- HTML | JS | CSS | Tailwind | React | React Router | React icons | Recharts
 - Node | Express | MongoDB | Mongoose | BCrypt | JWT | Curl | Mocha | Chai | Morgan
 - Git | Markdown | VSCode | Sublime Merge | DevTools
 
-
+### Future releases
+- Add more functionalities for the user.
+- For an upcoming release, I will initially use node-cron to perform the price‑fetching process, and later migrate this functionality to worker threads.
+- For Pro users, I will implement a WebSocket connection and expose the data through Server‑Sent Events (SSE).
+- Additionally, I will display the price history, as it is stored daily in the database.
 
